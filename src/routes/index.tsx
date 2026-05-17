@@ -1,11 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
-import graduation from "@/assets/graduation-day.jpg";
-import dorm from "@/assets/dorm-desk.jpg";
-import rainy from "@/assets/rainy-canteen.jpg";
-import bug from "@/assets/first-bug.jpg";
-import sunrise from "@/assets/sunrise-terrace.jpg";
+import { photoMap } from "@/lib/photos";
+
+const graduation = photoMap.p1;
+const dorm = photoMap.p6;
+const rainy = photoMap.p5;
+const bug = photoMap.p0;
+const sunrise = photoMap.p3;
 
 export const Route = createFileRoute("/")({
   head: () => ({
