@@ -1,0 +1,32 @@
+import { Link } from "@tanstack/react-router";
+
+const links = [
+  { to: "/", label: "Home" },
+  { to: "/gallery", label: "Gallery" },
+  { to: "/timeline", label: "Timeline" },
+  { to: "/yearbook", label: "Yearbook" },
+  { to: "/letter", label: "Letter" },
+] as const;
+
+export function SiteNav() {
+  return (
+    <nav className="sticky top-0 z-50 px-6 md:px-10 py-4 flex justify-between items-center bg-paper/75 backdrop-blur-md border-b border-charcoal/5">
+      <Link to="/" className="font-mono text-xs md:text-sm tracking-tight">
+        <span className="text-brand">//</span> BTECH_CSE_2026
+      </Link>
+      <div className="flex gap-4 md:gap-7 text-xs md:text-sm font-medium">
+        {links.map((l) => (
+          <Link
+            key={l.to}
+            to={l.to}
+            className="text-charcoal/70 hover:text-brand transition-colors"
+            activeProps={{ className: "text-brand" }}
+            activeOptions={{ exact: true }}
+          >
+            {l.label}
+          </Link>
+        ))}
+      </div>
+    </nav>
+  );
+}
