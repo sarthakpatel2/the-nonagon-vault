@@ -1,10 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
-import firstDay from "@/assets/first-day.jpg";
-import dorm from "@/assets/dorm-desk.jpg";
-import hackathon from "@/assets/hackathon.jpg";
-import graduation from "@/assets/graduation-day.jpg";
+import { photoMap } from "@/lib/photos";
+
+const firstDay = photoMap.p0;
+const dorm = photoMap.p4;
+const hackathon = photoMap.p2;
+const graduation = photoMap.p1;
 
 export const Route = createFileRoute("/timeline")({
   head: () => ({
