@@ -2,13 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
-import graduation from "@/assets/graduation-day.jpg";
-import dorm from "@/assets/dorm-desk.jpg";
-import rainy from "@/assets/rainy-canteen.jpg";
-import bug from "@/assets/first-bug.jpg";
-import sunrise from "@/assets/sunrise-terrace.jpg";
-import hackathon from "@/assets/hackathon.jpg";
-import firstDay from "@/assets/first-day.jpg";
+import { photos } from "@/lib/photos";
 
 export const Route = createFileRoute("/gallery")({
   head: () => ({
@@ -21,23 +15,6 @@ export const Route = createFileRoute("/gallery")({
   }),
   component: GalleryPage,
 });
-
-type Polaroid = {
-  src: string;
-  caption: string;
-  date: string;
-  rotate: string;
-};
-
-const polaroids: Polaroid[] = [
-  { src: firstDay, caption: "Day one. Nobody knew anybody.", date: "AUG 2022", rotate: "-rotate-3" },
-  { src: dorm, caption: "Room 302. The headquarters.", date: "OCT 2022", rotate: "rotate-2" },
-  { src: bug, caption: "When Hello World finally compiled.", date: "NOV 2022", rotate: "-rotate-2" },
-  { src: rainy, caption: "Monsoon canteen runs.", date: "JUL 2023", rotate: "rotate-3" },
-  { src: hackathon, caption: "36-hour hackathon. We placed nothing.", date: "FEB 2024", rotate: "-rotate-1" },
-  { src: sunrise, caption: "The morning after the last viva.", date: "APR 2026", rotate: "rotate-2" },
-  { src: graduation, caption: "Caps in the air. Hearts on the floor.", date: "MAY 2026", rotate: "-rotate-2" },
-];
 
 function GalleryPage() {
   const [active, setActive] = useState<number | null>(null);
@@ -61,7 +38,7 @@ function GalleryPage() {
 
       <section className="px-4 md:px-10 pb-24 max-w-7xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 md:gap-10 pt-12">
-          {polaroids.map((p, i) => (
+          {photos.map((p, i) => (
             <button
               key={i}
               onClick={() => setActive(i)}
@@ -73,7 +50,7 @@ function GalleryPage() {
                   src={p.src}
                   alt={p.caption}
                   loading="lazy"
-                  className="w-full h-full object-cover grayscale-[35%] group-hover:grayscale-0 transition-all duration-700"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
               <div className="mt-4 px-1 flex justify-between items-end gap-2">
@@ -85,7 +62,6 @@ function GalleryPage() {
         </div>
       </section>
 
-      {/* Lightbox */}
       {active !== null && (
         <div
           onClick={() => setActive(null)}
@@ -96,13 +72,13 @@ function GalleryPage() {
             className="paper-card p-4 pb-16 max-w-2xl w-full"
           >
             <img
-              src={polaroids[active].src}
-              alt={polaroids[active].caption}
-              className="w-full aspect-square object-cover"
+              src={photos[active].src}
+              alt={photos[active].caption}
+              className="w-full max-h-[70vh] object-contain bg-charcoal/5"
             />
-            <figcaption className="mt-5 px-2 flex justify-between items-end">
-              <p className="font-hand text-3xl">{polaroids[active].caption}</p>
-              <span className="font-mono text-xs text-charcoal/40">{polaroids[active].date}</span>
+            <figcaption className="mt-5 px-2 flex justify-between items-end gap-4">
+              <p className="font-hand text-3xl">{photos[active].caption}</p>
+              <span className="font-mono text-xs text-charcoal/40 shrink-0">{photos[active].date}</span>
             </figcaption>
           </figure>
           <button
