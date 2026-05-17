@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as YearbookRouteImport } from './routes/yearbook'
 import { Route as TimelineRouteImport } from './routes/timeline'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as LetterRouteImport } from './routes/letter'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as IndexRouteImport } from './routes/index'
@@ -23,6 +24,11 @@ const YearbookRoute = YearbookRouteImport.update({
 const TimelineRoute = TimelineRouteImport.update({
   id: '/timeline',
   path: '/timeline',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LetterRoute = LetterRouteImport.update({
@@ -45,6 +51,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/gallery': typeof GalleryRoute
   '/letter': typeof LetterRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/timeline': typeof TimelineRoute
   '/yearbook': typeof YearbookRoute
 }
@@ -52,6 +59,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/gallery': typeof GalleryRoute
   '/letter': typeof LetterRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/timeline': typeof TimelineRoute
   '/yearbook': typeof YearbookRoute
 }
@@ -60,21 +68,36 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/gallery': typeof GalleryRoute
   '/letter': typeof LetterRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/timeline': typeof TimelineRoute
   '/yearbook': typeof YearbookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/gallery' | '/letter' | '/timeline' | '/yearbook'
+  fullPaths:
+    | '/'
+    | '/gallery'
+    | '/letter'
+    | '/sitemap.xml'
+    | '/timeline'
+    | '/yearbook'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/gallery' | '/letter' | '/timeline' | '/yearbook'
-  id: '__root__' | '/' | '/gallery' | '/letter' | '/timeline' | '/yearbook'
+  to: '/' | '/gallery' | '/letter' | '/sitemap.xml' | '/timeline' | '/yearbook'
+  id:
+    | '__root__'
+    | '/'
+    | '/gallery'
+    | '/letter'
+    | '/sitemap.xml'
+    | '/timeline'
+    | '/yearbook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GalleryRoute: typeof GalleryRoute
   LetterRoute: typeof LetterRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TimelineRoute: typeof TimelineRoute
   YearbookRoute: typeof YearbookRoute
 }
@@ -93,6 +116,13 @@ declare module '@tanstack/react-router' {
       path: '/timeline'
       fullPath: '/timeline'
       preLoaderRoute: typeof TimelineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/letter': {
@@ -123,6 +153,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GalleryRoute: GalleryRoute,
   LetterRoute: LetterRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TimelineRoute: TimelineRoute,
   YearbookRoute: YearbookRoute,
 }
