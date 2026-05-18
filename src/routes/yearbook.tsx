@@ -57,6 +57,7 @@ const crew: Friend[] = [
       "Drinks → vomits → repeats. It's a lifestyle.",
     ],
     punchline: "Bhai bas ek plate biryani aur 2 ghante neend.",
+    photo: amanSinghImg,
   },
   {
     name: "Aman Saxena",
@@ -68,6 +69,7 @@ const crew: Friend[] = [
       "Non-veg is religion. Getting dressed is a 45-minute ritual.",
     ],
     punchline: "Bhai usne mujhe dekha tha, I swear.",
+    photo: amanSaxenaImg,
   },
   {
     name: "Pragati Srivastava",
@@ -80,6 +82,7 @@ const crew: Friend[] = [
       "Dumb moments are just her brain buffering.",
     ],
     punchline: "Mummy ne phone kiya hai, main ghar jaa rahi hoon.",
+    photo: pragatiImg,
   },
   {
     name: "Madhav Sharma",
@@ -92,6 +95,7 @@ const crew: Friend[] = [
       "Every conversation ends with: Bhai body nhi bn rhi hai.",
     ],
     punchline: "Bhai body nhi bn rhi hai, aur plan bhi nhi ja rha.",
+    photo: madhavSharmaImg,
   },
   {
     name: "Madhav Khandelwal",
@@ -105,6 +109,7 @@ const crew: Friend[] = [
       "Kadhi-chawal runs in his veins.",
     ],
     punchline: "Bhai paise kal de dunga, pakka.",
+    photo: madhavKhandelwalImg,
   },
   {
     name: "Racheet Saraswat",
@@ -117,6 +122,7 @@ const crew: Friend[] = [
       "Watches horror movies through fingers, then sleeps with lights on.",
     ],
     punchline: "Bhai raita fenk diya maine toh... zindagi fenk di.",
+    photo: racheetImg,
   },
   {
     name: "Sarthak Patel",
@@ -129,6 +135,7 @@ const crew: Friend[] = [
       "The glue that holds this chaotic squad together.",
     ],
     punchline: "Bhai sab theek hai, chill. Bas non-veg mile toh bata dio.",
+    photo: sarthakImg,
   },
   {
     name: "Shivendra Pandey",
@@ -142,6 +149,7 @@ const crew: Friend[] = [
       "Biryani and rice are his emotional support foods.",
     ],
     punchline: "Padhai ki thi yaar, examiner ne galat check kiya hoga.",
+    photo: shivendraImg,
   },
 ];
 
