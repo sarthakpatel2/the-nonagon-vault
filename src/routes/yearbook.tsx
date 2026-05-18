@@ -229,7 +229,6 @@ function YearbookPage() {
             { name: "— Racheet", note: "Raita spill = life spill." },
             { name: "— Sarthak", note: "Chill hai sab. Bas non-veg chahiye." },
             { name: "— Shivendra", note: "Examiner ne galat check kiya." },
-            { name: "— Arjun", note: "Thank you for everything, you idiots." },
           ].map((s, i) => (
             <div
               key={i}
