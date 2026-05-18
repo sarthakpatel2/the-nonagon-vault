@@ -45,14 +45,6 @@ const crew: Friend[] = [
     ],
     punchline: "Mai nashi me nhi hu, mujhse koi sawal pucho.",
     photo: aditiImg,
-    role: "The Zen Comedian",
-    vibe: "Calm, funny, and friendly — until the non-veg platter arrives.",
-    details: [
-      "Has a PhD in staying chill during chaos.",
-      "Loves non-veg more than she loves her own health.",
-      "After two drinks her truth serum activates.",
-    ],
-    punchline: "Mai nashi me nhi hu, mujhse koi sawal pucho.",
   },
   {
     name: "Aman Singh",
