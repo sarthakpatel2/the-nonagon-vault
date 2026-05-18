@@ -114,8 +114,8 @@ const crew: Friend[] = [
     details: [
       "Loves his friends but won't admit it. Acts too cool for emotions.",
       "Mysterious personality — even he doesn't know what he's doing next.",
-      "Non-veg warrior. Group leader by default because nobody else applied.",
-      "The glue that holds ten chaotic people together.",
+      "Non-veg warrior. Kind of runs things, but don't say that out loud.",
+      "The glue that holds this chaotic squad together.",
     ],
     punchline: "Bhai sab theek hai, chill. Bas non-veg mile toh bata dio.",
   },
