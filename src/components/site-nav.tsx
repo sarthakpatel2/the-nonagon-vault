@@ -4,7 +4,7 @@ const links = [
   { to: "/", label: "Home" },
   { to: "/gallery", label: "Gallery" },
   { to: "/timeline", label: "Timeline" },
-  { to: "/yearbook", label: "Yearbook" },
+  { to: "/yearbook", label: "Know the Group" },
   { to: "/letter", label: "Letter" },
 ] as const;
 
