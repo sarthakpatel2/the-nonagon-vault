@@ -2,6 +2,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
+import aditiImg from "@/assets/crew/aditi.jpeg";
+import amanSinghImg from "@/assets/crew/aman-singh.jpeg";
+import amanSaxenaImg from "@/assets/crew/aman-saxena.jpeg";
+import pragatiImg from "@/assets/crew/pragati.jpeg";
+import madhavSharmaImg from "@/assets/crew/madhav-sharma.jpeg";
+import madhavKhandelwalImg from "@/assets/crew/madhav-khandelwal.jpeg";
+import racheetImg from "@/assets/crew/racheet.jpeg";
+import sarthakImg from "@/assets/crew/sarthak.jpeg";
+import shivendraImg from "@/assets/crew/shivendra.jpeg";
 
 export const Route = createFileRoute("/yearbook")({
   head: () => ({
