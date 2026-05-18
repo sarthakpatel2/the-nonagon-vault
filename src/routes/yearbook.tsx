@@ -193,9 +193,17 @@ function YearbookPage() {
                   `}
                 >
                   <div>
-                    <span className={`font-mono text-[10px] tracking-[0.2em] uppercase block mb-4 ${isOpen ? "text-white/70" : "text-paper/40"}`}>
-                      {p.name} <span className={isOpen ? "text-white/40" : "text-brand"}>//</span> {p.role}
-                    </span>
+                    <div className="flex items-center gap-3 mb-4">
+                      <img
+                        src={p.photo}
+                        alt={p.name}
+                        loading="lazy"
+                        className={`w-14 h-14 rounded-full object-cover border-2 ${isOpen ? "border-white/40" : "border-paper/30"}`}
+                      />
+                      <span className={`font-mono text-[10px] tracking-[0.2em] uppercase ${isOpen ? "text-white/70" : "text-paper/40"}`}>
+                        {p.name} <span className={isOpen ? "text-white/40" : "text-brand"}>//</span> {p.role}
+                      </span>
+                    </div>
                     {!isOpen ? (
                       <div>
                         <p className="font-serif text-lg leading-snug mb-4">&ldquo;{p.vibe}&rdquo;</p>
