@@ -2,6 +2,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
+import aditiImg from "@/assets/crew/aditi.jpeg";
+import amanSinghImg from "@/assets/crew/aman-singh.jpeg";
+import amanSaxenaImg from "@/assets/crew/aman-saxena.jpeg";
+import pragatiImg from "@/assets/crew/pragati.jpeg";
+import madhavSharmaImg from "@/assets/crew/madhav-sharma.jpeg";
+import madhavKhandelwalImg from "@/assets/crew/madhav-khandelwal.jpeg";
+import racheetImg from "@/assets/crew/racheet.jpeg";
+import sarthakImg from "@/assets/crew/sarthak.jpeg";
+import shivendraImg from "@/assets/crew/shivendra.jpeg";
 
 export const Route = createFileRoute("/yearbook")({
   head: () => ({
@@ -21,6 +30,7 @@ type Friend = {
   vibe: string;
   details: string[];
   punchline: string;
+  photo: string;
 };
 
 const crew: Friend[] = [
@@ -34,6 +44,7 @@ const crew: Friend[] = [
       "After two drinks her truth serum activates.",
     ],
     punchline: "Mai nashi me nhi hu, mujhse koi sawal pucho.",
+    photo: aditiImg,
   },
   {
     name: "Aman Singh",
@@ -46,6 +57,7 @@ const crew: Friend[] = [
       "Drinks → vomits → repeats. It's a lifestyle.",
     ],
     punchline: "Bhai bas ek plate biryani aur 2 ghante neend.",
+    photo: amanSinghImg,
   },
   {
     name: "Aman Saxena",
@@ -57,6 +69,7 @@ const crew: Friend[] = [
       "Non-veg is religion. Getting dressed is a 45-minute ritual.",
     ],
     punchline: "Bhai usne mujhe dekha tha, I swear.",
+    photo: amanSaxenaImg,
   },
   {
     name: "Pragati Srivastava",
@@ -69,6 +82,7 @@ const crew: Friend[] = [
       "Dumb moments are just her brain buffering.",
     ],
     punchline: "Mummy ne phone kiya hai, main ghar jaa rahi hoon.",
+    photo: pragatiImg,
   },
   {
     name: "Madhav Sharma",
@@ -81,6 +95,7 @@ const crew: Friend[] = [
       "Every conversation ends with: Bhai body nhi bn rhi hai.",
     ],
     punchline: "Bhai body nhi bn rhi hai, aur plan bhi nhi ja rha.",
+    photo: madhavSharmaImg,
   },
   {
     name: "Madhav Khandelwal",
@@ -94,6 +109,7 @@ const crew: Friend[] = [
       "Kadhi-chawal runs in his veins.",
     ],
     punchline: "Bhai paise kal de dunga, pakka.",
+    photo: madhavKhandelwalImg,
   },
   {
     name: "Racheet Saraswat",
@@ -106,6 +122,7 @@ const crew: Friend[] = [
       "Watches horror movies through fingers, then sleeps with lights on.",
     ],
     punchline: "Bhai raita fenk diya maine toh... zindagi fenk di.",
+    photo: racheetImg,
   },
   {
     name: "Sarthak Patel",
@@ -118,6 +135,7 @@ const crew: Friend[] = [
       "The glue that holds this chaotic squad together.",
     ],
     punchline: "Bhai sab theek hai, chill. Bas non-veg mile toh bata dio.",
+    photo: sarthakImg,
   },
   {
     name: "Shivendra Pandey",
@@ -131,6 +149,7 @@ const crew: Friend[] = [
       "Biryani and rice are his emotional support foods.",
     ],
     punchline: "Padhai ki thi yaar, examiner ne galat check kiya hoga.",
+    photo: shivendraImg,
   },
 ];
 
@@ -174,9 +193,17 @@ function YearbookPage() {
                   `}
                 >
                   <div>
-                    <span className={`font-mono text-[10px] tracking-[0.2em] uppercase block mb-4 ${isOpen ? "text-white/70" : "text-paper/40"}`}>
-                      {p.name} <span className={isOpen ? "text-white/40" : "text-brand"}>//</span> {p.role}
-                    </span>
+                    <div className="flex items-center gap-3 mb-4">
+                      <img
+                        src={p.photo}
+                        alt={p.name}
+                        loading="lazy"
+                        className={`w-14 h-14 rounded-full object-cover border-2 ${isOpen ? "border-white/40" : "border-paper/30"}`}
+                      />
+                      <span className={`font-mono text-[10px] tracking-[0.2em] uppercase ${isOpen ? "text-white/70" : "text-paper/40"}`}>
+                        {p.name} <span className={isOpen ? "text-white/40" : "text-brand"}>//</span> {p.role}
+                      </span>
+                    </div>
                     {!isOpen ? (
                       <div>
                         <p className="font-serif text-lg leading-snug mb-4">&ldquo;{p.vibe}&rdquo;</p>
