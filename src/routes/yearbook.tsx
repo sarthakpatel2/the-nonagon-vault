@@ -6,33 +6,132 @@ import { SiteFooter } from "@/components/site-footer";
 export const Route = createFileRoute("/yearbook")({
   head: () => ({
     meta: [
-      { title: "Yearbook — The Crew" },
-      { name: "description", content: "An interactive digital yearbook for the eight friends who made these four years count." },
-      { property: "og:title", content: "Yearbook — The Crew" },
-      { property: "og:description", content: "An interactive digital yearbook of the crew." },
+      { title: "Know the Group — The Real Crew" },
+      { name: "description", content: "Tap a name to unlock the full, unfiltered, hilarious truth about every member of this legendary BTech squad." },
+      { property: "og:title", content: "Know the Group — The Real Crew" },
+      { property: "og:description", content: "The unfiltered yearbook of a BTech CSE friend group." },
     ],
   }),
   component: YearbookPage,
 });
 
-type Person = {
+type Friend = {
   name: string;
   role: string;
-  quote: string;
-  superpower: string;
-  catchphrase: string;
-  futureSeenIn: string;
+  vibe: string;
+  details: string[];
+  punchline: string;
 };
 
-const crew: Person[] = [
-  { name: "S. Rahul", role: "The Architect", quote: "I still have the drive with everyone's proxy records.", superpower: "Drawing UML at 3 AM", catchphrase: "Bhai, ek diagram bana le.", futureSeenIn: "Building startups in Bangalore" },
-  { name: "Priya K.", role: "The Debugger", quote: "Will miss the maggi more than the lectures.", superpower: "Spotting a missing semicolon", catchphrase: "It works on my machine.", futureSeenIn: "Leading an SRE team" },
-  { name: "Aman V.", role: "The Backbencher", quote: "CSE was a side quest. Gaming was the main game.", superpower: "Sleeping with eyes open", catchphrase: "Ek game aur, promise.", futureSeenIn: "Twitch at 50k followers" },
-  { name: "Sara T.", role: "The Topper", quote: "Finally free from 8 AM lectures. Now for 9 AM standups.", superpower: "Notes nobody else made", catchphrase: "I haven't studied at all, guys.", futureSeenIn: "On a stage doing a TEDx" },
-  { name: "Karan M.", role: "The Connector", quote: "Knew someone in every department. Knew nothing in OS.", superpower: "Organising trips out of thin air", catchphrase: "Mai dekh leta hoon.", futureSeenIn: "Running an events agency" },
-  { name: "Neha R.", role: "The Designer", quote: "Made every project PPT look like Apple's launch.", superpower: "Aligning to the 4px grid", catchphrase: "The Figma file is sacred.", futureSeenIn: "Design lead at a quiet, cool studio" },
-  { name: "Vikram S.", role: "The Philosopher", quote: "Every viva turned into an existential discussion.", superpower: "Long walks, longer monologues", catchphrase: "But what is, really, a process?", futureSeenIn: "Writing a blog nobody reads but loves" },
-  { name: "Ananya P.", role: "The Glue", quote: "Held this group together through every fight.", superpower: "Remembering everyone's birthday", catchphrase: "We're going. Get up.", futureSeenIn: "Hosting our 10-year reunion" },
+const crew: Friend[] = [
+  {
+    name: "Aditi Singh",
+    role: "The Zen Comedian",
+    vibe: "Calm, funny, and friendly — until the non-veg platter arrives.",
+    details: [
+      "Has a PhD in staying chill during chaos.",
+      "Loves non-veg more than she loves her own health.",
+      "After two drinks her truth serum activates.",
+    ],
+    punchline: "Mai nashi me nhi hu, mujhse koi sawal pucho.",
+  },
+  {
+    name: "Aman Singh",
+    role: "The Biryani Mercenary",
+    vibe: "Will literally do anything for friends. Emotions run on biryani fuel.",
+    details: [
+      "Choti Advance enthusiast — nobody knows what that means either.",
+      "Always late because biryani > punctuality.",
+      "Sleeps 14 hours a day. The other 10 are for eating.",
+      "Drinks → vomits → repeats. It's a lifestyle.",
+    ],
+    punchline: "Bhai bas ek plate biryani aur 2 ghante neend.",
+  },
+  {
+    name: "Aman Saxena",
+    role: "The Serial Crasher",
+    vibe: "Knows everyone, loves everyone (especially random girls he just met).",
+    details: [
+      "Good connections in every department, canteen, and bus stop.",
+      "Falls in love at least twice a semester.",
+      "Non-veg is religion. Getting dressed is a 45-minute ritual.",
+    ],
+    punchline: "Bhai usne mujhe dekha tha, I swear.",
+  },
+  {
+    name: "Pragati Srivastava",
+    role: "The Kurkure Goddess",
+    vibe: "Kind-hearted angel who occasionally forgets how the world works.",
+    details: [
+      "Eats Kurkure for dinner and calls it a balanced diet.",
+      "Cries if you look at her wrong. Also cries if you look at her right.",
+      "Family fear is real — her phone rings and she freezes.",
+      "Dumb moments are just her brain buffering.",
+    ],
+    punchline: "Mummy ne phone kiya hai, main ghar jaa rahi hoon.",
+  },
+  {
+    name: "Madhav Sharma",
+    role: "The Plan Canceller",
+    vibe: "Studious, scared, and convinced his body is a conspiracy.",
+    details: [
+      "Actually studies. Still confused. It's a talent.",
+      "Cancels plans with the consistency of a Japanese train schedule.",
+      "Loves kadhi chawal more than passing grades.",
+      "Every conversation ends with: Bhai body nhi bn rhi hai.",
+    ],
+    punchline: "Bhai body nhi bn rhi hai, aur plan bhi nhi ja rha.",
+  },
+  {
+    name: "Madhav Khandelwal",
+    role: "The Baniya Broadcast",
+    vibe: "Loud, funny, and permanently in debt — but always ordering more.",
+    details: [
+      "Chatterbox with a voice that reaches the next hostel block.",
+      "Makes everyone wait because he was 'bas 2 minute me aaya'.",
+      "Baniya by birth, debtor by choice. Udhaar ka raja.",
+      "Lies so smoothly you almost believe him. Almost.",
+      "Kadhi-chawal runs in his veins.",
+    ],
+    punchline: "Bhai paise kal de dunga, pakka.",
+  },
+  {
+    name: "Racheet Saraswat",
+    role: "The Raita Philosopher",
+    vibe: "Speaks in riddles nobody asked for. Scared of his own shadow.",
+    details: [
+      "Random topic generator — currently speaking about space while eating raita.",
+      "One-sided love artist. The other side never showed up.",
+      "Raita is life. Raita is love. Raita is everything.",
+      "Watches horror movies through fingers, then sleeps with lights on.",
+    ],
+    punchline: "Bhai raita fenk diya maine toh... zindagi fenk di.",
+  },
+  {
+    name: "Sarthak Patel",
+    role: "The Glue & The Enigma",
+    vibe: "Chill, mysterious, and the reason this group hasn't disbanded.",
+    details: [
+      "Loves his friends but won't admit it. Acts too cool for emotions.",
+      "Mysterious personality — even he doesn't know what he's doing next.",
+      "Non-veg warrior. Group leader by default because nobody else applied.",
+      "The glue that holds ten chaotic people together.",
+    ],
+    punchline: "Bhai sab theek hai, chill. Bas non-veg mile toh bata dio.",
+  },
+  {
+    name: "Shivendra Pandey",
+    role: "The Hulk with a GPA",
+    vibe: "Anger issues, hunger issues, and a tragic relationship with marks.",
+    details: [
+      "Anger management? Never heard of her.",
+      "Fights, stops talking, then comes back hungrier than before.",
+      "Always hungry. Even while eating.",
+      "Studies the most during exams. Scores less than the guy who slept.",
+      "Biryani and rice are his emotional support foods.",
+    ],
+    punchline: "Padhai ki thi yaar, examiner ne galat check kiya hoga.",
+  },
 ];
 
 function YearbookPage() {
@@ -47,10 +146,10 @@ function YearbookPage() {
           04 / The Crew
         </p>
         <h1 className="font-serif font-bold leading-[0.9] tracking-tight text-[clamp(2.5rem,7vw,5.5rem)]">
-          The digital <span className="italic text-brand">yearbook</span>.
+          Know the <span className="italic text-brand">group</span>.
         </h1>
         <p className="mt-6 max-w-xl text-charcoal/70">
-          Tap a name. Reveal the inside joke. These are the people who made the syllabus survivable.
+          Tap a card. Unlock the chaos. These are the real humans behind the inside jokes, the proxy logs, and the 2&nbsp;AM canteen bills.
         </p>
       </header>
 
@@ -63,14 +162,14 @@ function YearbookPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {crew.map((p, i) => {
               const isOpen = open === i;
               return (
                 <button
                   key={p.name}
                   onClick={() => setOpen(isOpen ? null : i)}
-                  className={`text-left border rounded-xl p-6 transition-all duration-300 group min-h-[220px] flex flex-col justify-between
+                  className={`text-left border rounded-xl p-6 transition-all duration-300 group min-h-[260px] flex flex-col justify-between
                     ${isOpen ? "bg-brand border-brand text-white" : "border-paper/15 hover:bg-paper/5 hover:border-paper/40"}
                   `}
                 >
@@ -79,12 +178,27 @@ function YearbookPage() {
                       {p.name} <span className={isOpen ? "text-white/40" : "text-brand"}>//</span> {p.role}
                     </span>
                     {!isOpen ? (
-                      <p className="font-serif text-lg leading-snug">&ldquo;{p.quote}&rdquo;</p>
+                      <div>
+                        <p className="font-serif text-lg leading-snug mb-4">&ldquo;{p.vibe}&rdquo;</p>
+                        <div className="flex flex-wrap gap-2">
+                          {p.details.slice(0, 2).map((d, idx) => (
+                            <span key={idx} className="text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded-full bg-paper/10 text-paper/70">
+                              {d.split(" ").slice(0, 3).join(" ")}...
+                            </span>
+                          ))}
+                        </div>
+                      </div>
                     ) : (
-                      <div className="space-y-3 text-sm">
-                        <p><span className="opacity-60">Superpower —</span> {p.superpower}</p>
-                        <p><span className="opacity-60">Catchphrase —</span> &ldquo;{p.catchphrase}&rdquo;</p>
-                        <p><span className="opacity-60">Future spotted at —</span> {p.futureSeenIn}</p>
+                      <div className="space-y-2 text-sm">
+                        {p.details.map((d, idx) => (
+                          <p key={idx} className="flex gap-2">
+                            <span className="text-white/50 mt-1">▸</span>
+                            {d}
+                          </p>
+                        ))}
+                        <p className="pt-3 font-hand text-xl italic text-white/90 border-t border-white/20 mt-3">
+                          &ldquo;{p.punchline}&rdquo;
+                        </p>
                       </div>
                     )}
                   </div>
@@ -106,15 +220,16 @@ function YearbookPage() {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {[
-            { name: "— Rahul", note: "Reunion in 5. Don't ghost." },
-            { name: "— Priya", note: "Push to prod and call me." },
-            { name: "— Aman", note: "GG, well played, mates." },
-            { name: "— Sara", note: "Stay curious, stay sleepy." },
-            { name: "— Karan", note: "I'll plan the trip. As always." },
-            { name: "— Neha", note: "Keep the kerning tight." },
-            { name: "— Vikram", note: "Life is just a `while true`." },
-            { name: "— Ananya", note: "I love you idiots." },
-            { name: "— Arjun", note: "Thank you for everything." },
+            { name: "— Aditi", note: "I was NOT drunk. Ask me anything." },
+            { name: "— Aman S.", note: "Biryani first. Emotions second." },
+            { name: "— Aman Sax.", note: "She looked at me. I swear." },
+            { name: "— Pragati", note: "Mummy called. I have to go." },
+            { name: "— Madhav Sh.", note: "Body nhi bani, plan nhi gya." },
+            { name: "— Madhav Kh.", note: "Paise kal. Pakka. Pakka pakka." },
+            { name: "— Racheet", note: "Raita spill = life spill." },
+            { name: "— Sarthak", note: "Chill hai sab. Bas non-veg chahiye." },
+            { name: "— Shivendra", note: "Examiner ne galat check kiya." },
+            { name: "— Arjun", note: "Thank you for everything, you idiots." },
           ].map((s, i) => (
             <div
               key={i}
