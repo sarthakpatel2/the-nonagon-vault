@@ -12,10 +12,10 @@ const sunrise = photoMap.p3;
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Arjun & Co. — Four years, one infinite loop" },
-      { name: "description", content: "A scrapbook of memories from a B.Tech CSE graduate and the friends who made it all unforgettable." },
-      { property: "og:title", content: "Arjun & Co. — Four years, one infinite loop" },
-      { property: "og:description", content: "A scrapbook of memories from a B.Tech CSE graduate and the friends who made it all unforgettable." },
+      { title: "The Nonagon — Nine humans, one infinite loop" },
+      { name: "description", content: "A scrapbook of memories from nine B.Tech CSE friends who made the four years unforgettable." },
+      { property: "og:title", content: "The Nonagon — Nine humans, one infinite loop" },
+      { property: "og:description", content: "A scrapbook of memories from nine B.Tech CSE friends who made the four years unforgettable." },
     ],
   }),
   component: Home,
