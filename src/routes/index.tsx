@@ -12,26 +12,31 @@ const sunrise = photoMap.p3;
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Arjun & Co. — Four years, one infinite loop" },
-      { name: "description", content: "A scrapbook of memories from a B.Tech CSE graduate and the friends who made it all unforgettable." },
-      { property: "og:title", content: "Arjun & Co. — Four years, one infinite loop" },
-      { property: "og:description", content: "A scrapbook of memories from a B.Tech CSE graduate and the friends who made it all unforgettable." },
+      { title: "The Nonagon — Nine humans, one infinite loop" },
+      { name: "description", content: "A scrapbook of memories from nine B.Tech CSE friends who made the four years unforgettable." },
+      { property: "og:title", content: "The Nonagon — Nine humans, one infinite loop" },
+      { property: "og:description", content: "A scrapbook of memories from nine B.Tech CSE friends who made the four years unforgettable." },
     ],
   }),
   component: Home,
 });
 
 const jokes = [
-  "PROXY LAGA DENA",
-  "WHO HAS THE SEM 5 NOTES?",
-  "TEA AT 2 AM",
-  "SEGMENTATION FAULT",
-  "NULL POINTER EXCEPTION",
-  "ATTENDANCE 74.9%",
-  "LAST DAY VIVA",
-  "BHAI CODE CHALA",
-  "ONE LAST MAGGI",
-  "PLACEMENT SEASON",
+  "BHAI PROXY LAGA DENA",
+  "ATTENDANCE: 74.9% (HEROIC)",
+  "2 AM CHAI > 8 AM CLASS",
+  "WHO HAS SEM 5 NOTES??",
+  "BIRYANI IS LOVE LANGUAGE",
+  "BAS 2 MINUTE ME AAYA",
+  "SLEEP IS A SKILL ISSUE",
+  "MUMMY KO MAT BATANA",
+  "SEGMENTATION FAULT (CORE DUMPED)",
+  "BHAI CODE CHAL GAYA?!",
+  "ONE LAST MAGGI, I SWEAR",
+  "PAISE KAL DUNGA, PAKKA",
+  "MAI NASHE ME NHI HU",
+  "BODY NHI BN RHI HAI",
+  "EXAMINER NE GALAT CHECK KIYA",
 ];
 
 function Home() {
@@ -200,7 +205,7 @@ function Home() {
         </Link>
         <Link to="/yearbook" className="group p-8 rounded-2xl bg-cream hover:bg-brand hover:text-white transition-colors">
           <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-charcoal/60 group-hover:text-white/70 mb-6">02 / The crew</p>
-          <h3 className="font-serif text-3xl mb-10 leading-tight">Ten characters that ran this season.</h3>
+          <h3 className="font-serif text-3xl mb-10 leading-tight">Nine characters that ran this season.</h3>
           <span className="font-serif italic group-hover:translate-x-1 inline-block transition-transform">Open yearbook →</span>
         </Link>
         <Link to="/letter" className="group p-8 rounded-2xl border border-charcoal/15 hover:bg-brand hover:text-white hover:border-brand transition-colors">

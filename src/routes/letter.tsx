@@ -15,23 +15,37 @@ export const Route = createFileRoute("/letter")({
   component: LetterPage,
 });
 
-const fullLetter = `Dear all of you,
+const fullLetter = `Dear nine of you,
 
-If you're reading this, the hostel WiFi has finally been kind to us.
+If you're reading this, the hostel WiFi has finally been kind to us. Or someone is using their phone hotspot and pretending it's fine. Either way — hi. I love you. Don't make it weird.
 
-Four years ago we showed up with new laptops and louder anxieties. We didn't know what a linked list was. We didn't know what each other's laugh sounded like. Today both of those things feel like the easiest knowledge in the world.
+Four years ago we showed up with new laptops, oversized hoodies, and louder anxieties than any of us would admit. We didn't know what a linked list was. We didn't know what each other's laughs sounded like. We didn't know that "bhai ek minute" actually meant forty. Today, all three of those things feel like the easiest knowledge in the world.
 
-I want to thank you. For the notes shared at 2 AM. For the proxies that should never have worked but somehow did. For the long walks after bad results. For the canteen chai that tasted like therapy. For showing up when I didn't know how to ask.
+I keep trying to write this letter like it's a goodbye. But it's not. It's a thank-you note for nine people who turned a degree into the loudest, dumbest, most ridiculous family I've ever had.
 
-College is going to keep being remembered as a degree. Quietly, between us, it'll always be you. The crew. The reason 'going home' for four years actually meant going to be near you.
+Thank you for the notes shared at 2 AM with the threat "delete after reading". Thank you for the proxies that should never have worked — and for never asking why I needed three on the same day. Thank you for the long walks after bad results, where nobody said anything useful but somehow everything felt lighter by the end. Thank you for the canteen chai that tasted like therapy and the Maggi that tasted like home.
 
-We're scattering now — to companies and cities and timezones. That's okay. We'll text. We'll call. We'll be the WhatsApp group that goes silent for weeks and then erupts at 1 AM over one stupid meme.
+Thank you for fighting with me. For making up over biryani. For the silent room when one of us cried, and the loud room when one of us tried to sing. For showing up when I didn't know how to ask. For knowing me before I knew myself, and somehow staying anyway.
+
+To Aditi — for being the calm in every storm, and the loudest after every drink.
+To both Amans — for being equally insane in completely different fonts.
+To Pragati — for crying at the smallest things and meaning the biggest ones.
+To both Madhavs — for the cancelled plans, the udhaar, the chaos, the love.
+To Racheet — for every raita-coded life lesson nobody asked for.
+To Sarthak — for being the glue, even when you pretended you weren't.
+To Shivendra — for the anger, the hunger, and the heart bigger than both.
+
+College is going to keep being remembered as a degree. Quietly, between us, it'll always be you. The nine. The reason "going home" for four years actually meant going to be near you.
+
+We're scattering now — to companies and cities and timezones we can't pronounce. That's okay. We'll text. We'll call. We'll be the WhatsApp group that goes silent for weeks and then erupts at 1 AM over one stupid meme. We'll meet at weddings and complain about traffic instead of professors. We'll grow up. We'll stay the same in the only ways that matter.
+
+So this is not goodbye. This is me, holding the door open. Walk through it whenever you need. The chai is on me.
 
 Keep pushing to main. Keep failing builds. Keep showing up for each other.
 
-I love you guys.
+I love you nine, more than I will ever know how to say out loud.
 
-— Arjun.`;
+— The Nonagon.`;
 
 function LetterPage() {
   const [typed, setTyped] = useState("");
@@ -90,12 +104,12 @@ function LetterPage() {
 
           {done && (
             <div className="mt-10 pt-8 border-t border-charcoal/10 flex flex-wrap items-end justify-between gap-6">
-              <p className="font-hand text-4xl text-brand">— Arjun.</p>
+              <p className="font-hand text-4xl text-brand">— the nonagon.</p>
               <Link
                 to="/yearbook"
                 className="inline-flex items-center gap-2 bg-charcoal text-paper px-5 py-3 rounded-full font-medium text-sm hover:bg-brand transition-colors"
               >
-                Sign the yearbook →
+                Know the group →
               </Link>
             </div>
           )}

@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { LoginGate } from "@/components/login-gate";
 
 function NotFoundComponent() {
   return (
@@ -72,10 +73,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Arjun & Co. — Four years, one infinite loop" },
-      { name: "description", content: "A scrapbook of memories from a B.Tech CSE graduate and the friends who made it unforgettable." },
-      { property: "og:title", content: "Arjun & Co. — Four years, one infinite loop" },
-      { property: "og:description", content: "A scrapbook of memories from a B.Tech CSE graduate and the friends who made it unforgettable." },
+      { title: "The Nonagon — Nine humans, one infinite loop" },
+      { name: "description", content: "A scrapbook of memories from nine B.Tech CSE friends who somehow made it out alive — together." },
+      { property: "og:title", content: "The Nonagon — Nine humans, one infinite loop" },
+      { property: "og:description", content: "A scrapbook of memories from nine B.Tech CSE friends who somehow made it out alive — together." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -114,7 +115,9 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <LoginGate>
+        <Outlet />
+      </LoginGate>
     </QueryClientProvider>
   );
 }
