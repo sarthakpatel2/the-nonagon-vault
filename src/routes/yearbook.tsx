@@ -43,7 +43,7 @@ const crew: Friend[] = [
       "Loves non-veg more than she loves her own health.",
       "After two drinks her truth serum activates.",
     ],
-    punchline: "Mai nashi me nhi hu, mujhse koi sawal pucho.",
+    punchline: "Mai nashe me nhi hu, mujhse koi sawal pucho.",
     photo: aditiImg,
   },
   {
