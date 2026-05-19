@@ -51,9 +51,9 @@ const years = [
     year: "2025 — 26",
     label: "Year 04",
     title: "graduation_commit",
-    body: "Placements, projects, the slow goodbye disguised as routine. Every chai at the canteen suddenly mattered. We pushed the final commit and watched the build pass.",
+    body: "Placements, projects, the slow goodbye disguised as routine. This photo? Morning after graduation — eyes half-open, hearts fully wrecked, standing in the same spot we'd walked past a thousand times, suddenly knowing we wouldn't again. We pushed the final commit and watched the build pass.",
     img: graduation,
-    moments: ["The placement WhatsApp group going wild", "Final farewell night under string lights", "Throwing caps. Throwing tears."],
+    moments: ["The morning-after-graduation photo (this one)", "Final farewell night under string lights", "Throwing caps. Throwing tears."],
   },
 ];
 
