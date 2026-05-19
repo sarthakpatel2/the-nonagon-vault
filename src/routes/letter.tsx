@@ -104,12 +104,12 @@ function LetterPage() {
 
           {done && (
             <div className="mt-10 pt-8 border-t border-charcoal/10 flex flex-wrap items-end justify-between gap-6">
-              <p className="font-hand text-4xl text-brand">— Arjun.</p>
+              <p className="font-hand text-4xl text-brand">— the nonagon.</p>
               <Link
                 to="/yearbook"
                 className="inline-flex items-center gap-2 bg-charcoal text-paper px-5 py-3 rounded-full font-medium text-sm hover:bg-brand transition-colors"
               >
-                Sign the yearbook →
+                Know the group →
               </Link>
             </div>
           )}
