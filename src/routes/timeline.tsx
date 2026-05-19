@@ -2,11 +2,13 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { photoMap } from "@/lib/photos";
+import firstDayImg from "@/assets/timeline/first-2.jpeg";
+import gradMorning from "@/assets/timeline/grad-morning.jpeg";
 
-const firstDay = photoMap.p0;
+const firstDay = firstDayImg;
 const dorm = photoMap.p4;
 const hackathon = photoMap.p2;
-const graduation = photoMap.p1;
+const graduation = gradMorning;
 
 export const Route = createFileRoute("/timeline")({
   head: () => ({
@@ -25,9 +27,9 @@ const years = [
     year: "2022 — 23",
     label: "Year 01",
     title: "fresh_install.exe",
-    body: "New laptops, new ID cards, and the awkward classroom where nobody knew anyone's name. We learned C, lost at table tennis, and called our parents every other night.",
+    body: "New laptops, new ID cards, and the awkward classroom where nobody knew anyone's name. Then one random lecture, someone said cheese — and accidentally, our very first group photo happened. Nine strangers, one frame, no idea what was coming.",
     img: firstDay,
-    moments: ["First friend made in line at the ID counter", "Stayed up for orientation skit rehearsals", "Got destroyed by the first MAT-101 paper"],
+    moments: ["Our first-ever picture together (this one!)", "Learning each other's names mid-attendance", "Got destroyed by the first MAT-101 paper"],
   },
   {
     year: "2023 — 24",
@@ -49,9 +51,9 @@ const years = [
     year: "2025 — 26",
     label: "Year 04",
     title: "graduation_commit",
-    body: "Placements, projects, the slow goodbye disguised as routine. Every chai at the canteen suddenly mattered. We pushed the final commit and watched the build pass.",
+    body: "Placements, projects, the slow goodbye disguised as routine. This photo? Morning after graduation — eyes half-open, hearts fully wrecked, standing in the same spot we'd walked past a thousand times, suddenly knowing we wouldn't again. We pushed the final commit and watched the build pass.",
     img: graduation,
-    moments: ["The placement WhatsApp group going wild", "Final farewell night under string lights", "Throwing caps. Throwing tears."],
+    moments: ["The morning-after-graduation photo (this one)", "Final farewell night under string lights", "Throwing caps. Throwing tears."],
   },
 ];
 
