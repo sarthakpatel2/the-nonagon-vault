@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { LoginGate } from "@/components/login-gate";
 
 function NotFoundComponent() {
   return (
