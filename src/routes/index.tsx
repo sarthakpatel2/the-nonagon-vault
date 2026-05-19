@@ -205,7 +205,7 @@ function Home() {
         </Link>
         <Link to="/yearbook" className="group p-8 rounded-2xl bg-cream hover:bg-brand hover:text-white transition-colors">
           <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-charcoal/60 group-hover:text-white/70 mb-6">02 / The crew</p>
-          <h3 className="font-serif text-3xl mb-10 leading-tight">Ten characters that ran this season.</h3>
+          <h3 className="font-serif text-3xl mb-10 leading-tight">Nine characters that ran this season.</h3>
           <span className="font-serif italic group-hover:translate-x-1 inline-block transition-transform">Open yearbook →</span>
         </Link>
         <Link to="/letter" className="group p-8 rounded-2xl border border-charcoal/15 hover:bg-brand hover:text-white hover:border-brand transition-colors">
