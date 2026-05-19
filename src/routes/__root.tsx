@@ -77,6 +77,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "A scrapbook of memories from nine B.Tech CSE friends who somehow made it out alive — together." },
       { property: "og:title", content: "The Nonagon — Nine humans, one infinite loop" },
       { property: "og:description", content: "A scrapbook of memories from nine B.Tech CSE friends who somehow made it out alive — together." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
