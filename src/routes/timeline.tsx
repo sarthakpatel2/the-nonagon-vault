@@ -27,9 +27,9 @@ const years = [
     year: "2022 — 23",
     label: "Year 01",
     title: "fresh_install.exe",
-    body: "New laptops, new ID cards, and the awkward classroom where nobody knew anyone's name. We learned C, lost at table tennis, and called our parents every other night.",
+    body: "New laptops, new ID cards, and the awkward classroom where nobody knew anyone's name. Then one random lecture, someone said cheese — and accidentally, our very first group photo happened. Nine strangers, one frame, no idea what was coming.",
     img: firstDay,
-    moments: ["First friend made in line at the ID counter", "Stayed up for orientation skit rehearsals", "Got destroyed by the first MAT-101 paper"],
+    moments: ["Our first-ever picture together (this one!)", "Learning each other's names mid-attendance", "Got destroyed by the first MAT-101 paper"],
   },
   {
     year: "2023 — 24",
