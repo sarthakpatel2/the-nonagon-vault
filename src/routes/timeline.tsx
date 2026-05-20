@@ -125,9 +125,33 @@ function TimelinePage() {
                   : "border-charcoal/20 text-charcoal/60 hover:border-charcoal/40"
               }`}
             >
+        <div className="mt-8 flex flex-wrap items-center gap-2">
+          {years.map((y, i) => (
+            <button
+              key={y.label}
+              onClick={() => { setPlaying(false); go(i); }}
+              className={`font-mono text-xs px-3 py-1.5 rounded-full border transition ${
+                active === i
+                  ? "bg-brand text-paper border-brand"
+                  : "border-charcoal/20 text-charcoal/60 hover:border-charcoal/40"
+              }`}
+            >
               {y.label}
             </button>
           ))}
+          <button
+            onClick={() => setPlaying((p) => !p)}
+            aria-pressed={playing}
+            className={`ml-1 font-mono text-xs px-3 py-1.5 rounded-full border transition inline-flex items-center gap-1.5 ${
+              playing ? "bg-charcoal text-paper border-charcoal" : "border-charcoal/30 text-charcoal/70 hover:border-brand hover:text-brand"
+            }`}
+          >
+            {playing ? (
+              <><span aria-hidden>❚❚</span> pause autoplay</>
+            ) : (
+              <><span aria-hidden>▶</span> autoplay</>
+            )}
+          </button>
         </div>
       </header>
 
