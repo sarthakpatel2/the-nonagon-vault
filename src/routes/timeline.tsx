@@ -60,8 +60,21 @@ const years = [
 
 function TimelinePage() {
   const [active, setActive] = useState(0);
+  const [playing, setPlaying] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const itemRefs = useRef<Array<HTMLLIElement | null>>([]);
+
+  useEffect(() => {
+    if (!playing) return;
+    const id = setInterval(() => {
+      setActive((a) => {
+        const next = (a + 1) % years.length;
+        itemRefs.current[next]?.scrollIntoView({ behavior: "smooth", block: "center" });
+        return next;
+      });
+    }, 3500);
+    return () => clearInterval(id);
+  }, [playing]);
 
   const go = (i: number) => {
     const next = Math.max(0, Math.min(years.length - 1, i));
@@ -101,11 +114,11 @@ function TimelinePage() {
           Read it top to bottom, or swipe / use arrow keys to jump between years.
         </p>
 
-        <div className="mt-8 flex flex-wrap gap-2">
+        <div className="mt-8 flex flex-wrap items-center gap-2">
           {years.map((y, i) => (
             <button
               key={y.label}
-              onClick={() => go(i)}
+              onClick={() => { setPlaying(false); go(i); }}
               className={`font-mono text-xs px-3 py-1.5 rounded-full border transition ${
                 active === i
                   ? "bg-brand text-paper border-brand"
@@ -115,6 +128,19 @@ function TimelinePage() {
               {y.label}
             </button>
           ))}
+          <button
+            onClick={() => setPlaying((p) => !p)}
+            aria-pressed={playing}
+            className={`ml-1 font-mono text-xs px-3 py-1.5 rounded-full border transition inline-flex items-center gap-1.5 ${
+              playing ? "bg-charcoal text-paper border-charcoal" : "border-charcoal/30 text-charcoal/70 hover:border-brand hover:text-brand"
+            }`}
+          >
+            {playing ? (
+              <><span aria-hidden>❚❚</span> pause autoplay</>
+            ) : (
+              <><span aria-hidden>▶</span> autoplay</>
+            )}
+          </button>
         </div>
       </header>
 
