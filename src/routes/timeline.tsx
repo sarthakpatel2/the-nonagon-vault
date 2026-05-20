@@ -114,17 +114,6 @@ function TimelinePage() {
           Read it top to bottom, or swipe / use arrow keys to jump between years.
         </p>
 
-        <div className="mt-8 flex flex-wrap gap-2">
-          {years.map((y, i) => (
-            <button
-              key={y.label}
-              onClick={() => go(i)}
-              className={`font-mono text-xs px-3 py-1.5 rounded-full border transition ${
-                active === i
-                  ? "bg-brand text-paper border-brand"
-                  : "border-charcoal/20 text-charcoal/60 hover:border-charcoal/40"
-              }`}
-            >
         <div className="mt-8 flex flex-wrap items-center gap-2">
           {years.map((y, i) => (
             <button
