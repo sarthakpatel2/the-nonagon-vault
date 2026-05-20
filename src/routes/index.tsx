@@ -3,7 +3,8 @@ import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { photoMap } from "@/lib/photos";
 
-const graduation = photoMap.p1;
+import gradMorning from "@/assets/timeline/grad-morning.jpeg";
+const graduation = gradMorning;
 const dorm = photoMap.p6;
 const rainy = photoMap.p5;
 const bug = photoMap.p0;
