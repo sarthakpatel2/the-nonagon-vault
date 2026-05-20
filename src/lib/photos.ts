@@ -8,6 +8,10 @@ import p6 from "@/assets/photos/p6.jpeg";
 import p7 from "@/assets/photos/p7.jpeg";
 import p8 from "@/assets/photos/p8.jpeg";
 import p9 from "@/assets/photos/p9.jpeg";
+import g1 from "@/assets/photos/g1.jpeg";
+import g2 from "@/assets/photos/g2.jpeg";
+import g3 from "@/assets/photos/g3.jpeg";
+import g4 from "@/assets/photos/g4.jpeg";
 
 export type Photo = {
   src: string;
@@ -18,9 +22,13 @@ export type Photo = {
 
 export const photos: Photo[] = [
   { src: p1, caption: "The whole crew. One frame, somehow.", date: "ROOFTOP", rotate: "-rotate-2" },
+  { src: g3, caption: "Lads on the lawn. Crossed arms, zero plans.", date: "FEST NIGHT", rotate: "rotate-2" },
   { src: p0, caption: "Cafe selfie — six smiles, zero regrets.", date: "LATE NIGHT", rotate: "rotate-2" },
+  { src: g2, caption: "Family + friends. The full guest list.", date: "FAREWELL", rotate: "-rotate-2" },
   { src: p3, caption: "Golden hour on the terrace.", date: "EVENING", rotate: "-rotate-1" },
+  { src: g1, caption: "Peace sign, blurry lens, perfect night.", date: "AFTER PARTY", rotate: "rotate-3" },
   { src: p6, caption: "Same spot, same people, new memory.", date: "15 SEP 2024", rotate: "rotate-2" },
+  { src: g4, caption: "Sat on the grass. Said nothing. Said everything.", date: "QUIET CORNER", rotate: "-rotate-3" },
   { src: p5, caption: "Heart hands and the elephant statue.", date: "DAY OUT", rotate: "-rotate-3" },
   { src: p2, caption: "Concert lights. Wet hair. Pure chaos.", date: "FEST NIGHT", rotate: "rotate-3" },
   { src: p8, caption: "Front row for the headliner.", date: "CULFEST", rotate: "-rotate-2" },
@@ -29,4 +37,4 @@ export const photos: Photo[] = [
   { src: p4, caption: "Mirror selfie. Tilted. Iconic.", date: "POST-PARTY", rotate: "rotate-3" },
 ];
 
-export const photoMap = { p0, p1, p2, p3, p4, p5, p6, p7, p8, p9 };
+export const photoMap = { p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, g1, g2, g3, g4 };
