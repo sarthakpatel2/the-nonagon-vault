@@ -60,8 +60,21 @@ const years = [
 
 function TimelinePage() {
   const [active, setActive] = useState(0);
+  const [playing, setPlaying] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const itemRefs = useRef<Array<HTMLLIElement | null>>([]);
+
+  useEffect(() => {
+    if (!playing) return;
+    const id = setInterval(() => {
+      setActive((a) => {
+        const next = (a + 1) % years.length;
+        itemRefs.current[next]?.scrollIntoView({ behavior: "smooth", block: "center" });
+        return next;
+      });
+    }, 3500);
+    return () => clearInterval(id);
+  }, [playing]);
 
   const go = (i: number) => {
     const next = Math.max(0, Math.min(years.length - 1, i));
