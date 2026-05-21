@@ -26,6 +26,15 @@ import g15 from "@/assets/photos/g15.jpeg";
 import g16 from "@/assets/photos/g16.jpeg";
 import g17 from "@/assets/photos/g17.jpeg";
 import g18 from "@/assets/photos/g18.jpeg";
+import g19 from "@/assets/photos/g19.jpeg";
+import g20 from "@/assets/photos/g20.jpeg";
+import g21 from "@/assets/photos/g21.jpeg";
+import g22 from "@/assets/photos/g22.jpeg";
+import g23 from "@/assets/photos/g23.jpeg";
+import g24 from "@/assets/photos/g24.jpeg";
+import g25 from "@/assets/photos/g25.jpeg";
+import g26 from "@/assets/photos/g26.jpeg";
+import g27 from "@/assets/photos/g27.jpeg";
 
 export type Photo = {
   src: string;
@@ -39,22 +48,31 @@ export const photos: Photo[] = [
   { src: g3, caption: "Lads on the lawn. Crossed arms, zero plans.", date: "FEST NIGHT", rotate: "rotate-2" },
   { src: g5, caption: "Spotlights above, nine of us below.", date: "CONCERT", rotate: "-rotate-2" },
   { src: g10, caption: "Rooftop cafe. Sunlight through the slats.", date: "BRUNCH", rotate: "rotate-1" },
+  { src: g19, caption: "Rooftop chaos. Background full of side characters.", date: "AFTERNOON", rotate: "-rotate-2" },
   { src: p0, caption: "Cafe selfie — six smiles, zero regrets.", date: "LATE NIGHT", rotate: "rotate-2" },
+  { src: g23, caption: "Got the marks. Holding the proof.", date: "RESULT DAY", rotate: "rotate-3" },
   { src: g6, caption: "Under the tree. Two rows, one gang.", date: "CAMPUS", rotate: "-rotate-1" },
   { src: g12, caption: "Thumbs up from the back row.", date: "DINNER", rotate: "rotate-3" },
+  { src: g22, caption: "Two boys, one red rabbit.", date: "ROOFTOP CAFE", rotate: "-rotate-2" },
   { src: g2, caption: "Family + friends. The full guest list.", date: "FAREWELL", rotate: "-rotate-2" },
   { src: p3, caption: "Golden hour on the terrace.", date: "EVENING", rotate: "-rotate-1" },
   { src: g11, caption: "Piggyback in the parking lot.", date: "AFTERNOON", rotate: "rotate-2" },
+  { src: g24, caption: "Bridal-style carry. No reason given.", date: "ROOFTOP", rotate: "rotate-1" },
   { src: g7, caption: "Rooftop lineup. Everyone present, accounted for.", date: "DAY OUT", rotate: "rotate-2" },
   { src: g13, caption: "Concert ground selfie. Five-wide.", date: "CULFEST", rotate: "-rotate-3" },
+  { src: g21, caption: "Hands on hips, eyes on the lights.", date: "CULFEST", rotate: "rotate-2" },
   { src: g1, caption: "Peace sign, blurry lens, perfect night.", date: "AFTER PARTY", rotate: "rotate-3" },
   { src: g14, caption: "Three on a stool. Don't ask how.", date: "ROOFTOP BAR", rotate: "-rotate-2" },
   { src: g8, caption: "Piggyback on an empty village road.", date: "ROAD TRIP", rotate: "-rotate-2" },
+  { src: g20, caption: "Three in the crowd. Purple sky above.", date: "FEST NIGHT", rotate: "-rotate-1" },
   { src: g15, caption: "Mall squad. Hand on the face.", date: "DAY OUT", rotate: "rotate-1" },
   { src: p6, caption: "Same spot, same people, new memory.", date: "15 SEP 2024", rotate: "rotate-2" },
+  { src: g25, caption: "Side hug in the fog. Best friends only.", date: "CULFEST", rotate: "rotate-2" },
   { src: g16, caption: "Two-man army. Stadium lights behind.", date: "FEST NIGHT", rotate: "-rotate-1" },
+  { src: g26, caption: "Hands on hips, fest behind us.", date: "FEST GROUND", rotate: "-rotate-3" },
   { src: g9, caption: "Sunlit staircase, two best friends.", date: "BRUNCH", rotate: "rotate-1" },
   { src: g17, caption: "Three-man mirror selfie. Iconic.", date: "GET-TOGETHER", rotate: "rotate-2" },
+  { src: g27, caption: "Kurta gang. Three-mirror moment.", date: "FESTIVAL", rotate: "-rotate-2" },
   { src: g4, caption: "Sat on the grass. Said nothing. Said everything.", date: "QUIET CORNER", rotate: "-rotate-3" },
   { src: g18, caption: "Three of us, one loud night.", date: "CULFEST", rotate: "-rotate-2" },
   { src: p5, caption: "Heart hands and the elephant statue.", date: "DAY OUT", rotate: "-rotate-3" },
@@ -65,4 +83,4 @@ export const photos: Photo[] = [
   { src: p4, caption: "Mirror selfie. Tilted. Iconic.", date: "POST-PARTY", rotate: "rotate-3" },
 ];
 
-export const photoMap = { p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, g13, g14, g15, g16, g17, g18 };
+export const photoMap = { p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, g13, g14, g15, g16, g17, g18, g19, g20, g21, g22, g23, g24, g25, g26, g27 };
