@@ -153,6 +153,14 @@ export const photos: Photo[] = [
   { src: g54, caption: "Spotlights cutting the night. Five in line.", date: "CULFEST", rotate: "-rotate-2" },
   { src: g55, caption: "Auto-rickshaw selfie. Flower behind the ear.", date: "ROAD TRIP", rotate: "rotate-2" },
   { src: g56, caption: "Elevator mirror selfie. Bags packed, vibes higher.", date: "DEPARTURE", rotate: "-rotate-1" },
+  { src: g57, caption: "Shirt-signing ritual. 'Prayagraj you LES' — NIT forever.", date: "FAREWELL", rotate: "-rotate-2" },
+  { src: g58, caption: "Kota ka pehla round. Danish bhai, 12 Dec — sab likha hai.", date: "SHIRT DAY", rotate: "rotate-2" },
+  { src: g59, caption: "Marker army. Sleeves, shoulders, signatures everywhere.", date: "LAST DAY", rotate: "-rotate-1" },
+  { src: g60, caption: "Lawn tackle. Peace sign through the chaos.", date: "AFTERNOON", rotate: "rotate-3" },
+  { src: g61, caption: "Parental advisory: four friends, explicit memories.", date: "MALL ELEVATOR", rotate: "-rotate-2" },
+  { src: g62, caption: "Night night. Hoodie down, KFC behind.", date: "FOOD COURT", rotate: "rotate-2" },
+  { src: g63, caption: "Lawn picnic. Plates, blankets, black & white mood.", date: "WINTER EVENING", rotate: "-rotate-3" },
+  { src: g64, caption: "Spider-gang, assemble. Faces classified.", date: "ROOM SELFIE", rotate: "rotate-1" },
 ];
 
-export const photoMap = { p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, g13, g14, g15, g16, g17, g18, g19, g20, g21, g22, g23, g24, g25, g26, g27, g28, g29, g30, g31, g32, g33, g34, g35, g36, g37, g38, g39, g40, g41, g42, g43, g44, g45, g46, g47, g48, g49, g50, g51, g52, g53, g54, g55, g56 };
+export const photoMap = { p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, g13, g14, g15, g16, g17, g18, g19, g20, g21, g22, g23, g24, g25, g26, g27, g28, g29, g30, g31, g32, g33, g34, g35, g36, g37, g38, g39, g40, g41, g42, g43, g44, g45, g46, g47, g48, g49, g50, g51, g52, g53, g54, g55, g56, g57, g58, g59, g60, g61, g62, g63, g64 };
