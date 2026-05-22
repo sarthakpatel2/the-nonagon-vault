@@ -35,6 +35,18 @@ import g24 from "@/assets/photos/g24.jpeg";
 import g25 from "@/assets/photos/g25.jpeg";
 import g26 from "@/assets/photos/g26.jpeg";
 import g27 from "@/assets/photos/g27.jpeg";
+import g28 from "@/assets/photos/g28.jpeg";
+import g29 from "@/assets/photos/g29.jpeg";
+import g30 from "@/assets/photos/g30.jpeg";
+import g31 from "@/assets/photos/g31.jpeg";
+import g32 from "@/assets/photos/g32.jpeg";
+import g33 from "@/assets/photos/g33.jpeg";
+import g34 from "@/assets/photos/g34.jpeg";
+import g35 from "@/assets/photos/g35.jpeg";
+import g36 from "@/assets/photos/g36.jpeg";
+import g37 from "@/assets/photos/g37.jpeg";
+
+
 
 export type Photo = {
   src: string;
@@ -81,6 +93,16 @@ export const photos: Photo[] = [
   { src: p7, caption: "Brothers. Thumbs up. Say no more.", date: "FEST GROUND", rotate: "rotate-2" },
   { src: p9, caption: "Quiet moment in the loudest year.", date: "ROOFTOP", rotate: "-rotate-1" },
   { src: p4, caption: "Mirror selfie. Tilted. Iconic.", date: "POST-PARTY", rotate: "rotate-3" },
+  { src: g28, caption: "Kurta trio. Buffet behind, smiles in front.", date: "DINNER NIGHT", rotate: "-rotate-2" },
+  { src: g29, caption: "Window-side gang. Lights blurring past.", date: "LATE DINNER", rotate: "rotate-1" },
+  { src: g30, caption: "Rooftop pose. Two thumbs up. No notes.", date: "15 SEP 2024", rotate: "-rotate-3" },
+  { src: g31, caption: "Shivendra ne padhai ki thi yaar — examiner ne galat check kiya hoga. Revenge: cake on the face.", date: "RESULT NIGHT", rotate: "rotate-2" },
+  { src: g32, caption: "Temple stop. Five faces, one frame.", date: "ROAD TRIP", rotate: "-rotate-1" },
+  { src: g33, caption: "Hostel hacksaw engineering. Don't ask.", date: "AFTERNOON", rotate: "rotate-3" },
+  { src: g34, caption: "Aakrosh tha — bhukha tha. Cake mila, gussa shaant hua.", date: "POST RESULT", rotate: "-rotate-2" },
+  { src: g35, caption: "Four on the bed. The classic hostel pile.", date: "ROOM 204", rotate: "rotate-2" },
+  { src: g36, caption: "Classroom family. Last bench, first memories.", date: "FAREWELL", rotate: "-rotate-1" },
+  { src: g37, caption: "Cake pe gussa, gussa pe cake. Shivendra ka revenge round.", date: "BIRTHDAY BASH", rotate: "rotate-1" },
 ];
 
-export const photoMap = { p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, g13, g14, g15, g16, g17, g18, g19, g20, g21, g22, g23, g24, g25, g26, g27 };
+export const photoMap = { p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, g13, g14, g15, g16, g17, g18, g19, g20, g21, g22, g23, g24, g25, g26, g27, g28, g29, g30, g31, g32, g33, g34, g35, g36, g37 };
