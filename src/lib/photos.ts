@@ -115,6 +115,16 @@ export const photos: Photo[] = [
   { src: g35, caption: "Four on the bed. The classic hostel pile.", date: "ROOM 204", rotate: "rotate-2" },
   { src: g36, caption: "Classroom family. Last bench, first memories.", date: "FAREWELL", rotate: "-rotate-1" },
   { src: g37, caption: "Cake pe gussa, gussa pe cake. Shivendra ka revenge round.", date: "BIRTHDAY BASH", rotate: "rotate-1" },
+  { src: g38, caption: "The Trunk cafe. Five-strong, elephant approves.", date: "ROOFTOP CAFE", rotate: "-rotate-2" },
+  { src: g39, caption: "Hearts, shades, full chaos energy.", date: "ROOM SELFIE", rotate: "rotate-3" },
+  { src: g40, caption: "Cake-night encore. Charger banner watching.", date: "7 FEB 2024", rotate: "-rotate-1" },
+  { src: g41, caption: "KFC table. Zinger, Coolberg, zero leftovers.", date: "MALL DAY", rotate: "rotate-2" },
+  { src: g42, caption: "Food court nap club. Three-piece set.", date: "POST-LUNCH", rotate: "-rotate-3" },
+  { src: g43, caption: "Riverbank stroll. Sun in everyone's eyes.", date: "WINTER WALK", rotate: "rotate-1" },
+  { src: g44, caption: "Cafe corner, doodled hearts, cold drinks.", date: "CHILL DAY", rotate: "-rotate-2" },
+  { src: g45, caption: "Two-up selfie. Sunset, plaid, vibe.", date: "GROUND WALK", rotate: "rotate-2" },
+  { src: g46, caption: "Trunk cafe lounge. Tilted frame, tilted day.", date: "BRUNCH", rotate: "-rotate-3" },
+  { src: g47, caption: "Snore-cap. Caught mid-dream, no escape.", date: "HOSTEL NIGHT", rotate: "rotate-2" },
 ];
 
-export const photoMap = { p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, g13, g14, g15, g16, g17, g18, g19, g20, g21, g22, g23, g24, g25, g26, g27, g28, g29, g30, g31, g32, g33, g34, g35, g36, g37 };
+export const photoMap = { p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, g13, g14, g15, g16, g17, g18, g19, g20, g21, g22, g23, g24, g25, g26, g27, g28, g29, g30, g31, g32, g33, g34, g35, g36, g37, g38, g39, g40, g41, g42, g43, g44, g45, g46, g47 };
