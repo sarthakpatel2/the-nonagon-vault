@@ -55,6 +55,17 @@ import g44 from "@/assets/photos/g44.jpeg";
 import g45 from "@/assets/photos/g45.jpeg";
 import g46 from "@/assets/photos/g46.jpeg";
 import g47 from "@/assets/photos/g47.jpeg";
+import g48 from "@/assets/photos/g48.jpeg";
+import g49 from "@/assets/photos/g49.jpeg";
+import g50 from "@/assets/photos/g50.jpeg";
+import g51 from "@/assets/photos/g51.jpeg";
+import g52 from "@/assets/photos/g52.jpeg";
+import g53 from "@/assets/photos/g53.jpeg";
+import g54 from "@/assets/photos/g54.jpeg";
+import g55 from "@/assets/photos/g55.jpeg";
+import g56 from "@/assets/photos/g56.jpeg";
+
+
 
 
 
