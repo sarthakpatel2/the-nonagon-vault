@@ -14,6 +14,7 @@ import { Route as TimelineRouteImport } from './routes/timeline'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as LetterRouteImport } from './routes/letter'
 import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as FromPragsRouteImport } from './routes/from-prags'
 import { Route as IndexRouteImport } from './routes/index'
 
 const YearbookRoute = YearbookRouteImport.update({
@@ -41,6 +42,11 @@ const GalleryRoute = GalleryRouteImport.update({
   path: '/gallery',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FromPragsRoute = FromPragsRouteImport.update({
+  id: '/from-prags',
+  path: '/from-prags',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -49,6 +55,7 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/from-prags': typeof FromPragsRoute
   '/gallery': typeof GalleryRoute
   '/letter': typeof LetterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/from-prags': typeof FromPragsRoute
   '/gallery': typeof GalleryRoute
   '/letter': typeof LetterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -66,6 +74,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/from-prags': typeof FromPragsRoute
   '/gallery': typeof GalleryRoute
   '/letter': typeof LetterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -76,16 +85,25 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/from-prags'
     | '/gallery'
     | '/letter'
     | '/sitemap.xml'
     | '/timeline'
     | '/yearbook'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/gallery' | '/letter' | '/sitemap.xml' | '/timeline' | '/yearbook'
+  to:
+    | '/'
+    | '/from-prags'
+    | '/gallery'
+    | '/letter'
+    | '/sitemap.xml'
+    | '/timeline'
+    | '/yearbook'
   id:
     | '__root__'
     | '/'
+    | '/from-prags'
     | '/gallery'
     | '/letter'
     | '/sitemap.xml'
@@ -95,6 +113,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  FromPragsRoute: typeof FromPragsRoute
   GalleryRoute: typeof GalleryRoute
   LetterRoute: typeof LetterRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -139,6 +158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GalleryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/from-prags': {
+      id: '/from-prags'
+      path: '/from-prags'
+      fullPath: '/from-prags'
+      preLoaderRoute: typeof FromPragsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -151,6 +177,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  FromPragsRoute: FromPragsRoute,
   GalleryRoute: GalleryRoute,
   LetterRoute: LetterRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
