@@ -16,12 +16,12 @@ export function SiteNav() {
         <span className="size-6 rounded-md bg-brand text-white font-serif italic grid place-items-center text-sm shadow-sm group-hover:rotate-12 transition-transform">9</span>
         <span><span className="text-brand">//</span> the_nonagon</span>
       </Link>
-      <div className="flex gap-4 md:gap-7 text-xs md:text-sm font-medium">
+      <div className="flex gap-4 md:gap-7 text-xs md:text-sm font-medium overflow-x-auto scrollbar-hide -mr-2 pr-2">
         {links.map((l) => (
           <Link
             key={l.to}
             to={l.to}
-            className="text-charcoal/70 hover:text-brand transition-colors"
+            className="text-charcoal/70 hover:text-brand transition-colors whitespace-nowrap"
             activeProps={{ className: "text-brand" }}
             activeOptions={{ exact: true }}
           >
