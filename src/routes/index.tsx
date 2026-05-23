@@ -4,6 +4,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { photoMap } from "@/lib/photos";
 
 import gradMorning from "@/assets/timeline/grad-morning.jpeg";
+import goingHome from "@/assets/photos/going-home.jpeg";
 const graduation = gradMorning;
 const dorm = photoMap.p6;
 const rainy = photoMap.p5;
