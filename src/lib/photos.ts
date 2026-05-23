@@ -174,7 +174,7 @@ export const photos: Photo[] = [
   { src: g68, caption: "Roadside chai stop. One on call, two watching life pass.", date: "EVENING", rotate: "rotate-3" },
   { src: g69, caption: "Bottles staring, mouth open — pure existential dread.", date: "PARTY NIGHT", rotate: "-rotate-2" },
   { src: g70, caption: "Whole gang under the tree. Coats, smiles, no agenda.", date: "WINTER GROUP", rotate: "rotate-1" },
-  { src: g71, caption: "Dinner date. Bhai-behen ka classic.", date: "9 APR 2024", rotate: "-rotate-2" },
+  { src: g71, caption: "Dinner date. Two best friends, no labels needed.", date: "9 APR 2024", rotate: "-rotate-2" },
   { src: g72, caption: "Spider tee, sunset sky, ground full of people.", date: "CULFEST", rotate: "rotate-2" },
   { src: g73, caption: "Rooftop cafe, arm around the bhai. Panda tee approved.", date: "5 APR 2026", rotate: "-rotate-2" },
   { src: g74, caption: "Four under the rooftop canopy. Pose, smile, repeat.", date: "5 APR 2026", rotate: "rotate-1" },
