@@ -117,6 +117,8 @@ export function SendLove() {
     setMessage("");
     setName("");
     setBurst((b) => b + 1);
+    fireConfetti();
+    playChime();
     loadNotes();
   };
 
