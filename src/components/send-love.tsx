@@ -10,8 +10,48 @@ type LoveNote = {
   created_at: string;
 };
 
+type Confetti = {
+  id: number;
+  left: number;
+  delay: number;
+  duration: number;
+  emoji: string;
+  rotate: number;
+  drift: number;
+};
+
 const MAX_MSG = 280;
 const MAX_NAME = 60;
+const EMOJIS = ["💖", "💗", "💕", "💞", "✨", "🌸", "💘", "💝", "🫶"];
+
+function playChime() {
+  try {
+    const AC =
+      typeof window !== "undefined"
+        ? window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+        : null;
+    if (!AC) return;
+    const ctx = new AC();
+    const now = ctx.currentTime;
+    // Bright major arpeggio: A5, C#6, E6
+    [880, 1108.73, 1318.51].forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.value = freq;
+      const start = now + i * 0.08;
+      gain.gain.setValueAtTime(0, start);
+      gain.gain.linearRampToValueAtTime(0.18, start + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.6);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(start);
+      osc.stop(start + 0.65);
+    });
+    setTimeout(() => ctx.close(), 1200);
+  } catch {
+    /* no-op */
+  }
+}
 
 export function SendLove() {
   const { pathname } = useLocation();
@@ -22,6 +62,21 @@ export function SendLove() {
   const [notes, setNotes] = useState<LoveNote[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [burst, setBurst] = useState(0);
+  const [confetti, setConfetti] = useState<Confetti[]>([]);
+
+  const fireConfetti = () => {
+    const pieces: Confetti[] = Array.from({ length: 32 }, (_, i) => ({
+      id: Date.now() + i,
+      left: Math.random() * 100,
+      delay: Math.random() * 0.25,
+      duration: 1.6 + Math.random() * 1.4,
+      emoji: EMOJIS[Math.floor(Math.random() * EMOJIS.length)],
+      rotate: Math.random() * 720 - 360,
+      drift: Math.random() * 80 - 40,
+    }));
+    setConfetti(pieces);
+    setTimeout(() => setConfetti([]), 3200);
+  };
 
   const loadNotes = async () => {
     const { data, error } = await supabase
@@ -62,11 +117,39 @@ export function SendLove() {
     setMessage("");
     setName("");
     setBurst((b) => b + 1);
+    fireConfetti();
+    playChime();
     loadNotes();
   };
 
   return (
     <>
+      {/* Confetti overlay */}
+      {confetti.length > 0 && (
+        <div className="pointer-events-none fixed inset-0 z-[60] overflow-hidden">
+          {confetti.map((p) => (
+            <span
+              key={p.id}
+              className="absolute -top-10 text-2xl will-change-transform"
+              style={{
+                left: `${p.left}%`,
+                animation: `love-fall ${p.duration}s ${p.delay}s cubic-bezier(0.25,0.46,0.45,0.94) forwards`,
+                ["--drift" as string]: `${p.drift}px`,
+                ["--rot" as string]: `${p.rotate}deg`,
+              } as React.CSSProperties}
+            >
+              {p.emoji}
+            </span>
+          ))}
+          <style>{`
+            @keyframes love-fall {
+              0% { transform: translate3d(0,-10vh,0) rotate(0deg); opacity: 1; }
+              100% { transform: translate3d(var(--drift), 110vh, 0) rotate(var(--rot)); opacity: 0; }
+            }
+          `}</style>
+        </div>
+      )}
+
       {/* Floating button */}
       <button
         onClick={() => setOpen(true)}
