@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, Plus, Upload, Loader2 } from "lucide-react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
-import { photos } from "@/lib/photos";
+import { photos as staticPhotos, pickRandomRotation, type Photo } from "@/lib/photos";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/gallery")({
   head: () => ({
@@ -18,16 +20,43 @@ export const Route = createFileRoute("/gallery")({
 });
 
 function GalleryPage() {
+  const [uploaded, setUploaded] = useState<Photo[]>([]);
   const [active, setActive] = useState<number | null>(null);
+  const [showUpload, setShowUpload] = useState(false);
+
+  const photos: Photo[] = [...uploaded, ...staticPhotos];
+
+  const loadUploaded = useCallback(async () => {
+    const { data, error } = await supabase
+      .from("gallery_photos")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) {
+      console.error(error);
+      return;
+    }
+    setUploaded(
+      (data ?? []).map((row) => ({
+        src: row.image_url,
+        caption: row.caption || "Untitled",
+        date: row.date_label || "NEW",
+        rotate: row.rotate || "rotate-0",
+      })),
+    );
+  }, []);
+
+  useEffect(() => {
+    loadUploaded();
+  }, [loadUploaded]);
 
   const close = useCallback(() => setActive(null), []);
   const prev = useCallback(
     () => setActive((i) => (i === null ? i : (i - 1 + photos.length) % photos.length)),
-    [],
+    [photos.length],
   );
   const next = useCallback(
     () => setActive((i) => (i === null ? i : (i + 1) % photos.length)),
-    [],
+    [photos.length],
   );
 
   useEffect(() => {
@@ -56,6 +85,14 @@ function GalleryPage() {
         <p className="mt-6 max-w-xl text-charcoal/70">
           Hover, tilt, click. Each one a tiny rectangle of a much bigger feeling.
         </p>
+
+        <button
+          onClick={() => setShowUpload(true)}
+          className="mt-8 inline-flex items-center gap-2 bg-brand text-paper px-5 py-3 font-mono text-xs tracking-[0.25em] uppercase hover:bg-charcoal transition-colors"
+        >
+          <Plus className="w-4 h-4" />
+          Add a polaroid
+        </button>
       </header>
 
       <section className="px-4 md:px-10 pb-24 max-w-7xl mx-auto">
@@ -135,7 +172,145 @@ function GalleryPage() {
         </div>
       )}
 
+      {showUpload && (
+        <UploadDialog
+          onClose={() => setShowUpload(false)}
+          onUploaded={() => {
+            setShowUpload(false);
+            loadUploaded();
+          }}
+        />
+      )}
+
       <SiteFooter />
     </main>
+  );
+}
+
+function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded: () => void }) {
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [caption, setCaption] = useState("");
+  const [dateLabel, setDateLabel] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  const onFile = (f: File | null) => {
+    setFile(f);
+    if (preview) URL.revokeObjectURL(preview);
+    setPreview(f ? URL.createObjectURL(f) : null);
+  };
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!file) {
+      toast.error("Pick a photo first");
+      return;
+    }
+    setBusy(true);
+    try {
+      const ext = file.name.split(".").pop() || "jpg";
+      const path = `${crypto.randomUUID()}.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from("gallery")
+        .upload(path, file, { contentType: file.type, upsert: false });
+      if (upErr) throw upErr;
+      const { data: urlData } = supabase.storage.from("gallery").getPublicUrl(path);
+      const { error: insErr } = await supabase.from("gallery_photos").insert({
+        image_url: urlData.publicUrl,
+        caption: caption.trim() || "Untitled",
+        date_label: dateLabel.trim().toUpperCase() || "NEW",
+        rotate: pickRandomRotation(),
+      });
+      if (insErr) throw insErr;
+      toast.success("Polaroid pinned to the wall!");
+      onUploaded();
+    } catch (err) {
+      console.error(err);
+      toast.error(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-[70] bg-charcoal/90 backdrop-blur-sm grid place-items-center p-4 animate-reveal"
+      role="dialog"
+      aria-modal="true"
+    >
+      <form
+        onClick={(e) => e.stopPropagation()}
+        onSubmit={submit}
+        className="paper-card p-6 pb-8 max-w-md w-full relative"
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute top-3 right-3 grid place-items-center w-9 h-9 rounded-full hover:bg-charcoal/10 text-charcoal"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
+        <p className="font-mono text-xs tracking-[0.3em] uppercase text-charcoal/50 mb-2">
+          Pin a new polaroid
+        </p>
+        <h2 className="font-serif text-3xl font-bold mb-5">Add a memory</h2>
+
+        <label className="block">
+          <span className="font-mono text-[10px] tracking-widest uppercase text-charcoal/60">Photo</span>
+          <div className="mt-2 border-2 border-dashed border-charcoal/20 hover:border-brand transition-colors aspect-square w-full overflow-hidden bg-charcoal/5 grid place-items-center cursor-pointer">
+            {preview ? (
+              <img src={preview} alt="preview" className="w-full h-full object-cover" />
+            ) : (
+              <div className="text-center text-charcoal/50 font-mono text-xs">
+                <Upload className="w-6 h-6 mx-auto mb-2" />
+                Click to choose an image
+              </div>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              className="sr-only"
+              onChange={(e) => onFile(e.target.files?.[0] ?? null)}
+            />
+          </div>
+        </label>
+
+        <label className="block mt-4">
+          <span className="font-mono text-[10px] tracking-widest uppercase text-charcoal/60">Caption</span>
+          <input
+            type="text"
+            value={caption}
+            onChange={(e) => setCaption(e.target.value)}
+            maxLength={140}
+            placeholder="Say something about this moment…"
+            className="mt-1 w-full bg-transparent border-b border-charcoal/30 focus:border-brand outline-none font-hand text-xl py-1"
+          />
+        </label>
+
+        <label className="block mt-4">
+          <span className="font-mono text-[10px] tracking-widest uppercase text-charcoal/60">Date / Label</span>
+          <input
+            type="text"
+            value={dateLabel}
+            onChange={(e) => setDateLabel(e.target.value)}
+            maxLength={24}
+            placeholder="e.g. 15 SEP 2024 or FAREWELL"
+            className="mt-1 w-full bg-transparent border-b border-charcoal/30 focus:border-brand outline-none font-mono text-sm uppercase tracking-widest py-1"
+          />
+        </label>
+
+        <button
+          type="submit"
+          disabled={busy || !file}
+          className="mt-6 w-full inline-flex items-center justify-center gap-2 bg-brand text-paper px-5 py-3 font-mono text-xs tracking-[0.25em] uppercase disabled:opacity-50 hover:bg-charcoal transition-colors"
+        >
+          {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+          {busy ? "Pinning…" : "Pin to wall"}
+        </button>
+      </form>
+    </div>
   );
 }
