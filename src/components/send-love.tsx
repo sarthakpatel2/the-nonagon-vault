@@ -62,6 +62,21 @@ export function SendLove() {
   const [notes, setNotes] = useState<LoveNote[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [burst, setBurst] = useState(0);
+  const [confetti, setConfetti] = useState<Confetti[]>([]);
+
+  const fireConfetti = () => {
+    const pieces: Confetti[] = Array.from({ length: 32 }, (_, i) => ({
+      id: Date.now() + i,
+      left: Math.random() * 100,
+      delay: Math.random() * 0.25,
+      duration: 1.6 + Math.random() * 1.4,
+      emoji: EMOJIS[Math.floor(Math.random() * EMOJIS.length)],
+      rotate: Math.random() * 720 - 360,
+      drift: Math.random() * 80 - 40,
+    }));
+    setConfetti(pieces);
+    setTimeout(() => setConfetti([]), 3200);
+  };
 
   const loadNotes = async () => {
     const { data, error } = await supabase
