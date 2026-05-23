@@ -72,12 +72,14 @@ import g61 from "@/assets/photos/g61.jpeg";
 import g62 from "@/assets/photos/g62.jpeg";
 import g63 from "@/assets/photos/g63.jpeg";
 import g64 from "@/assets/photos/g64.jpeg";
-
-
-
-
-
-
+import g65 from "@/assets/photos/g65.jpeg";
+import g66 from "@/assets/photos/g66.jpeg";
+import g67 from "@/assets/photos/g67.jpeg";
+import g68 from "@/assets/photos/g68.jpeg";
+import g69 from "@/assets/photos/g69.jpeg";
+import g70 from "@/assets/photos/g70.jpeg";
+import g71 from "@/assets/photos/g71.jpeg";
+import g72 from "@/assets/photos/g72.jpeg";
 
 export type Photo = {
   src: string;
@@ -161,6 +163,17 @@ export const photos: Photo[] = [
   { src: g62, caption: "Night night. Hoodie down, KFC behind.", date: "FOOD COURT", rotate: "rotate-2" },
   { src: g63, caption: "Lawn picnic. Plates, blankets, black & white mood.", date: "WINTER EVENING", rotate: "-rotate-3" },
   { src: g64, caption: "Spider-gang, assemble. Faces classified.", date: "ROOM SELFIE", rotate: "rotate-1" },
+  { src: g65, caption: "Bridge stop. Cafe & restaurant cameo behind.", date: "ROAD STOP", rotate: "-rotate-2" },
+  { src: g66, caption: "Night walk selfie. Trees, streetlight, full main-character.", date: "LATE NIGHT", rotate: "rotate-2" },
+  { src: g67, caption: "Signing off batch 2026 — Btech khtm.", date: "DEPARTURE", rotate: "-rotate-1" },
+  { src: g68, caption: "Roadside chai stop. One on call, two watching life pass.", date: "EVENING", rotate: "rotate-3" },
+  { src: g69, caption: "Bottles staring, mouth open — pure existential dread.", date: "PARTY NIGHT", rotate: "-rotate-2" },
+  { src: g70, caption: "Whole gang under the tree. Coats, smiles, no agenda.", date: "WINTER GROUP", rotate: "rotate-1" },
+  { src: g71, caption: "Dinner date. Bhai-behen ka classic.", date: "9 APR 2024", rotate: "-rotate-2" },
+  { src: g72, caption: "Spider tee, sunset sky, ground full of people.", date: "CULFEST", rotate: "rotate-2" },
 ];
 
-export const photoMap = { p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, g13, g14, g15, g16, g17, g18, g19, g20, g21, g22, g23, g24, g25, g26, g27, g28, g29, g30, g31, g32, g33, g34, g35, g36, g37, g38, g39, g40, g41, g42, g43, g44, g45, g46, g47, g48, g49, g50, g51, g52, g53, g54, g55, g56, g57, g58, g59, g60, g61, g62, g63, g64 };
+const ROTATIONS = ["-rotate-3", "-rotate-2", "-rotate-1", "rotate-1", "rotate-2", "rotate-3"];
+export function pickRandomRotation(): string {
+  return ROTATIONS[Math.floor(Math.random() * ROTATIONS.length)];
+}
