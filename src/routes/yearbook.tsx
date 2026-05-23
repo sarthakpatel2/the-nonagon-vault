@@ -126,13 +126,14 @@ const crew: Friend[] = [
   },
   {
     name: "Sarthak Patel",
-    role: "The Glue & The Enigma",
+    role: "Chill, mysterious, threatens to leave the group at first (but never does)",
     vibe: "Chill, mysterious, and the reason this group hasn't disbanded.",
     details: [
       "Loves his friends but won't admit it. Acts too cool for emotions.",
       "Mysterious personality — even he doesn't know what he's doing next.",
       "Non-veg warrior. Kind of runs things, but don't say that out loud.",
       "The glue that holds this chaotic squad together.",
+      "Girls look at him, like him, but he won't admit. (still blushing)",
     ],
     punchline: "Bhai sab theek hai, chill. Bas non-veg mile toh bata dio.",
     photo: sarthakImg,
