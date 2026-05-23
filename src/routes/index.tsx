@@ -198,6 +198,48 @@ function Home() {
         </div>
       </section>
 
+      {/* THE LAST FRAME */}
+      <section className="relative px-6 md:px-10 py-20 md:py-28 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-12 gap-8 md:gap-10 items-center">
+          <div className="md:col-span-7 group relative">
+            <div className="relative w-full aspect-[3/4] md:aspect-[4/5] overflow-hidden rounded-2xl bg-charcoal/5 shadow-[0_30px_80px_-30px_oklch(0.18_0.01_60/0.45)]">
+              <img
+                src={goingHome}
+                alt="Five friends walking away with luggage, leaving the hostel for the last time"
+                width={1080}
+                height={1440}
+                loading="lazy"
+                className="w-full h-full object-cover animate-slow-zoom transition-transform duration-[1.5s] group-hover:scale-[1.04]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-charcoal/70 via-transparent to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-paper/70 mb-2 animate-blink inline-block">● REC · 17.05.2026</p>
+                <p className="font-serif italic text-paper text-xl md:text-3xl leading-tight">
+                  Signing off, batch 2026. <br />B.Tech khtm.
+                </p>
+              </div>
+              <span className="tape rotate-[-6deg] -top-3 left-12 w-24 h-6 rounded-sm hidden md:block" />
+            </div>
+          </div>
+
+          <div className="md:col-span-5 animate-drift-in">
+            <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-brand mb-6">The last frame</p>
+            <h2 className="font-serif text-4xl md:text-5xl leading-[0.95] mb-6 text-balance">
+              Backs to the camera. <span className="italic text-brand">Hearts</span> to the hostel.
+            </h2>
+            <p className="text-charcoal/70 leading-relaxed mb-6">
+              Suitcases dragging on the tar. Hostel block on the left. The trees we sat
+              under for four years on the right. Nobody turned around — because nobody
+              wanted the photo to end.
+            </p>
+            <div className="flex items-center gap-3 font-mono text-xs text-charcoal/50">
+              <span className="w-8 h-px bg-charcoal/30" />
+              FINAL EXIT · NIT
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA STRIPS */}
       <section className="px-6 md:px-10 pb-24 max-w-7xl mx-auto grid md:grid-cols-3 gap-4">
         <Link to="/timeline" className="group p-8 rounded-2xl bg-charcoal text-paper hover:bg-brand transition-colors">
