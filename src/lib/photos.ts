@@ -80,6 +80,7 @@ import g69 from "@/assets/photos/g69.jpeg";
 import g70 from "@/assets/photos/g70.jpeg";
 import g71 from "@/assets/photos/g71.jpeg";
 import g72 from "@/assets/photos/g72.jpeg";
+import g73 from "@/assets/photos/g73.jpeg";
 
 export type Photo = {
   src: string;
@@ -171,6 +172,7 @@ export const photos: Photo[] = [
   { src: g70, caption: "Whole gang under the tree. Coats, smiles, no agenda.", date: "WINTER GROUP", rotate: "rotate-1" },
   { src: g71, caption: "Dinner date. Bhai-behen ka classic.", date: "9 APR 2024", rotate: "-rotate-2" },
   { src: g72, caption: "Spider tee, sunset sky, ground full of people.", date: "CULFEST", rotate: "rotate-2" },
+  { src: g73, caption: "Rooftop cafe, arm around the bhai. Panda tee approved.", date: "5 APR 2026", rotate: "-rotate-2" },
 ];
 
 const ROTATIONS = ["-rotate-3", "-rotate-2", "-rotate-1", "rotate-1", "rotate-2", "rotate-3"];
@@ -178,5 +180,5 @@ export function pickRandomRotation(): string {
   return ROTATIONS[Math.floor(Math.random() * ROTATIONS.length)];
 }
 
-export const photoMap = { p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, g13, g14, g15, g16, g17, g18, g19, g20, g21, g22, g23, g24, g25, g26, g27, g28, g29, g30, g31, g32, g33, g34, g35, g36, g37, g38, g39, g40, g41, g42, g43, g44, g45, g46, g47, g48, g49, g50, g51, g52, g53, g54, g55, g56, g57, g58, g59, g60, g61, g62, g63, g64, g65, g66, g67, g68, g69, g70, g71, g72 };
+export const photoMap = { p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, g13, g14, g15, g16, g17, g18, g19, g20, g21, g22, g23, g24, g25, g26, g27, g28, g29, g30, g31, g32, g33, g34, g35, g36, g37, g38, g39, g40, g41, g42, g43, g44, g45, g46, g47, g48, g49, g50, g51, g52, g53, g54, g55, g56, g57, g58, g59, g60, g61, g62, g63, g64, g65, g66, g67, g68, g69, g70, g71, g72, g73 };
 
