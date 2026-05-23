@@ -172,6 +172,7 @@ export const photos: Photo[] = [
   { src: g70, caption: "Whole gang under the tree. Coats, smiles, no agenda.", date: "WINTER GROUP", rotate: "rotate-1" },
   { src: g71, caption: "Dinner date. Bhai-behen ka classic.", date: "9 APR 2024", rotate: "-rotate-2" },
   { src: g72, caption: "Spider tee, sunset sky, ground full of people.", date: "CULFEST", rotate: "rotate-2" },
+  { src: g73, caption: "Rooftop cafe, arm around the bhai. Panda tee approved.", date: "5 APR 2026", rotate: "-rotate-2" },
 ];
 
 const ROTATIONS = ["-rotate-3", "-rotate-2", "-rotate-1", "rotate-1", "rotate-2", "rotate-3"];
