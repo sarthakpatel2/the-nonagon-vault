@@ -20,6 +20,7 @@ export function SiteFooter() {
     { to: "/timeline", label: "Timeline" },
     { to: "/yearbook", label: "Know the Group" },
     { to: "/letter", label: "Letter" },
+    { to: "/from-prags", label: "From Prags" },
   ] as const;
 
   return (
