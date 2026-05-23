@@ -10,6 +10,8 @@ import {
 
 import appCss from "../styles.css?url";
 import { LoginGate } from "@/components/login-gate";
+import { SendLove } from "@/components/send-love";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -121,6 +123,8 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <LoginGate>
         <Outlet />
+        <SendLove />
+        <Toaster position="top-center" />
       </LoginGate>
     </QueryClientProvider>
   );
