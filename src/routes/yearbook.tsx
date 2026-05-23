@@ -126,8 +126,9 @@ const crew: Friend[] = [
   },
   {
     name: "Sarthak Patel",
-    role: "Chill, mysterious, threatens to leave the group at first (but never does)",
-    vibe: "Chill, mysterious, and the reason this group hasn't disbanded.",
+    role: "The Glue & The Enigma",
+    vibe: "Chill, mysterious, threatens to leave the group at first (but never does).",
+
     details: [
       "Loves his friends but won't admit it. Acts too cool for emotions.",
       "Mysterious personality — even he doesn't know what he's doing next.",
