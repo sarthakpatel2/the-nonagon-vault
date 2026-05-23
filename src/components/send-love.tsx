@@ -124,6 +124,32 @@ export function SendLove() {
 
   return (
     <>
+      {/* Confetti overlay */}
+      {confetti.length > 0 && (
+        <div className="pointer-events-none fixed inset-0 z-[60] overflow-hidden">
+          {confetti.map((p) => (
+            <span
+              key={p.id}
+              className="absolute -top-10 text-2xl will-change-transform"
+              style={{
+                left: `${p.left}%`,
+                animation: `love-fall ${p.duration}s ${p.delay}s cubic-bezier(0.25,0.46,0.45,0.94) forwards`,
+                ["--drift" as string]: `${p.drift}px`,
+                ["--rot" as string]: `${p.rotate}deg`,
+              } as React.CSSProperties}
+            >
+              {p.emoji}
+            </span>
+          ))}
+          <style>{`
+            @keyframes love-fall {
+              0% { transform: translate3d(0,-10vh,0) rotate(0deg); opacity: 1; }
+              100% { transform: translate3d(var(--drift), 110vh, 0) rotate(var(--rot)); opacity: 0; }
+            }
+          `}</style>
+        </div>
+      )}
+
       {/* Floating button */}
       <button
         onClick={() => setOpen(true)}
