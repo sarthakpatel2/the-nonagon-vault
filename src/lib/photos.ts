@@ -81,6 +81,7 @@ import g70 from "@/assets/photos/g70.jpeg";
 import g71 from "@/assets/photos/g71.jpeg";
 import g72 from "@/assets/photos/g72.jpeg";
 import g73 from "@/assets/photos/g73.jpeg";
+import g74 from "@/assets/photos/g74.jpeg";
 
 export type Photo = {
   src: string;
