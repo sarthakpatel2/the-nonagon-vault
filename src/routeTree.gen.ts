@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as YearbookRouteImport } from './routes/yearbook'
 import { Route as TimelineRouteImport } from './routes/timeline'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as LoveRouteImport } from './routes/love'
 import { Route as LetterRouteImport } from './routes/letter'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as FromPragsRouteImport } from './routes/from-prags'
@@ -30,6 +31,11 @@ const TimelineRoute = TimelineRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoveRoute = LoveRouteImport.update({
+  id: '/love',
+  path: '/love',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LetterRoute = LetterRouteImport.update({
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/from-prags': typeof FromPragsRoute
   '/gallery': typeof GalleryRoute
   '/letter': typeof LetterRoute
+  '/love': typeof LoveRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/timeline': typeof TimelineRoute
   '/yearbook': typeof YearbookRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/from-prags': typeof FromPragsRoute
   '/gallery': typeof GalleryRoute
   '/letter': typeof LetterRoute
+  '/love': typeof LoveRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/timeline': typeof TimelineRoute
   '/yearbook': typeof YearbookRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/from-prags': typeof FromPragsRoute
   '/gallery': typeof GalleryRoute
   '/letter': typeof LetterRoute
+  '/love': typeof LoveRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/timeline': typeof TimelineRoute
   '/yearbook': typeof YearbookRoute
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/from-prags'
     | '/gallery'
     | '/letter'
+    | '/love'
     | '/sitemap.xml'
     | '/timeline'
     | '/yearbook'
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/from-prags'
     | '/gallery'
     | '/letter'
+    | '/love'
     | '/sitemap.xml'
     | '/timeline'
     | '/yearbook'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/from-prags'
     | '/gallery'
     | '/letter'
+    | '/love'
     | '/sitemap.xml'
     | '/timeline'
     | '/yearbook'
@@ -116,6 +128,7 @@ export interface RootRouteChildren {
   FromPragsRoute: typeof FromPragsRoute
   GalleryRoute: typeof GalleryRoute
   LetterRoute: typeof LetterRoute
+  LoveRoute: typeof LoveRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TimelineRoute: typeof TimelineRoute
   YearbookRoute: typeof YearbookRoute
@@ -142,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/love': {
+      id: '/love'
+      path: '/love'
+      fullPath: '/love'
+      preLoaderRoute: typeof LoveRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/letter': {
@@ -180,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   FromPragsRoute: FromPragsRoute,
   GalleryRoute: GalleryRoute,
   LetterRoute: LetterRoute,
+  LoveRoute: LoveRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TimelineRoute: TimelineRoute,
   YearbookRoute: YearbookRoute,
@@ -187,3 +208,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

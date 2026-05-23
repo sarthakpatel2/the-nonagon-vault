@@ -7,6 +7,7 @@ const links = [
   { to: "/yearbook", label: "Know the Group" },
   { to: "/letter", label: "Letter" },
   { to: "/from-prags", label: "From Prags" },
+  { to: "/love", label: "Wall of Love" },
 ] as const;
 
 export function SiteNav() {
