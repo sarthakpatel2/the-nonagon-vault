@@ -235,6 +235,28 @@ export function SendLove() {
                     {message.length}/{MAX_MSG}
                   </span>
                 </div>
+                <div>
+                  <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-charcoal/50 mb-2">
+                    Mood
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {MOODS.map((m) => (
+                      <button
+                        key={m.id}
+                        type="button"
+                        onClick={() => setMood(m.id)}
+                        className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                          mood === m.id
+                            ? "bg-charcoal text-paper border-charcoal scale-105"
+                            : "bg-paper text-charcoal/70 border-charcoal/15 hover:border-brand"
+                        }`}
+                      >
+                        <span className="mr-1">{m.emoji}</span>
+                        {m.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <button
                   type="submit"
                   disabled={sending || !message.trim()}
