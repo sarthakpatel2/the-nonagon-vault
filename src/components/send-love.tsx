@@ -74,6 +74,7 @@ export function SendLove() {
   const [loaded, setLoaded] = useState(false);
   const [burst, setBurst] = useState(0);
   const [confetti, setConfetti] = useState<Confetti[]>([]);
+  const [mood, setMood] = useState<string>("love");
 
   const fireConfetti = () => {
     const pieces: Confetti[] = Array.from({ length: 32 }, (_, i) => ({
