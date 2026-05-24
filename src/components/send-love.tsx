@@ -279,23 +279,27 @@ export function SendLove() {
                       Be the first to send love here.
                     </p>
                   ) : (
-                    notes.map((n) => (
-                      <div
-                        key={n.id}
-                        className="bg-paper rounded-xl px-4 py-3 border border-charcoal/5"
-                      >
-                        <p className="font-hand text-base text-charcoal leading-snug break-words">
-                          {n.message}
-                        </p>
-                        <p className="font-mono text-[10px] tracking-wider uppercase text-charcoal/40 mt-1">
-                          — {n.name?.trim() || "anonymous"} ·{" "}
-                          {new Date(n.created_at).toLocaleDateString(undefined, {
-                            month: "short",
-                            day: "numeric",
-                          })}
-                        </p>
-                      </div>
-                    ))
+                    notes.map((n) => {
+                      const m = MOOD_MAP[n.mood] ?? MOOD_MAP.love;
+                      return (
+                        <div
+                          key={n.id}
+                          className={`${m.bg} rounded-xl px-4 py-3 border border-charcoal/5`}
+                        >
+                          <p className="font-hand text-base text-charcoal leading-snug break-words">
+                            <span className="mr-1">{m.emoji}</span>
+                            {n.message}
+                          </p>
+                          <p className="font-mono text-[10px] tracking-wider uppercase text-charcoal/40 mt-1">
+                            — {n.name?.trim() || "anonymous"} ·{" "}
+                            {new Date(n.created_at).toLocaleDateString(undefined, {
+                              month: "short",
+                              day: "numeric",
+                            })}
+                          </p>
+                        </div>
+                      );
+                    })
                   )}
                 </div>
               </div>
