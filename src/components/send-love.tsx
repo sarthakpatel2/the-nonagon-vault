@@ -93,7 +93,7 @@ export function SendLove() {
   const loadNotes = async () => {
     const { data, error } = await supabase
       .from("love_notes")
-      .select("id,name,message,created_at")
+      .select("id,name,message,mood,created_at")
       .eq("page", pathname)
       .order("created_at", { ascending: false })
       .limit(50);
