@@ -200,12 +200,13 @@ function FilterChip({
 
 function NoteCard({ note, index }: { note: LoveNote; index: number }) {
   const rotate = ROTATIONS[index % ROTATIONS.length];
-  const tape = TAPE_COLORS[index % TAPE_COLORS.length];
+  const mood = MOOD_MAP[note.mood] ?? MOOD_MAP.love;
+  const tape = mood.tape ?? TAPE_COLORS[index % TAPE_COLORS.length];
   const label = PAGE_LABELS[note.page] ?? note.page;
 
   return (
     <div
-      className={`relative bg-cream rounded-sm p-6 pt-8 shadow-[0_8px_24px_oklch(0_0_0/0.08)] hover:shadow-[0_14px_36px_oklch(0_0_0/0.14)] transition-all duration-300 ${rotate} hover:rotate-0 hover:-translate-y-1 animate-fade-in`}
+      className={`relative ${mood.bg} rounded-sm p-6 pt-8 shadow-[0_8px_24px_oklch(0_0_0/0.08)] hover:shadow-[0_14px_36px_oklch(0_0_0/0.14)] transition-all duration-300 ${rotate} hover:rotate-0 hover:-translate-y-1 animate-fade-in`}
       style={{ animationDelay: `${(index % 12) * 40}ms` }}
     >
       {/* Tape */}
@@ -214,9 +215,12 @@ function NoteCard({ note, index }: { note: LoveNote; index: number }) {
         aria-hidden
       />
 
-      <p className="font-hand text-xl md:text-2xl text-charcoal leading-snug break-words">
-        {note.message}
-      </p>
+      <div className="flex items-start gap-2">
+        <span className="text-2xl leading-none" title={mood.label}>{mood.emoji}</span>
+        <p className="font-hand text-xl md:text-2xl text-charcoal leading-snug break-words flex-1">
+          {note.message}
+        </p>
+      </div>
 
       <div className="mt-5 pt-4 border-t border-dashed border-charcoal/15 flex items-center justify-between gap-2">
         <p className="font-mono text-[10px] tracking-wider uppercase text-charcoal/50 truncate">
