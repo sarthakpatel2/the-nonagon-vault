@@ -30,6 +30,7 @@ type LoveNote = {
   name: string;
   message: string;
   page: string;
+  mood: string;
   created_at: string;
 };
 
