@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
+import { MOODS, MOOD_MAP } from "@/components/send-love";
 
 export const Route = createFileRoute("/love")({
   head: () => ({
