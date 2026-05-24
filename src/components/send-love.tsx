@@ -7,8 +7,19 @@ type LoveNote = {
   id: string;
   name: string;
   message: string;
+  mood: string;
   created_at: string;
 };
+
+export const MOODS = [
+  { id: "love", emoji: "💌", label: "Love", bg: "bg-pink-100", tape: "bg-pink-300/50" },
+  { id: "funny", emoji: "😂", label: "Funny", bg: "bg-yellow-100", tape: "bg-yellow-300/60" },
+  { id: "sentimental", emoji: "🥹", label: "Sentimental", bg: "bg-blue-50", tape: "bg-blue-300/50" },
+  { id: "roast", emoji: "🔥", label: "Roast", bg: "bg-orange-100", tape: "bg-orange-300/60" },
+  { id: "hype", emoji: "✨", label: "Hype", bg: "bg-purple-100", tape: "bg-purple-300/50" },
+] as const;
+
+export const MOOD_MAP = Object.fromEntries(MOODS.map((m) => [m.id, m]));
 
 type Confetti = {
   id: number;
