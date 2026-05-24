@@ -15,65 +15,343 @@ export const Route = createFileRoute("/from-prags")({
   component: FromPragsPage,
 });
 
-const fullLetter = `Hey guys if you are reading this... what's if... Padho shanti se...hn to I love you guys bhut dher sara idc if you guys don't love back.
+const fullLetter = `Dear All,
 
-Once upon a time (4 saal pehle), people from different state cities came to a jhatu college and led to the foundation of gayLesbianRelu.
+I hope this letter finds you all alive, and still mentally unstable in the same beautiful way.
 
-They met each other, but you won't believe what happened when they truly got to know one another — the love and fun began. ❤️
+I miss you guys. And honestly, I don't think I'll ever find friends like you again. Hopefully tum log bhi na dhundo. Some people get good college life, some get memories. Hum logon ko dono mil gaye — bas thoda time kam kam mila aisa ab feel hota hai.
 
-The boy who hated him actually loved him. Among the 9... two boys were in love. They both never agreed and neither let anybody know about them....
+I hope years later, after shaadi, jobs, responsibilities, bacche, EMI, and whatever adulthood throws at us… your wives/husbands still let you come meet each other. I hope one random evening we all end up together again — probably in Chicago, probably drunk, holding Ballentine's and Teacher's in each hand while Billori bina chatni kaise bani blasts in the background.
 
-Dhumtana nana 🎶
+Us dancing.
 
-They are 🤞🏻 Sharma and Racheet.
+Us screaming.
 
-Pyaar tha pr darar thi.
-Tu tha to kahi mai thi.
-Kahi maa thi to kahi behen... kahi raita tha to kahi kadhi-chawal.
+Us ragebaiting CSK fans for absolutely no reason.
 
-They both loved each other but always used to fight, as they had someone else in their life.
+And the next morning discussing things like:
 
-Dhoomtana naa dhoomtana 🎶
+"Humari maa ki..."
 
-Madhav..., Racheet ki side chick raita se jalta tha kyoki vo usse zada gori thi, or Racheet kadhi-chawal se jalti thi kyoki vo Madhav ki side hot chick thi.
+"Agar badhai-ho wala kand ho gaya to kya karoge?"
 
-Raat raat ko Madhav ghar nai aata tha or kadhi-chawal ke sath raat guzarta tha.
+The kind of conversations that would sound concerning to literally anyone outside this group.
 
-Din raat ladai-jagde ke baad bhi vo dono nai sudhre... and they separated... as we say, pyaar hai pr darar hai.
+I don't know when I got used to you people. Maybe somewhere between the midnight maggies, random fights, birthday beatings, Kaveri runs, cancelled plans, and "bhai bas 5 minute me aa rahe." But somewhere along the way, you all stopped becoming friends and started feeling like home.
 
-Now comes the chaotic three — Buddy # Sarthak # Shivendra.
+And maybe that's why leaving hurts this much.
 
-Absolute disaster.
+1st Year
 
-Buddy and Shivendra each had a wife.
+GLA University.
 
-Pr vhi baat hai na... sabse zada dukh dene vali cheez kon — aurat. Or sabse zada sukh dene vali cheez kon — aurat. To ek aurat se itna sukh utha liya, to dusri aurat se sukh uthao na...
+Section J.
 
-But they only had dukh dene vali aurat, not sukh vali... they had sukh vala... # Sarthak.
+Nine people. Not all on the same day. Not even the same story. But somehow the same ending.
 
-So Buddy and Sarthak were the gay bf-bf, and Shivendra-Sarthak were the gay husband-husband, AND Buddy-Shivendra were the gay bf-bf.
+Among them were Madhav and Sarthak — roommates in 109 (2/9). Beside them, Racheet (3/9). They met, went to Kapil Sir's class, sat on the first bench like sincere bacche before life destroyed them.
 
-Whenever Buddy and Shivendra messed up in their relationship (which they do frequently), they turned to the 3rd guy — Sarthak. He was their comfort zone, their emotional support....
+Then came:
 
-Sarthak was also bisexual but never had the guts to talk to other girls... He was always left alone when Buddy and Shivendra got back with their gfs... So being married with Shivendra, they both adopted a kid and named him Sexena.
+"Sarthak Patel from Basti…"
 
-Cute little adorable gol kid — they both cherished him so that he never felt the need of a mother. But... Sexena was their child... he had keen interest in girls... pr ladkiya usse dekhti nahi thi.
+"Oye bhai, Basti?"
 
-Buddy, after seeing the child of Sarthak and Shivendra, got upset and felt lonely... went back to his GFs Advance and Aditi... Aditi came with a solution — "hum Shivendra ki gf ko hi adopt kr lete hai." They adopted Shivendra's gf Pragati. Now Pragati with her step-mother Aditi (gf of Buddy) is in a lesbian relationship... adoption to ek bahana tha, maqsad to kuch or tha hehehe.
+"Mai bhi Basti!"
 
-But Pragati always wanted a child but wasn't able to accept Sexena (Shivendra-Sarthak's adopted kid) as her own, so she insisted on having her own child with him... so they adopted Pinnu. Lovely kid — keval chillata, sota, pita, ulti krta.
+And just like that — Shivendra Pandey entered the story (4/9).
 
-Last but not least — beauty with brains, the Lebanese girls. They were different from everybody. They both were calm, sweet, peaceful girls, most understanding in the group. Vrna kya koi apne bf ko kisi dusre mard ke sath dekh skta hai... They were beauty with brains; they silently loved and cared for everyone that nobody ever noticed... but they both noticed each other, and somehow in that in-between friendship they found love in each other.
+Then another encounter:
 
-But nobody took them seriously.
+"Chechu…"
 
-It hurt them deeply — far more than they ever let anyone see — because despite being the most understanding, caring, beauty-with-brains kind of people, their love was never given the respect it deserved. So one day, without any drama, arguments, or big emotional speeches, they simply left — quietly, silently, choosing peace over explanation.
+"Bhai tu bhi?"
 
-Years later, news spread that the two had settled in the beautiful hills of Kullu-Manali after a massive glow-up, and had opened a cozy little bakery together — filled with the smell of warm cinnamon, fresh bread, mountain air, handwritten menus, and the peaceful life they had once dreamed of.
+"Haan bhai mai bhi…"
 
-And somehow, life had its own poetic way of balancing things — the same people who once laughed at them and never took them seriously now worked there, some as chefs, some as waiters, serving coffee with awkward smiles while the two owners simply looked at each other knowingly; not out of revenge, but because destiny sometimes writes the best endings on its own.
+"Choti hai bhai choti…"
 
-— Prags 💌`;
+And there he was.
+
+The coldest breeze of them all.
+
+BUDDAY-Buddy.
+
+Aka Aman Singh.
+
+(5/9)
+
+Shivendra was rooming with Aman Saxena (6/9) in 167. Din bhar games. Din bhar bakchodi. But bhai hai, chalta hai.
+
+Slowly the rooms merged. The people merged. And eventually 109 became less of a room and more of a permanent adda. Maybe because Basti connected people, maybe because the room was downstairs and thanda rehta tha, or maybe because destiny wanted maximum chaos concentrated in one place.
+
+Then same class, another beginning:
+
+"Excuse me, I'm from Delhi… can I get your number? Thoda notes chahiye the."
+
+And that's how Aditi and Buddy met.
+
+(7/9)
+
+Pragati met Buddy. Then Aditi. Then during random conversations Shivendra and Pragati discovered they were from the same board — ICSE. And suddenly the group became (8/9).
+
+And then entered the loudest character-"Pinnu" (9/9). We got to know him through Sarthak as both were pretty close buddies(iykyk)
+
+And then came one of the greatest plot twists of 1st year.
+
+Aman bhai casually says:
+
+"Bhai pata hai meri bua ki bhanji bhi isi college me padhti hai… aur uska naam Pragati hai."
+
+Shivendra:
+
+"Accha?"
+
+Next day.
+
+418 AB7.
+
+Shivendra to Pragati:
+
+"Kya tumhare koi mama hai?"
+
+"Haan."
+
+"Kya unka naam Amit Srivastava hai?"
+
+"Haan…"
+
+"Kya woh dentist hai?"
+
+"…haan?"
+
+"Udhar dekh rahi? Woh tumhara bhai hai — Aman Saxena."
+
+And somehow, against all odds, the nonagon was complete.
+
+Hostel never really felt like hostel after that. Except when mess me dahi vade aur dum aloo aata tha — tab reality check milta tha.
+
+I still wish we could go back just once and play Chat pe soya tha behnoi on full volume while locking the room from outside so even the warden gets confused:
+
+"Saala darwaza bahar se band hai… andar gaana kaun baja raha?"
+
+I would honestly give anything to live those days one more time.
+
+Even the fights.
+
+Especially the fights.
+
+Because who says:
+
+"Ab se kamre me mat aana, mere roommate ne mana kara hai."
+
+Madhav, bhai… aaj bhi yaad hai.
+
+And Holi.
+
+God, the first Holi.
+
+I still watch that video where Madhav entered and Aman bhai literally chhat ke upar se usko laal rang me baptize kar diye.
+
+Then came the legendary field project.
+
+Epic. Disastrous. Historic.
+
+Adhi raat. Ek bathroom. Chhe launde.
+
+"PANI AA GAYA BC, PIPE ME PANI AA GAYA!"
+
+The project may have officially been for two people.
+
+But emotionally?
+
+Pure gay love. Brotherhood edition.
+
+And slowly, before we even realised, first year ended. Baithaks badhne lagi. Bonds stronger hone lage. Itna mazboot connection bana ki 4 saal me na koi replace ho paya, na koi extra add ho paya.
+
+2nd Year
+
+Then came second year.
+
+The year everyone feared.
+
+Shuffle hone wali thi. Rooms alag honge. Wings alag hongi. Routine alag hoga.
+
+Par shayad kisi ko nahi pata tha ki jo log pehle saal mil gaye the… woh itni aasani se chhod ke nahi jaane wale.
+
+Honestly, I never really made new friends after first year.
+
+Need hi nahi padi.
+
+Already had the best.
+
+The kind of best jinko agar abhi call karu to muh pe ₹5000 phek ke maarenge and bolenge:
+
+"Drama band kar aur location bhej."
+
+Ek chicken paratha ke liye Kaveri me 5 log aa jate the. That's family.
+
+Second year also came with mahamari and unke mareez. Midnight dispensary runs became normal. Chahe mild blockage ho, chahe lungs me paani — hum jayenge saath me.
+
+Always.
+
+And I'll forever miss invading Aditi's wardrobe at 2 AM and dancing to Didi tera devar deewana while half the group got married to each other for no reason.
+
+I'll miss those nights the most.
+
+The nights where nothing important happened… but somehow everything important happened.
+
+3rd and 4th Year
+
+Then came third year.
+
+Same chaos. Same love.
+
+Kabhi beech raat me KC ke gadho me nahana.
+
+Kabhi cake se nahana.
+
+Kabhi imaginary omelette banana because anda lovers were emotionally committed to the idea.
+
+The plans kept getting worse.
+
+The memories kept getting better.
+
+And then fourth year happened.
+
+Honestly?
+
+Not good.
+
+Daily daily behosh ho jana is honestly talent at this point.
+
+Placements, berozgari, panic, fake confidence, "bhai ho jayega," and silent stress hidden behind jokes.
+
+Everyone started preparing to leave without actually admitting we were leaving.
+
+The Leaving Part
+
+11th May 2026.
+
+Gol-chakkar.
+
+Signing off.
+
+Aur kitna kuch likhna tha… par likh nahi paaye.
+
+At that moment maybe nobody reacted properly. Maybe nobody wanted to. But while leaving… I know everybody felt it.
+
+Some looked at the signed shirts.
+
+Some looked back at the wings.
+
+Some quietly watched everyone leave.
+
+And some made maggie because wapas aate waqt mess band ho gayi thi.
+
+Peak engineering emotion.
+
+Kuch log itne sad the ki 4 din lagatar piye.
+
+And now everything feels different somehow.
+
+Even the chicken tastes different. Maybe because starters me paneer pakode nahi milte anymore.
+
+We'll all say:
+
+"Milte hain."
+
+And I know we will. Pakka.
+
+But when? Where? Nobody knows.
+
+Maybe life gets busy.
+
+Maybe adulthood wins sometimes.
+
+Maybe plans keep getting cancelled like always.
+
+Maybe "Singapore chalenge" bas kehne ki baat reh jaaye.
+
+But honestly?
+
+I still want that Bali trip.
+
+Toh… Bali ka plan final kare?
+
+Because this time feels different.
+
+Earlier, even if we left, there was always certainty.
+
+"5 January se college khul raha."
+
+"Mil lenge."
+
+"Room pe aa ja."
+
+But now there's no next semester waiting for us.
+
+And that thought hurts more than expected.
+
+So please… don't stop trying.
+
+Don't stop making plans.
+
+Aur maan lo toh Lucknow itna door bhi nahi hai.
+
+Aur agar paap dhulwane ho… toh Allahabad sirf 4 ghante door hai.
+
+We'll grow up.
+
+We'll become professionals.
+
+Somebody will become a husband. Somebody a wife. Somebody rich. Somebody bald. Somebody emotionally unavailable. Somebody still unemployed.
+
+But I hope, in the ways that actually matter, we stay exactly the same.
+
+So no… this isn't goodbye.
+
+This is just a very long "milte hain."
+
+The chai is on me.
+
+Always.
+
+Thank you for fighting with me.
+
+For making up over biryani.
+
+For showing up when I didn't know how to ask.
+
+For understanding me before I understood myself.
+
+And somehow staying anyway.
+
+To Aditi — stay this adorable and always become the loudest after every drink.
+
+To both Amans — thank you for always being late. Consistency matters.
+
+To both Madhavs — for cancelled plans and somehow still being the loudest people in every room.
+
+To Racheet — for every unnecessary conversation that somehow became necessary.
+
+To Sarthak — for never abandoning anyone and loving all of us dher sara.
+
+To Shivendra — for the anger, the loyalty, and the love hidden behind both.
+
+And to us — the nine idiots who somehow turned a college into a lifetime.
+
+I hope you all continue doing paap and reunite in ALD… kyunki mummy permission waise bhi aur kahi ki nahi dengi.
+
+So whenever life gets too loud, too lonely, too adult…
+
+Door khula hai.
+
+Aa jaana.
+
+— Pragati
+
+Signing off. Subah ke 5 bajne wale hain.`;
 
 function FromPragsPage() {
   const [typed, setTyped] = useState("");
