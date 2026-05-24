@@ -64,13 +64,14 @@ const TAPE_COLORS = [
 function LovePage() {
   const [notes, setNotes] = useState<LoveNote[]>([]);
   const [filter, setFilter] = useState<string>("all");
+  const [moodFilter, setMoodFilter] = useState<string>("all");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       const { data } = await supabase
         .from("love_notes")
-        .select("id,name,message,page,created_at")
+        .select("id,name,message,page,mood,created_at")
         .order("created_at", { ascending: false })
         .limit(500);
       if (data) setNotes(data as LoveNote[]);
@@ -79,7 +80,11 @@ function LovePage() {
   }, []);
 
   const pages = Array.from(new Set(notes.map((n) => n.page)));
-  const visible = filter === "all" ? notes : notes.filter((n) => n.page === filter);
+  const visible = notes.filter(
+    (n) =>
+      (filter === "all" || n.page === filter) &&
+      (moodFilter === "all" || (n.mood ?? "love") === moodFilter),
+  );
 
   return (
     <div className="min-h-screen bg-paper">
