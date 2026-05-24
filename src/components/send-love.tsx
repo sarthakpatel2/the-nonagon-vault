@@ -7,8 +7,19 @@ type LoveNote = {
   id: string;
   name: string;
   message: string;
+  mood: string;
   created_at: string;
 };
+
+export const MOODS = [
+  { id: "love", emoji: "💌", label: "Love", bg: "bg-pink-100", tape: "bg-pink-300/50" },
+  { id: "funny", emoji: "😂", label: "Funny", bg: "bg-yellow-100", tape: "bg-yellow-300/60" },
+  { id: "sentimental", emoji: "🥹", label: "Sentimental", bg: "bg-blue-50", tape: "bg-blue-300/50" },
+  { id: "roast", emoji: "🔥", label: "Roast", bg: "bg-orange-100", tape: "bg-orange-300/60" },
+  { id: "hype", emoji: "✨", label: "Hype", bg: "bg-purple-100", tape: "bg-purple-300/50" },
+] as const;
+
+export const MOOD_MAP = Object.fromEntries(MOODS.map((m) => [m.id, m]));
 
 type Confetti = {
   id: number;
@@ -63,6 +74,7 @@ export function SendLove() {
   const [loaded, setLoaded] = useState(false);
   const [burst, setBurst] = useState(0);
   const [confetti, setConfetti] = useState<Confetti[]>([]);
+  const [mood, setMood] = useState<string>("love");
 
   const fireConfetti = () => {
     const pieces: Confetti[] = Array.from({ length: 32 }, (_, i) => ({
@@ -81,7 +93,7 @@ export function SendLove() {
   const loadNotes = async () => {
     const { data, error } = await supabase
       .from("love_notes")
-      .select("id,name,message,created_at")
+      .select("id,name,message,mood,created_at")
       .eq("page", pathname)
       .order("created_at", { ascending: false })
       .limit(50);
@@ -107,6 +119,7 @@ export function SendLove() {
       name: name.trim().slice(0, MAX_NAME),
       message: trimmed.slice(0, MAX_MSG),
       page: pathname,
+      mood,
     });
     setSending(false);
     if (error) {
@@ -222,6 +235,28 @@ export function SendLove() {
                     {message.length}/{MAX_MSG}
                   </span>
                 </div>
+                <div>
+                  <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-charcoal/50 mb-2">
+                    Mood
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {MOODS.map((m) => (
+                      <button
+                        key={m.id}
+                        type="button"
+                        onClick={() => setMood(m.id)}
+                        className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                          mood === m.id
+                            ? "bg-charcoal text-paper border-charcoal scale-105"
+                            : "bg-paper text-charcoal/70 border-charcoal/15 hover:border-brand"
+                        }`}
+                      >
+                        <span className="mr-1">{m.emoji}</span>
+                        {m.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <button
                   type="submit"
                   disabled={sending || !message.trim()}
@@ -244,23 +279,27 @@ export function SendLove() {
                       Be the first to send love here.
                     </p>
                   ) : (
-                    notes.map((n) => (
-                      <div
-                        key={n.id}
-                        className="bg-paper rounded-xl px-4 py-3 border border-charcoal/5"
-                      >
-                        <p className="font-hand text-base text-charcoal leading-snug break-words">
-                          {n.message}
-                        </p>
-                        <p className="font-mono text-[10px] tracking-wider uppercase text-charcoal/40 mt-1">
-                          — {n.name?.trim() || "anonymous"} ·{" "}
-                          {new Date(n.created_at).toLocaleDateString(undefined, {
-                            month: "short",
-                            day: "numeric",
-                          })}
-                        </p>
-                      </div>
-                    ))
+                    notes.map((n) => {
+                      const m = MOOD_MAP[n.mood] ?? MOOD_MAP.love;
+                      return (
+                        <div
+                          key={n.id}
+                          className={`${m.bg} rounded-xl px-4 py-3 border border-charcoal/5`}
+                        >
+                          <p className="font-hand text-base text-charcoal leading-snug break-words">
+                            <span className="mr-1">{m.emoji}</span>
+                            {n.message}
+                          </p>
+                          <p className="font-mono text-[10px] tracking-wider uppercase text-charcoal/40 mt-1">
+                            — {n.name?.trim() || "anonymous"} ·{" "}
+                            {new Date(n.created_at).toLocaleDateString(undefined, {
+                              month: "short",
+                              day: "numeric",
+                            })}
+                          </p>
+                        </div>
+                      );
+                    })
                   )}
                 </div>
               </div>

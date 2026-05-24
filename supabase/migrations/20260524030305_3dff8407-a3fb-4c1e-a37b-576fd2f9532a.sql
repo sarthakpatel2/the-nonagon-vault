@@ -1,0 +1,1 @@
+ALTER TABLE public.love_notes ADD COLUMN IF NOT EXISTS mood TEXT NOT NULL DEFAULT 'love';
