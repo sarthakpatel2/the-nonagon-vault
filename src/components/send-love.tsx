@@ -119,6 +119,7 @@ export function SendLove() {
       name: name.trim().slice(0, MAX_NAME),
       message: trimmed.slice(0, MAX_MSG),
       page: pathname,
+      mood,
     });
     setSending(false);
     if (error) {
