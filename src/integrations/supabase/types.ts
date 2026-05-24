@@ -46,6 +46,7 @@ export type Database = {
           created_at: string
           id: string
           message: string
+          mood: string
           name: string
           page: string
         }
@@ -53,6 +54,7 @@ export type Database = {
           created_at?: string
           id?: string
           message: string
+          mood?: string
           name?: string
           page?: string
         }
@@ -60,6 +62,7 @@ export type Database = {
           created_at?: string
           id?: string
           message?: string
+          mood?: string
           name?: string
           page?: string
         }
