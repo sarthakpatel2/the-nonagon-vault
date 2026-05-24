@@ -123,6 +123,26 @@ function LovePage() {
         </div>
       )}
 
+      {/* Mood filter chips */}
+      <div className="px-6 md:px-10 max-w-6xl mx-auto mb-10 flex flex-wrap gap-2 justify-center">
+        <FilterChip active={moodFilter === "all"} onClick={() => setMoodFilter("all")}>
+          All moods
+        </FilterChip>
+        {MOODS.map((m) => {
+          const count = notes.filter((n) => (n.mood ?? "love") === m.id).length;
+          if (count === 0) return null;
+          return (
+            <FilterChip
+              key={m.id}
+              active={moodFilter === m.id}
+              onClick={() => setMoodFilter(m.id)}
+            >
+              {m.emoji} {m.label} ({count})
+            </FilterChip>
+          );
+        })}
+      </div>
+
       {/* Wall */}
       <section className="px-6 md:px-10 pb-24 max-w-6xl mx-auto">
         {loading ? (
