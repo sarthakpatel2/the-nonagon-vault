@@ -118,7 +118,10 @@ function LetterPage() {
         </article>
       </section>
 
+      <LetterReactions />
+
       <SiteFooter />
+
     </main>
   );
 }
