@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
+import { ReunionCountdown } from "@/components/reunion-countdown";
 import { photoMap } from "@/lib/photos";
 
 import gradMorning from "@/assets/timeline/grad-morning.jpeg";
@@ -257,6 +258,16 @@ function Home() {
           <h3 className="font-serif text-3xl mb-10 leading-tight">A letter to the friends I won&rsquo;t see daily.</h3>
           <span className="font-serif italic group-hover:translate-x-1 inline-block transition-transform">Read letter →</span>
         </Link>
+      </section>
+
+      {/* REUNION COUNTDOWN */}
+      <section className="px-6 md:px-10 py-20 md:py-28 max-w-7xl mx-auto">
+        <div className="max-w-3xl mx-auto">
+          <p className="font-mono text-xs tracking-[0.3em] uppercase text-charcoal/50 mb-4 text-center">
+            The clock keeps ticking
+          </p>
+          <ReunionCountdown />
+        </div>
       </section>
 
       <SiteFooter />
