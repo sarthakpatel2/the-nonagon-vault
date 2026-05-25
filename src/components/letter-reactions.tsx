@@ -40,18 +40,8 @@ export function LetterReactions() {
 
   useEffect(() => {
     load();
-    const channel = supabase
-      .channel("letter_reactions")
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "letter_reactions" },
-        (payload) => setItems((prev) => [payload.new as Reaction, ...prev]),
-      )
-      .subscribe();
-    return () => {
-      supabase.removeChannel(channel);
-    };
   }, []);
+
 
   const counts = EMOJIS.map((e) => ({
     emoji: e,
@@ -73,9 +63,10 @@ export function LetterReactions() {
       return;
     }
     setMemory("");
-    setName((n) => n);
+    load();
     toast.success("Reaction added 🫶");
   };
+
 
   return (
     <section className="px-6 md:px-10 pb-24 max-w-3xl mx-auto">
