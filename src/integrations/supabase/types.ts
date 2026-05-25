@@ -41,6 +41,30 @@ export type Database = {
         }
         Relationships: []
       }
+      letter_reactions: {
+        Row: {
+          created_at: string
+          emoji: string
+          id: string
+          memory: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          emoji: string
+          id?: string
+          memory?: string
+          name?: string
+        }
+        Update: {
+          created_at?: string
+          emoji?: string
+          id?: string
+          memory?: string
+          name?: string
+        }
+        Relationships: []
+      }
       love_notes: {
         Row: {
           created_at: string

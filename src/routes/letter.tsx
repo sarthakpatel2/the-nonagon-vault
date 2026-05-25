@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
+import { LetterReactions } from "@/components/letter-reactions";
+
 
 export const Route = createFileRoute("/letter")({
   head: () => ({
@@ -116,7 +118,10 @@ function LetterPage() {
         </article>
       </section>
 
+      <LetterReactions />
+
       <SiteFooter />
+
     </main>
   );
 }
