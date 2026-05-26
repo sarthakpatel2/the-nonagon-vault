@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
-import { ReunionCountdown } from "@/components/reunion-countdown";
+import { VisitCounter } from "@/components/visit-counter";
 import { photoMap } from "@/lib/photos";
 
 import gradMorning from "@/assets/timeline/grad-morning.jpeg";
