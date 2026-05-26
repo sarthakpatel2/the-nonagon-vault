@@ -78,32 +78,28 @@ export function SendLove() {
   const [trail, setTrail] = useState<{ id: number; x: number; y: number; emoji: string }[]>([]);
 
   useEffect(() => {
-    if (trail.length === 0) return;
-    let active = true;
+    if (burst === 0) return;
     const stopAt = Date.now() + 2000;
+    let last = 0;
     const onMove = (e: MouseEvent) => {
-      if (!active || Date.now() > stopAt) return;
+      const now = Date.now();
+      if (now > stopAt || now - last < 40) return;
+      last = now;
       const emoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
-      const id = Date.now() + Math.random();
+      const id = now + Math.random();
       setTrail((t) => [...t, { id, x: e.clientX, y: e.clientY, emoji }]);
       setTimeout(() => setTrail((t) => t.filter((p) => p.id !== id)), 900);
     };
     window.addEventListener("mousemove", onMove);
     const timeout = setTimeout(() => {
-      active = false;
       window.removeEventListener("mousemove", onMove);
     }, 2000);
     return () => {
-      active = false;
       window.removeEventListener("mousemove", onMove);
       clearTimeout(timeout);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [burst]);
 
-  const startTrail = () => {
-    setTrail((t) => [...t, { id: Date.now(), x: -100, y: -100, emoji: "💖" }]);
-  };
 
   const fireConfetti = () => {
     const pieces: Confetti[] = Array.from({ length: 32 }, (_, i) => ({
