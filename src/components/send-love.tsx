@@ -75,6 +75,31 @@ export function SendLove() {
   const [burst, setBurst] = useState(0);
   const [confetti, setConfetti] = useState<Confetti[]>([]);
   const [mood, setMood] = useState<string>("love");
+  const [trail, setTrail] = useState<{ id: number; x: number; y: number; emoji: string }[]>([]);
+
+  useEffect(() => {
+    if (burst === 0) return;
+    const stopAt = Date.now() + 2000;
+    let last = 0;
+    const onMove = (e: MouseEvent) => {
+      const now = Date.now();
+      if (now > stopAt || now - last < 40) return;
+      last = now;
+      const emoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+      const id = now + Math.random();
+      setTrail((t) => [...t, { id, x: e.clientX, y: e.clientY, emoji }]);
+      setTimeout(() => setTrail((t) => t.filter((p) => p.id !== id)), 900);
+    };
+    window.addEventListener("mousemove", onMove);
+    const timeout = setTimeout(() => {
+      window.removeEventListener("mousemove", onMove);
+    }, 2000);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      clearTimeout(timeout);
+    };
+  }, [burst]);
+
 
   const fireConfetti = () => {
     const pieces: Confetti[] = Array.from({ length: 32 }, (_, i) => ({
@@ -137,7 +162,33 @@ export function SendLove() {
 
   return (
     <>
-      {/* Confetti overlay */}
+      {/* Heart trail cursor */}
+      {trail.length > 0 && (
+        <div className="pointer-events-none fixed inset-0 z-[70]">
+          {trail.map((p) => (
+            <span
+              key={p.id}
+              className="absolute text-2xl will-change-transform"
+              style={{
+                left: p.x,
+                top: p.y,
+                transform: "translate(-50%, -50%)",
+                animation: "heart-trail 0.9s ease-out forwards",
+              }}
+            >
+              {p.emoji}
+            </span>
+          ))}
+          <style>{`
+            @keyframes heart-trail {
+              0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+              100% { opacity: 0; transform: translate(-50%, -140%) scale(0.5); }
+            }
+          `}</style>
+        </div>
+      )}
+
+
       {confetti.length > 0 && (
         <div className="pointer-events-none fixed inset-0 z-[60] overflow-hidden">
           {confetti.map((p) => (
