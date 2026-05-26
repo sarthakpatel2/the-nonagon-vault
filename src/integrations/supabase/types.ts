@@ -92,6 +92,35 @@ export type Database = {
         }
         Relationships: []
       }
+      note_reactions: {
+        Row: {
+          created_at: string
+          emoji: string
+          id: string
+          note_id: string
+        }
+        Insert: {
+          created_at?: string
+          emoji: string
+          id?: string
+          note_id: string
+        }
+        Update: {
+          created_at?: string
+          emoji?: string
+          id?: string
+          note_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "note_reactions_note_id_fkey"
+            columns: ["note_id"]
+            isOneToOne: false
+            referencedRelation: "love_notes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       site_visits: {
         Row: {
           created_at: string
