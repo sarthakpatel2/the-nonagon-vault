@@ -125,7 +125,7 @@ function RootComponent() {
       <LoginGate>
         <Outlet />
         <SendLove />
-        <ShuffleMemory />
+        
         <Toaster position="top-center" />
       </LoginGate>
     </QueryClientProvider>
