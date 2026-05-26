@@ -11,7 +11,7 @@ import {
 import appCss from "../styles.css?url";
 import { LoginGate } from "@/components/login-gate";
 import { SendLove } from "@/components/send-love";
-import { ShuffleMemory } from "@/components/shuffle-memory";
+
 import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
@@ -125,7 +125,7 @@ function RootComponent() {
       <LoginGate>
         <Outlet />
         <SendLove />
-        <ShuffleMemory />
+        
         <Toaster position="top-center" />
       </LoginGate>
     </QueryClientProvider>
