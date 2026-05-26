@@ -348,10 +348,12 @@ export function SendLove() {
                               day: "numeric",
                             })}
                           </p>
+                          <NoteReactions noteId={n.id} />
                         </div>
                       );
                     })
                   )}
+
                 </div>
               </div>
             </div>
@@ -361,3 +363,90 @@ export function SendLove() {
     </>
   );
 }
+
+const REACTION_EMOJIS = ["❤️", "😂", "🥲"] as const;
+
+function NoteReactions({ noteId }: { noteId: string }) {
+  const [counts, setCounts] = useState<Record<string, number>>({});
+  const [mine, setMine] = useState<Set<string>>(() => {
+    if (typeof window === "undefined") return new Set();
+    try {
+      const raw = sessionStorage.getItem(`note-reacts:${noteId}`);
+      return new Set(raw ? (JSON.parse(raw) as string[]) : []);
+    } catch {
+      return new Set();
+    }
+  });
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase
+        .from("note_reactions")
+        .select("emoji")
+        .eq("note_id", noteId);
+      if (cancelled || !data) return;
+      const next: Record<string, number> = {};
+      for (const row of data as { emoji: string }[]) {
+        next[row.emoji] = (next[row.emoji] ?? 0) + 1;
+      }
+      setCounts(next);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [noteId]);
+
+  const react = async (emoji: string) => {
+    if (mine.has(emoji)) return;
+    setCounts((c) => ({ ...c, [emoji]: (c[emoji] ?? 0) + 1 }));
+    const nextMine = new Set(mine);
+    nextMine.add(emoji);
+    setMine(nextMine);
+    try {
+      sessionStorage.setItem(
+        `note-reacts:${noteId}`,
+        JSON.stringify([...nextMine]),
+      );
+    } catch {
+      /* ignore */
+    }
+    const { error } = await supabase
+      .from("note_reactions")
+      .insert({ note_id: noteId, emoji });
+    if (error) {
+      setCounts((c) => ({ ...c, [emoji]: Math.max(0, (c[emoji] ?? 1) - 1) }));
+      nextMine.delete(emoji);
+      setMine(new Set(nextMine));
+    }
+  };
+
+  return (
+    <div className="mt-2 flex gap-1.5">
+      {REACTION_EMOJIS.map((e) => {
+        const count = counts[e] ?? 0;
+        const reacted = mine.has(e);
+        return (
+          <button
+            key={e}
+            type="button"
+            onClick={() => react(e)}
+            disabled={reacted}
+            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full border text-xs transition-all ${
+              reacted
+                ? "bg-charcoal/10 border-charcoal/30 cursor-default"
+                : "bg-white/60 border-charcoal/10 hover:border-brand hover:scale-105"
+            }`}
+            aria-label={`React with ${e}`}
+          >
+            <span className="text-sm leading-none">{e}</span>
+            {count > 0 && (
+              <span className="font-mono text-[10px] text-charcoal/60">{count}</span>
+            )}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
