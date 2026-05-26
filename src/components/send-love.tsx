@@ -162,7 +162,33 @@ export function SendLove() {
 
   return (
     <>
-      {/* Confetti overlay */}
+      {/* Heart trail cursor */}
+      {trail.length > 0 && (
+        <div className="pointer-events-none fixed inset-0 z-[70]">
+          {trail.map((p) => (
+            <span
+              key={p.id}
+              className="absolute text-2xl will-change-transform"
+              style={{
+                left: p.x,
+                top: p.y,
+                transform: "translate(-50%, -50%)",
+                animation: "heart-trail 0.9s ease-out forwards",
+              }}
+            >
+              {p.emoji}
+            </span>
+          ))}
+          <style>{`
+            @keyframes heart-trail {
+              0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+              100% { opacity: 0; transform: translate(-50%, -140%) scale(0.5); }
+            }
+          `}</style>
+        </div>
+      )}
+
+
       {confetti.length > 0 && (
         <div className="pointer-events-none fixed inset-0 z-[60] overflow-hidden">
           {confetti.map((p) => (
