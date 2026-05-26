@@ -348,10 +348,12 @@ export function SendLove() {
                               day: "numeric",
                             })}
                           </p>
+                          <NoteReactions noteId={n.id} />
                         </div>
                       );
                     })
                   )}
+
                 </div>
               </div>
             </div>
