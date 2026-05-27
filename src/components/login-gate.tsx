@@ -34,20 +34,43 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const floaters = ["💌", "✨", "🥂", "💕", "📸", "🌙", "⭐", "🍸", "💫", "🪩"];
+
   return (
     <div className="min-h-screen grid place-items-center bg-paper px-6 py-12 relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, currentColor 1px, transparent 1px)", backgroundSize: "20px 20px" }} aria-hidden />
-      <div className={`relative w-full max-w-md ${shake ? "animate-[shake_0.4s]" : ""}`}>
+
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
+        {floaters.map((emoji, i) => (
+          <span
+            key={i}
+            className="absolute text-2xl md:text-3xl opacity-40 animate-float"
+            style={{
+              left: `${(i * 9.7 + 5) % 95}%`,
+              top: `${(i * 13.3 + 8) % 90}%`,
+              animationDelay: `${i * 0.6}s`,
+              animationDuration: `${6 + (i % 4)}s`,
+            }}
+          >
+            {emoji}
+          </span>
+        ))}
+      </div>
+
+      <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-brand/20 blur-3xl animate-blob" aria-hidden />
+      <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-amber-300/20 blur-3xl animate-blob" style={{ animationDelay: "2s" }} aria-hidden />
+
+      <div className={`relative w-full max-w-md ${shake ? "animate-[shake_0.4s]" : "animate-card-in"}`}>
         <div className="paper-card rounded-3xl p-8 md:p-10 relative">
-          <span className="tape left-1/2 -translate-x-1/2 -top-4 w-32 h-6 rotate-[-2deg]" aria-hidden />
+          <span className="tape left-1/2 -translate-x-1/2 -top-4 w-32 h-6 rotate-[-2deg] animate-tape-sway" aria-hidden />
 
           <div className="text-center mb-8">
-            <div className="inline-block text-4xl mb-3">🔒</div>
+            <div className="inline-block text-4xl mb-3 animate-lock-bounce">🔒</div>
             <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-charcoal/50 mb-2">
               Members only · Est. 2022
             </p>
             <h1 className="font-serif text-3xl md:text-4xl italic leading-tight">
-              The <span className="text-brand">Nonagon</span> Vault.
+              The <span className="text-brand animate-shimmer">Nonagon</span> Vault.
             </h1>
             <p className="mt-3 text-sm text-charcoal/60">
               If you weren&rsquo;t in the group chat, you weren&rsquo;t in the group.
@@ -65,7 +88,7 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
                 value={user}
                 onChange={(e) => setUser(e.target.value)}
                 placeholder="Two words. You know it."
-                className="w-full bg-cream/60 border border-charcoal/15 rounded-xl px-4 py-3 font-serif text-base outline-none focus:border-brand transition-colors"
+                className="w-full bg-cream/60 border border-charcoal/15 rounded-xl px-4 py-3 font-serif text-base outline-none focus:border-brand focus:scale-[1.02] transition-all duration-300"
                 autoFocus
               />
             </div>
@@ -78,19 +101,20 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
                 value={pass}
                 onChange={(e) => setPass(e.target.value)}
                 placeholder="••••••••••••••"
-                className="w-full bg-cream/60 border border-charcoal/15 rounded-xl px-4 py-3 font-serif text-base outline-none focus:border-brand transition-colors"
+                className="w-full bg-cream/60 border border-charcoal/15 rounded-xl px-4 py-3 font-serif text-base outline-none focus:border-brand focus:scale-[1.02] transition-all duration-300"
               />
             </div>
 
             {error && (
-              <p className="font-mono text-xs text-brand text-center">{error}</p>
+              <p className="font-mono text-xs text-brand text-center animate-[shake_0.4s]">{error}</p>
             )}
 
             <button
               type="submit"
-              className="w-full bg-charcoal text-paper rounded-full py-3.5 font-medium text-sm hover:bg-brand transition-colors mt-2"
+              className="group relative w-full bg-charcoal text-paper rounded-full py-3.5 font-medium text-sm hover:bg-brand transition-all duration-300 mt-2 overflow-hidden hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg"
             >
-              Unlock the scrapbook →
+              <span className="relative z-10">Unlock the scrapbook →</span>
+              <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
             </button>
           </form>
 
@@ -109,6 +133,44 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
           0%, 100% { transform: translateX(0); }
           25% { transform: translateX(-8px); }
           75% { transform: translateX(8px); }
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0) rotate(0deg); }
+          50% { transform: translateY(-30px) rotate(8deg); }
+        }
+        .animate-float { animation: float 7s ease-in-out infinite; }
+        @keyframes blob {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          33% { transform: translate(30px, -20px) scale(1.1); }
+          66% { transform: translate(-20px, 30px) scale(0.95); }
+        }
+        .animate-blob { animation: blob 12s ease-in-out infinite; }
+        @keyframes card-in {
+          0% { opacity: 0; transform: translateY(20px) scale(0.96); }
+          100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .animate-card-in { animation: card-in 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+        @keyframes lock-bounce {
+          0%, 100% { transform: translateY(0) rotate(0); }
+          50% { transform: translateY(-6px) rotate(-6deg); }
+        }
+        .animate-lock-bounce { animation: lock-bounce 2.4s ease-in-out infinite; display: inline-block; }
+        @keyframes tape-sway {
+          0%, 100% { transform: translateX(-50%) rotate(-2deg); }
+          50% { transform: translateX(-50%) rotate(1deg); }
+        }
+        .animate-tape-sway { animation: tape-sway 5s ease-in-out infinite; }
+        @keyframes shimmer {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        .animate-shimmer {
+          background: linear-gradient(90deg, currentColor 0%, #f59e0b 50%, currentColor 100%);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: shimmer 3s linear infinite;
         }
       `}</style>
     </div>
