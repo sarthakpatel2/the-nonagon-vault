@@ -377,6 +377,8 @@ function NoteReactions({ noteId }: { noteId: string }) {
       return new Set();
     }
   });
+  const [bounceEmoji, setBounceEmoji] = useState<string | null>(null);
+  const [flashEmoji, setFlashEmoji] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -399,6 +401,8 @@ function NoteReactions({ noteId }: { noteId: string }) {
 
   const react = async (emoji: string) => {
     if (mine.has(emoji)) return;
+    setBounceEmoji(emoji);
+    setTimeout(() => setBounceEmoji(null), 400);
     setCounts((c) => ({ ...c, [emoji]: (c[emoji] ?? 0) + 1 }));
     const nextMine = new Set(mine);
     nextMine.add(emoji);
@@ -426,6 +430,7 @@ function NoteReactions({ noteId }: { noteId: string }) {
       {REACTION_EMOJIS.map((e) => {
         const count = counts[e] ?? 0;
         const reacted = mine.has(e);
+        const isBouncing = bounceEmoji === e;
         return (
           <button
             key={e}
@@ -436,16 +441,42 @@ function NoteReactions({ noteId }: { noteId: string }) {
               reacted
                 ? "bg-charcoal/10 border-charcoal/30 cursor-default"
                 : "bg-white/60 border-charcoal/10 hover:border-brand hover:scale-105"
-            }`}
+            } ${isBouncing ? "react-bounce" : ""}`}
             aria-label={`React with ${e}`}
           >
             <span className="text-sm leading-none">{e}</span>
             {count > 0 && (
-              <span className="font-mono text-[10px] text-charcoal/60">{count}</span>
+              <span
+                key={count}
+                className="font-mono text-[10px] text-charcoal/60 react-flash"
+              >
+                {count}
+              </span>
             )}
           </button>
         );
       })}
+      <style>{`
+        @keyframes reactBounce {
+          0%   { transform: scale(1); }
+          30%  { transform: scale(1.35); }
+          50%  { transform: scale(0.92); }
+          70%  { transform: scale(1.08); }
+          100% { transform: scale(1); }
+        }
+        .react-bounce {
+          animation: reactBounce 0.4s ease-out;
+        }
+        @keyframes reactFlash {
+          0%   { opacity: 0.3; transform: scale(0.7) translateY(2px); }
+          40%  { opacity: 1; transform: scale(1.3) translateY(-1px); }
+          100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .react-flash {
+          animation: reactFlash 0.35s ease-out;
+          display: inline-block;
+        }
+      `}</style>
     </div>
   );
 }
