@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
+import { Eye, EyeOff } from "lucide-react";
 
 const STORAGE_KEY = "nonagon-pass";
 const USERNAME = "The Hangover";
@@ -13,6 +14,8 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
   const [pass, setPass] = useState("");
   const [error, setError] = useState("");
   const [shake, setShake] = useState(false);
+  const [errorFlash, setErrorFlash] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [celebrating, setCelebrating] = useState(false);
   const navigate = useNavigate();
   const currentPath = useRouterState({ select: (s) => s.location.pathname });
@@ -40,9 +43,11 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
         }
       }, 1600);
     } else {
-      setError("Access denied. Try again, soberly.");
+      setError("Nice try, impostor! 🚫");
       setShake(true);
-      setTimeout(() => setShake(false), 500);
+      setErrorFlash(true);
+      setTimeout(() => setShake(false), 700);
+      setTimeout(() => setErrorFlash(false), 900);
     }
   };
 
@@ -74,12 +79,12 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
       <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-brand/20 blur-3xl animate-blob" aria-hidden />
       <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-amber-300/20 blur-3xl animate-blob" style={{ animationDelay: "2s" }} aria-hidden />
 
-      <div className={`relative w-full max-w-md ${shake ? "animate-[shake_0.4s]" : "animate-card-in"}`}>
+      <div className={`relative w-full max-w-md ${shake ? "animate-[funny-shake_0.7s_ease-in-out]" : "animate-card-in"} ${errorFlash ? "animate-[error-flash_0.9s_ease-out]" : ""}`}>
         <div className="paper-card rounded-3xl p-8 md:p-10 relative">
           <span className="tape left-1/2 -translate-x-1/2 -top-4 w-32 h-6 rotate-[-2deg] animate-tape-sway" aria-hidden />
 
           <div className="text-center mb-8">
-            <div className="inline-block text-4xl mb-3 animate-lock-bounce">🔒</div>
+            <div className={`inline-block text-4xl mb-3 ${shake ? "animate-[lock-rattle_0.7s_ease-in-out]" : "animate-lock-bounce"}`}>🔒</div>
             <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-charcoal/50 mb-2">
               Members only · Est. 2022
             </p>
@@ -102,25 +107,39 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
                 value={user}
                 onChange={(e) => setUser(e.target.value)}
                 placeholder="Two words. You know it."
-                className="w-full bg-cream/60 border border-charcoal/15 rounded-xl px-4 py-3 font-serif text-base outline-none focus:border-brand focus:scale-[1.02] transition-all duration-300"
+                className={`w-full bg-cream/60 border rounded-xl px-4 py-3 font-serif text-base outline-none focus:border-brand focus:scale-[1.02] transition-all duration-300 ${errorFlash ? "border-brand animate-[input-wobble_0.5s_ease-in-out]" : "border-charcoal/15"}`}
                 autoFocus
               />
             </div>
-            <div>
+            <div className="relative">
               <label className="font-mono text-[10px] tracking-[0.2em] uppercase text-charcoal/60 block mb-1.5">
                 Secret phrase
               </label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 value={pass}
                 onChange={(e) => setPass(e.target.value)}
                 placeholder="••••••••••••••"
-                className="w-full bg-cream/60 border border-charcoal/15 rounded-xl px-4 py-3 font-serif text-base outline-none focus:border-brand focus:scale-[1.02] transition-all duration-300"
+                className={`w-full bg-cream/60 border rounded-xl px-4 py-3 pr-12 font-serif text-base outline-none focus:border-brand focus:scale-[1.02] transition-all duration-300 ${errorFlash ? "border-brand animate-[input-wobble_0.5s_ease-in-out]" : "border-charcoal/15"}`}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                className="absolute right-3 top-[calc(50%+6px)] -translate-y-1/2 text-charcoal/40 hover:text-charcoal transition-colors duration-200 focus:outline-none"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                <span className="block transition-all duration-300" style={{ transform: showPassword ? "rotate(180deg) scale(1.1)" : "rotate(0deg) scale(1)", opacity: showPassword ? 1 : 0.7 }}>
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </span>
+              </button>
             </div>
 
             {error && (
-              <p className="font-mono text-xs text-brand text-center animate-[shake_0.4s]">{error}</p>
+              <div className="flex items-center justify-center gap-2 font-mono text-xs text-brand text-center animate-[pop-in_0.4s_cubic-bezier(0.22,1,0.36,1)]">
+                <span>🙅</span>
+                <span>{error}</span>
+                <span>😬</span>
+              </div>
             )}
 
             <button
@@ -196,6 +215,47 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
           0%, 100% { transform: translateX(0); }
           25% { transform: translateX(-8px); }
           75% { transform: translateX(8px); }
+        }
+        @keyframes funny-shake {
+          0% { transform: translateX(0) rotate(0deg) scale(1); }
+          10% { transform: translateX(-14px) rotate(-4deg) scale(1.02); }
+          20% { transform: translateX(12px) rotate(3deg) scale(0.98); }
+          30% { transform: translateX(-10px) rotate(-5deg) scale(1.01); }
+          40% { transform: translateX(8px) rotate(4deg) scale(0.99); }
+          50% { transform: translateX(-6px) rotate(-3deg) scale(1.01); }
+          60% { transform: translateX(4px) rotate(2deg) scale(1); }
+          70% { transform: translateX(-2px) rotate(-1deg); }
+          80% { transform: translateX(1px) rotate(0.5deg); }
+          100% { transform: translateX(0) rotate(0deg) scale(1); }
+        }
+        @keyframes error-flash {
+          0% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+          15% { box-shadow: 0 0 0 4px rgba(239,68,68,0.25); }
+          40% { box-shadow: 0 0 0 8px rgba(239,68,68,0.15); }
+          100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+        }
+        @keyframes input-wobble {
+          0% { transform: translateX(0); }
+          20% { transform: translateX(-6px); }
+          40% { transform: translateX(5px); }
+          60% { transform: translateX(-3px); }
+          80% { transform: translateX(2px); }
+          100% { transform: translateX(0); }
+        }
+        @keyframes lock-rattle {
+          0% { transform: translate(0, 0) rotate(0deg); }
+          10% { transform: translate(-3px, -2px) rotate(-12deg); }
+          20% { transform: translate(3px, 1px) rotate(10deg); }
+          30% { transform: translate(-2px, -1px) rotate(-8deg); }
+          40% { transform: translate(2px, 1px) rotate(6deg); }
+          50% { transform: translate(-1px, 0px) rotate(-4deg); }
+          60% { transform: translate(1px, 0px) rotate(3deg); }
+          100% { transform: translate(0, 0) rotate(0deg); }
+        }
+        @keyframes pop-in {
+          0% { opacity: 0; transform: scale(0.5) translateY(8px); }
+          60% { opacity: 1; transform: scale(1.1) translateY(-2px); }
+          100% { opacity: 1; transform: scale(1) translateY(0); }
         }
         @keyframes float {
           0%, 100% { transform: translateY(0) rotate(0deg); }
