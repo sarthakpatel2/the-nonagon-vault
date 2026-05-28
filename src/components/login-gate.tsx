@@ -107,7 +107,7 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
                 value={user}
                 onChange={(e) => setUser(e.target.value)}
                 placeholder="Two words. You know it."
-                className="w-full bg-cream/60 border border-charcoal/15 rounded-xl px-4 py-3 font-serif text-base outline-none focus:border-brand focus:scale-[1.02] transition-all duration-300"
+                className={`w-full bg-cream/60 border rounded-xl px-4 py-3 font-serif text-base outline-none focus:border-brand focus:scale-[1.02] transition-all duration-300 ${errorFlash ? "border-brand animate-[input-wobble_0.5s_ease-in-out]" : "border-charcoal/15"}`}
                 autoFocus
               />
             </div>
