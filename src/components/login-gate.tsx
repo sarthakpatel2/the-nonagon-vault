@@ -84,7 +84,7 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
           <span className="tape left-1/2 -translate-x-1/2 -top-4 w-32 h-6 rotate-[-2deg] animate-tape-sway" aria-hidden />
 
           <div className="text-center mb-8">
-            <div className="inline-block text-4xl mb-3 animate-lock-bounce">🔒</div>
+            <div className={`inline-block text-4xl mb-3 ${shake ? "animate-[lock-rattle_0.7s_ease-in-out]" : "animate-lock-bounce"}`}>🔒</div>
             <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-charcoal/50 mb-2">
               Members only · Est. 2022
             </p>
