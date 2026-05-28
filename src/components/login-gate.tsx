@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
+import { Eye, EyeOff } from "lucide-react";
 
 const STORAGE_KEY = "nonagon-pass";
 const USERNAME = "The Hangover";
