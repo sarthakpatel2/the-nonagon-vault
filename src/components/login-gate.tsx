@@ -216,6 +216,47 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
           25% { transform: translateX(-8px); }
           75% { transform: translateX(8px); }
         }
+        @keyframes funny-shake {
+          0% { transform: translateX(0) rotate(0deg) scale(1); }
+          10% { transform: translateX(-14px) rotate(-4deg) scale(1.02); }
+          20% { transform: translateX(12px) rotate(3deg) scale(0.98); }
+          30% { transform: translateX(-10px) rotate(-5deg) scale(1.01); }
+          40% { transform: translateX(8px) rotate(4deg) scale(0.99); }
+          50% { transform: translateX(-6px) rotate(-3deg) scale(1.01); }
+          60% { transform: translateX(4px) rotate(2deg) scale(1); }
+          70% { transform: translateX(-2px) rotate(-1deg); }
+          80% { transform: translateX(1px) rotate(0.5deg); }
+          100% { transform: translateX(0) rotate(0deg) scale(1); }
+        }
+        @keyframes error-flash {
+          0% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+          15% { box-shadow: 0 0 0 4px rgba(239,68,68,0.25); }
+          40% { box-shadow: 0 0 0 8px rgba(239,68,68,0.15); }
+          100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+        }
+        @keyframes input-wobble {
+          0% { transform: translateX(0); }
+          20% { transform: translateX(-6px); }
+          40% { transform: translateX(5px); }
+          60% { transform: translateX(-3px); }
+          80% { transform: translateX(2px); }
+          100% { transform: translateX(0); }
+        }
+        @keyframes lock-rattle {
+          0% { transform: translate(0, 0) rotate(0deg); }
+          10% { transform: translate(-3px, -2px) rotate(-12deg); }
+          20% { transform: translate(3px, 1px) rotate(10deg); }
+          30% { transform: translate(-2px, -1px) rotate(-8deg); }
+          40% { transform: translate(2px, 1px) rotate(6deg); }
+          50% { transform: translate(-1px, 0px) rotate(-4deg); }
+          60% { transform: translate(1px, 0px) rotate(3deg); }
+          100% { transform: translate(0, 0) rotate(0deg); }
+        }
+        @keyframes pop-in {
+          0% { opacity: 0; transform: scale(0.5) translateY(8px); }
+          60% { opacity: 1; transform: scale(1.1) translateY(-2px); }
+          100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
         @keyframes float {
           0%, 100% { transform: translateY(0) rotate(0deg); }
           50% { transform: translateY(-30px) rotate(8deg); }
