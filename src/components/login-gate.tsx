@@ -135,7 +135,11 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
             </div>
 
             {error && (
-              <p className="font-mono text-xs text-brand text-center animate-[shake_0.4s]">{error}</p>
+              <div className="flex items-center justify-center gap-2 font-mono text-xs text-brand text-center animate-[pop-in_0.4s_cubic-bezier(0.22,1,0.36,1)]">
+                <span>🙅</span>
+                <span>{error}</span>
+                <span>😬</span>
+              </div>
             )}
 
             <button
