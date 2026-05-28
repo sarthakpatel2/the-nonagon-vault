@@ -1,8 +1,10 @@
 import { useEffect, useState, type FormEvent } from "react";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
 
 const STORAGE_KEY = "nonagon-pass";
 const USERNAME = "The Hangover";
 const PASSWORD = "Kaleshi Nonagon";
+const VAULT_ROUTE = "/";
 
 export function LoginGate({ children }: { children: React.ReactNode }) {
   const [unlocked, setUnlocked] = useState(false);
@@ -11,6 +13,9 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
   const [pass, setPass] = useState("");
   const [error, setError] = useState("");
   const [shake, setShake] = useState(false);
+  const [celebrating, setCelebrating] = useState(false);
+  const navigate = useNavigate();
+  const currentPath = useRouterState({ select: (s) => s.location.pathname });
 
   useEffect(() => {
     if (typeof window !== "undefined" && sessionStorage.getItem(STORAGE_KEY) === "1") {
