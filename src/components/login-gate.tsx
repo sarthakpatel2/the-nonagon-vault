@@ -43,9 +43,11 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
         }
       }, 1600);
     } else {
-      setError("Access denied. Try again, soberly.");
+      setError("Nice try, impostor! 🚫");
       setShake(true);
-      setTimeout(() => setShake(false), 500);
+      setErrorFlash(true);
+      setTimeout(() => setShake(false), 700);
+      setTimeout(() => setErrorFlash(false), 900);
     }
   };
 
