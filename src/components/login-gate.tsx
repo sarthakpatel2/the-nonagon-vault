@@ -142,6 +142,55 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
         </p>
       </div>
 
+      {celebrating && (
+        <div className="fixed inset-0 z-50 pointer-events-none overflow-hidden">
+          <div className="absolute inset-0 bg-paper/40 animate-[celebrate-flash_1.6s_ease-out]" />
+          {confettiPieces.map((_, i) => {
+            const left = (i * 7.3 + 3) % 100;
+            const delay = (i % 12) * 0.05;
+            const duration = 1.2 + (i % 5) * 0.15;
+            const isHeart = i % 3 === 0;
+            const colors = ["#ef4444", "#f59e0b", "#ec4899", "#8b5cf6", "#10b981", "#3b82f6"];
+            return isHeart ? (
+              <span
+                key={i}
+                className="absolute text-2xl md:text-3xl animate-[confetti-fall_var(--dur)_cubic-bezier(0.4,0.7,0.6,1)_forwards]"
+                style={{
+                  left: `${left}%`,
+                  top: "-10%",
+                  animationDelay: `${delay}s`,
+                  ["--dur" as never]: `${duration}s`,
+                }}
+              >
+                {heartPieces[i % heartPieces.length]}
+              </span>
+            ) : (
+              <span
+                key={i}
+                className="absolute w-2 h-3 rounded-sm animate-[confetti-fall_var(--dur)_cubic-bezier(0.4,0.7,0.6,1)_forwards]"
+                style={{
+                  left: `${left}%`,
+                  top: "-10%",
+                  background: colors[i % colors.length],
+                  animationDelay: `${delay}s`,
+                  ["--dur" as never]: `${duration}s`,
+                  transform: `rotate(${(i * 37) % 360}deg)`,
+                }}
+              />
+            );
+          })}
+          <div className="absolute inset-0 grid place-items-center">
+            <div className="text-center animate-[welcome-pop_1.6s_cubic-bezier(0.22,1,0.36,1)]">
+              <div className="text-6xl md:text-7xl mb-3">🥂</div>
+              <p className="font-serif italic text-2xl md:text-3xl text-charcoal">
+                Welcome back to the <span className="text-brand">Vault</span>.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+
       <style>{`
         @keyframes shake {
           0%, 100% { transform: translateX(0); }
