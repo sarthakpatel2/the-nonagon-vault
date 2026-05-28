@@ -111,17 +111,27 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
                 autoFocus
               />
             </div>
-            <div>
+            <div className="relative">
               <label className="font-mono text-[10px] tracking-[0.2em] uppercase text-charcoal/60 block mb-1.5">
                 Secret phrase
               </label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 value={pass}
                 onChange={(e) => setPass(e.target.value)}
                 placeholder="••••••••••••••"
-                className="w-full bg-cream/60 border border-charcoal/15 rounded-xl px-4 py-3 font-serif text-base outline-none focus:border-brand focus:scale-[1.02] transition-all duration-300"
+                className={`w-full bg-cream/60 border rounded-xl px-4 py-3 pr-12 font-serif text-base outline-none focus:border-brand focus:scale-[1.02] transition-all duration-300 ${errorFlash ? "border-brand animate-[input-wobble_0.5s_ease-in-out]" : "border-charcoal/15"}`}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                className="absolute right-3 top-[calc(50%+6px)] -translate-y-1/2 text-charcoal/40 hover:text-charcoal transition-colors duration-200 focus:outline-none"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                <span className="block transition-all duration-300" style={{ transform: showPassword ? "rotate(180deg) scale(1.1)" : "rotate(0deg) scale(1)", opacity: showPassword ? 1 : 0.7 }}>
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </span>
+              </button>
             </div>
 
             {error && (
