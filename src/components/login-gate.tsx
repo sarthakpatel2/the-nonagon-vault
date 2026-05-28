@@ -1,8 +1,10 @@
 import { useEffect, useState, type FormEvent } from "react";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
 
 const STORAGE_KEY = "nonagon-pass";
 const USERNAME = "The Hangover";
 const PASSWORD = "Kaleshi Nonagon";
+const VAULT_ROUTE = "/";
 
 export function LoginGate({ children }: { children: React.ReactNode }) {
   const [unlocked, setUnlocked] = useState(false);
@@ -11,6 +13,9 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
   const [pass, setPass] = useState("");
   const [error, setError] = useState("");
   const [shake, setShake] = useState(false);
+  const [celebrating, setCelebrating] = useState(false);
+  const navigate = useNavigate();
+  const currentPath = useRouterState({ select: (s) => s.location.pathname });
 
   useEffect(() => {
     if (typeof window !== "undefined" && sessionStorage.getItem(STORAGE_KEY) === "1") {
@@ -26,7 +31,14 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
     e.preventDefault();
     if (user.trim() === USERNAME && pass === PASSWORD) {
       sessionStorage.setItem(STORAGE_KEY, "1");
-      setUnlocked(true);
+      setError("");
+      setCelebrating(true);
+      setTimeout(() => {
+        setUnlocked(true);
+        if (currentPath !== VAULT_ROUTE) {
+          navigate({ to: VAULT_ROUTE });
+        }
+      }, 1600);
     } else {
       setError("Access denied. Try again, soberly.");
       setShake(true);
@@ -35,6 +47,8 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
   };
 
   const floaters = ["💌", "✨", "🥂", "💕", "📸", "🌙", "⭐", "🍸", "💫", "🪩"];
+  const confettiPieces = Array.from({ length: 36 });
+  const heartPieces = ["❤️", "💖", "💘", "💝", "💕", "💗", "💞", "🥂", "✨"];
 
   return (
     <div className="min-h-screen grid place-items-center bg-paper px-6 py-12 relative overflow-hidden">
@@ -128,6 +142,55 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
         </p>
       </div>
 
+      {celebrating && (
+        <div className="fixed inset-0 z-50 pointer-events-none overflow-hidden">
+          <div className="absolute inset-0 bg-paper/40 animate-[celebrate-flash_1.6s_ease-out]" />
+          {confettiPieces.map((_, i) => {
+            const left = (i * 7.3 + 3) % 100;
+            const delay = (i % 12) * 0.05;
+            const duration = 1.2 + (i % 5) * 0.15;
+            const isHeart = i % 3 === 0;
+            const colors = ["#ef4444", "#f59e0b", "#ec4899", "#8b5cf6", "#10b981", "#3b82f6"];
+            return isHeart ? (
+              <span
+                key={i}
+                className="absolute text-2xl md:text-3xl animate-[confetti-fall_var(--dur)_cubic-bezier(0.4,0.7,0.6,1)_forwards]"
+                style={{
+                  left: `${left}%`,
+                  top: "-10%",
+                  animationDelay: `${delay}s`,
+                  ["--dur" as never]: `${duration}s`,
+                }}
+              >
+                {heartPieces[i % heartPieces.length]}
+              </span>
+            ) : (
+              <span
+                key={i}
+                className="absolute w-2 h-3 rounded-sm animate-[confetti-fall_var(--dur)_cubic-bezier(0.4,0.7,0.6,1)_forwards]"
+                style={{
+                  left: `${left}%`,
+                  top: "-10%",
+                  background: colors[i % colors.length],
+                  animationDelay: `${delay}s`,
+                  ["--dur" as never]: `${duration}s`,
+                  transform: `rotate(${(i * 37) % 360}deg)`,
+                }}
+              />
+            );
+          })}
+          <div className="absolute inset-0 grid place-items-center">
+            <div className="text-center animate-[welcome-pop_1.6s_cubic-bezier(0.22,1,0.36,1)]">
+              <div className="text-6xl md:text-7xl mb-3">🥂</div>
+              <p className="font-serif italic text-2xl md:text-3xl text-charcoal">
+                Welcome back to the <span className="text-brand">Vault</span>.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+
       <style>{`
         @keyframes shake {
           0%, 100% { transform: translateX(0); }
@@ -171,6 +234,21 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
           background-clip: text;
           -webkit-text-fill-color: transparent;
           animation: shimmer 3s linear infinite;
+        }
+        @keyframes confetti-fall {
+          0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+          100% { transform: translateY(110vh) rotate(720deg); opacity: 0.9; }
+        }
+        @keyframes welcome-pop {
+          0% { opacity: 0; transform: scale(0.6); }
+          30% { opacity: 1; transform: scale(1.08); }
+          60% { transform: scale(1); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes celebrate-flash {
+          0% { opacity: 0; }
+          15% { opacity: 1; }
+          100% { opacity: 0; }
         }
       `}</style>
     </div>
