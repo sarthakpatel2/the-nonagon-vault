@@ -14,6 +14,8 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
   const [pass, setPass] = useState("");
   const [error, setError] = useState("");
   const [shake, setShake] = useState(false);
+  const [errorFlash, setErrorFlash] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [celebrating, setCelebrating] = useState(false);
   const navigate = useNavigate();
   const currentPath = useRouterState({ select: (s) => s.location.pathname });
