@@ -79,7 +79,7 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
       <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-brand/20 blur-3xl animate-blob" aria-hidden />
       <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-amber-300/20 blur-3xl animate-blob" style={{ animationDelay: "2s" }} aria-hidden />
 
-      <div className={`relative w-full max-w-md ${shake ? "animate-[shake_0.4s]" : "animate-card-in"}`}>
+      <div className={`relative w-full max-w-md ${shake ? "animate-[funny-shake_0.7s_ease-in-out]" : "animate-card-in"} ${errorFlash ? "animate-[error-flash_0.9s_ease-out]" : ""}`}>
         <div className="paper-card rounded-3xl p-8 md:p-10 relative">
           <span className="tape left-1/2 -translate-x-1/2 -top-4 w-32 h-6 rotate-[-2deg] animate-tape-sway" aria-hidden />
 
