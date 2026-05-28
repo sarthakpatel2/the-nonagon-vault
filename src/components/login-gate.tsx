@@ -31,7 +31,14 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
     e.preventDefault();
     if (user.trim() === USERNAME && pass === PASSWORD) {
       sessionStorage.setItem(STORAGE_KEY, "1");
-      setUnlocked(true);
+      setError("");
+      setCelebrating(true);
+      setTimeout(() => {
+        setUnlocked(true);
+        if (currentPath !== VAULT_ROUTE) {
+          navigate({ to: VAULT_ROUTE });
+        }
+      }, 1600);
     } else {
       setError("Access denied. Try again, soberly.");
       setShake(true);
@@ -40,6 +47,8 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
   };
 
   const floaters = ["💌", "✨", "🥂", "💕", "📸", "🌙", "⭐", "🍸", "💫", "🪩"];
+  const confettiPieces = Array.from({ length: 36 });
+  const heartPieces = ["❤️", "💖", "💘", "💝", "💕", "💗", "💞", "🥂", "✨"];
 
   return (
     <div className="min-h-screen grid place-items-center bg-paper px-6 py-12 relative overflow-hidden">
