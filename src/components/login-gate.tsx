@@ -76,6 +76,23 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
   const confettiPieces = Array.from({ length: 36 });
   const heartPieces = ["❤️", "💖", "💘", "💝", "💕", "💗", "💞", "🥂", "✨"];
 
+  const moodTint: Record<typeof mood, string> = {
+    dawn: "from-rose-200/40 via-amber-100/30 to-sky-200/40",
+    day: "from-sky-100/40 via-paper to-amber-100/40",
+    dusk: "from-orange-200/50 via-rose-200/30 to-indigo-300/40",
+    night: "from-indigo-900/60 via-slate-800/50 to-purple-900/60",
+  };
+  const isNight = mood === "night";
+
+  const polaroids = [
+    { rot: -8, x: "4%", y: "8%", emoji: "📸", label: "goa '23", delay: 0 },
+    { rot: 6, x: "82%", y: "12%", emoji: "🍕", label: "2am pizza", delay: 0.4 },
+    { rot: -5, x: "78%", y: "68%", emoji: "🎂", label: "surprise", delay: 0.8 },
+    { rot: 9, x: "6%", y: "72%", emoji: "🌅", label: "manali", delay: 1.2 },
+    { rot: -12, x: "45%", y: "4%", emoji: "🥂", label: "cheers", delay: 1.6 },
+    { rot: 4, x: "48%", y: "82%", emoji: "🎉", label: "grad day", delay: 2.0 },
+  ];
+
   return (
     <div className="min-h-screen grid place-items-center bg-paper px-6 py-12 relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, currentColor 1px, transparent 1px)", backgroundSize: "20px 20px" }} aria-hidden />
