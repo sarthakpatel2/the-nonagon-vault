@@ -94,8 +94,44 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
   ];
 
   return (
-    <div className="min-h-screen grid place-items-center bg-paper px-6 py-12 relative overflow-hidden">
+    <div className={`min-h-screen grid place-items-center px-6 py-12 relative overflow-hidden transition-colors duration-1000 ${isNight ? "bg-slate-900" : "bg-paper"}`}>
+      {/* Day/night mood tint */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${moodTint[mood]} transition-opacity duration-1000 pointer-events-none`} aria-hidden />
+
+      {/* Aurora gradient mesh */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
+        <div className="absolute -top-1/3 -left-1/4 w-[60vw] h-[60vw] rounded-full blur-3xl opacity-50 animate-aurora-1"
+             style={{ background: isNight ? "radial-gradient(circle, #6366f1, transparent 70%)" : "radial-gradient(circle, #fbbf24, transparent 70%)" }} />
+        <div className="absolute top-1/4 -right-1/4 w-[55vw] h-[55vw] rounded-full blur-3xl opacity-50 animate-aurora-2"
+             style={{ background: isNight ? "radial-gradient(circle, #a855f7, transparent 70%)" : "radial-gradient(circle, #f472b6, transparent 70%)" }} />
+        <div className="absolute -bottom-1/4 left-1/4 w-[60vw] h-[60vw] rounded-full blur-3xl opacity-50 animate-aurora-3"
+             style={{ background: isNight ? "radial-gradient(circle, #06b6d4, transparent 70%)" : "radial-gradient(circle, #60a5fa, transparent 70%)" }} />
+      </div>
+
       <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, currentColor 1px, transparent 1px)", backgroundSize: "20px 20px" }} aria-hidden />
+
+      {/* Polaroid stack background */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden hidden sm:block" aria-hidden>
+        {polaroids.map((p, i) => (
+          <div
+            key={i}
+            className="absolute bg-white shadow-2xl p-2 pb-6 animate-polaroid-drift"
+            style={{
+              left: p.x,
+              top: p.y,
+              transform: `rotate(${p.rot}deg)`,
+              width: "120px",
+              animationDelay: `${p.delay}s`,
+              opacity: isNight ? 0.35 : 0.6,
+            }}
+          >
+            <div className={`w-full h-24 grid place-items-center text-4xl ${isNight ? "bg-slate-700" : "bg-gradient-to-br from-cream to-amber-100"}`}>
+              {p.emoji}
+            </div>
+            <p className="font-hand text-xs text-center text-charcoal/70 mt-1">{p.label}</p>
+          </div>
+        ))}
+      </div>
 
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
         {floaters.map((emoji, i) => (
@@ -116,6 +152,20 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
 
       <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-brand/20 blur-3xl animate-blob" aria-hidden />
       <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-amber-300/20 blur-3xl animate-blob" style={{ animationDelay: "2s" }} aria-hidden />
+
+      {/* Cursor sparkle trail */}
+      <div className="fixed inset-0 pointer-events-none z-40" aria-hidden>
+        {sparkles.map((s) => (
+          <span
+            key={s.id}
+            className="absolute text-lg animate-sparkle-fade"
+            style={{ left: s.x, top: s.y, transform: "translate(-50%, -50%)", color: isNight ? "#fde68a" : "#f59e0b" }}
+          >
+            {s.emoji}
+          </span>
+        ))}
+      </div>
+
 
       <div className={`relative w-full max-w-md ${shake ? "animate-[funny-shake_0.7s_ease-in-out]" : "animate-card-in"} ${errorFlash ? "animate-[error-flash_0.9s_ease-out]" : ""}`}>
         <div className="paper-card rounded-3xl p-8 md:p-10 relative">
