@@ -444,6 +444,16 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
           100% { opacity: 0; transform: translate(-50%, -80%) scale(0.2) rotate(180deg); }
         }
         .animate-sparkle-fade { animation: sparkle-fade 0.9s ease-out forwards; }
+        @keyframes signature-draw {
+          0% { stroke-dashoffset: 600; opacity: 0.4; }
+          100% { stroke-dashoffset: 0; opacity: 1; }
+        }
+        .animate-signature { animation: signature-draw 2.4s cubic-bezier(0.65, 0, 0.35, 1) 0.4s forwards; }
+        @keyframes signature-flourish {
+          0% { stroke-dashoffset: 40; }
+          100% { stroke-dashoffset: 0; }
+        }
+        .animate-signature-flourish { animation: signature-flourish 0.6s ease-out 2.6s forwards; }
       `}</style>
     </div>
   );
