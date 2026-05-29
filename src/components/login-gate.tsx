@@ -398,6 +398,32 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
           15% { opacity: 1; }
           100% { opacity: 0; }
         }
+        @keyframes aurora-1 {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(15vw, 10vh) scale(1.15); }
+        }
+        .animate-aurora-1 { animation: aurora-1 18s ease-in-out infinite; }
+        @keyframes aurora-2 {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(-12vw, 8vh) scale(0.9); }
+        }
+        .animate-aurora-2 { animation: aurora-2 22s ease-in-out infinite; }
+        @keyframes aurora-3 {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(8vw, -12vh) scale(1.1); }
+        }
+        .animate-aurora-3 { animation: aurora-3 26s ease-in-out infinite; }
+        @keyframes polaroid-drift {
+          0%, 100% { transform: rotate(var(--r, 0deg)) translateY(0); }
+          50% { transform: rotate(calc(var(--r, 0deg) + 1deg)) translateY(-8px); }
+        }
+        .animate-polaroid-drift { animation: polaroid-drift 8s ease-in-out infinite; }
+        @keyframes sparkle-fade {
+          0% { opacity: 1; transform: translate(-50%, -50%) scale(0.4) rotate(0deg); }
+          50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2) rotate(90deg); }
+          100% { opacity: 0; transform: translate(-50%, -80%) scale(0.2) rotate(180deg); }
+        }
+        .animate-sparkle-fade { animation: sparkle-fade 0.9s ease-out forwards; }
       `}</style>
     </div>
   );
