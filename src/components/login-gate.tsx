@@ -17,6 +17,8 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
   const [errorFlash, setErrorFlash] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [celebrating, setCelebrating] = useState(false);
+  const [mood, setMood] = useState<"dawn" | "day" | "dusk" | "night">("day");
+  const [sparkles, setSparkles] = useState<{ id: number; x: number; y: number; emoji: string }[]>([]);
   const navigate = useNavigate();
   const currentPath = useRouterState({ select: (s) => s.location.pathname });
 
@@ -25,7 +27,26 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
       setUnlocked(true);
     }
     setChecked(true);
+    const h = new Date().getHours();
+    setMood(h < 6 ? "night" : h < 10 ? "dawn" : h < 17 ? "day" : h < 20 ? "dusk" : "night");
   }, []);
+
+  useEffect(() => {
+    if (unlocked || !checked) return;
+    let id = 0;
+    const emojis = ["✨", "·", "✦", "˖", "✧"];
+    let last = 0;
+    const onMove = (e: MouseEvent) => {
+      const now = performance.now();
+      if (now - last < 40) return;
+      last = now;
+      const sparkle = { id: id++, x: e.clientX, y: e.clientY, emoji: emojis[Math.floor(Math.random() * emojis.length)] };
+      setSparkles((prev) => [...prev.slice(-18), sparkle]);
+      setTimeout(() => setSparkles((prev) => prev.filter((s) => s.id !== sparkle.id)), 900);
+    };
+    window.addEventListener("mousemove", onMove);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, [unlocked, checked]);
 
   if (!checked) return null;
   if (unlocked) return <>{children}</>;
@@ -55,9 +76,62 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
   const confettiPieces = Array.from({ length: 36 });
   const heartPieces = ["❤️", "💖", "💘", "💝", "💕", "💗", "💞", "🥂", "✨"];
 
+  const moodTint: Record<typeof mood, string> = {
+    dawn: "from-rose-200/40 via-amber-100/30 to-sky-200/40",
+    day: "from-sky-100/40 via-paper to-amber-100/40",
+    dusk: "from-orange-200/50 via-rose-200/30 to-indigo-300/40",
+    night: "from-indigo-900/60 via-slate-800/50 to-purple-900/60",
+  };
+  const isNight = mood === "night";
+
+  const polaroids = [
+    { rot: -8, x: "4%", y: "8%", emoji: "📸", label: "goa '23", delay: 0 },
+    { rot: 6, x: "82%", y: "12%", emoji: "🍕", label: "2am pizza", delay: 0.4 },
+    { rot: -5, x: "78%", y: "68%", emoji: "🎂", label: "surprise", delay: 0.8 },
+    { rot: 9, x: "6%", y: "72%", emoji: "🌅", label: "manali", delay: 1.2 },
+    { rot: -12, x: "45%", y: "4%", emoji: "🥂", label: "cheers", delay: 1.6 },
+    { rot: 4, x: "48%", y: "82%", emoji: "🎉", label: "grad day", delay: 2.0 },
+  ];
+
   return (
-    <div className="min-h-screen grid place-items-center bg-paper px-6 py-12 relative overflow-hidden">
+    <div className={`min-h-screen grid place-items-center px-6 py-12 relative overflow-hidden transition-colors duration-1000 ${isNight ? "bg-slate-900" : "bg-paper"}`}>
+      {/* Day/night mood tint */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${moodTint[mood]} transition-opacity duration-1000 pointer-events-none`} aria-hidden />
+
+      {/* Aurora gradient mesh */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
+        <div className="absolute -top-1/3 -left-1/4 w-[60vw] h-[60vw] rounded-full blur-3xl opacity-50 animate-aurora-1"
+             style={{ background: isNight ? "radial-gradient(circle, #6366f1, transparent 70%)" : "radial-gradient(circle, #fbbf24, transparent 70%)" }} />
+        <div className="absolute top-1/4 -right-1/4 w-[55vw] h-[55vw] rounded-full blur-3xl opacity-50 animate-aurora-2"
+             style={{ background: isNight ? "radial-gradient(circle, #a855f7, transparent 70%)" : "radial-gradient(circle, #f472b6, transparent 70%)" }} />
+        <div className="absolute -bottom-1/4 left-1/4 w-[60vw] h-[60vw] rounded-full blur-3xl opacity-50 animate-aurora-3"
+             style={{ background: isNight ? "radial-gradient(circle, #06b6d4, transparent 70%)" : "radial-gradient(circle, #60a5fa, transparent 70%)" }} />
+      </div>
+
       <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, currentColor 1px, transparent 1px)", backgroundSize: "20px 20px" }} aria-hidden />
+
+      {/* Polaroid stack background */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden hidden sm:block" aria-hidden>
+        {polaroids.map((p, i) => (
+          <div
+            key={i}
+            className="absolute bg-white shadow-2xl p-2 pb-6 animate-polaroid-drift"
+            style={{
+              left: p.x,
+              top: p.y,
+              transform: `rotate(${p.rot}deg)`,
+              width: "120px",
+              animationDelay: `${p.delay}s`,
+              opacity: isNight ? 0.35 : 0.6,
+            }}
+          >
+            <div className={`w-full h-24 grid place-items-center text-4xl ${isNight ? "bg-slate-700" : "bg-gradient-to-br from-cream to-amber-100"}`}>
+              {p.emoji}
+            </div>
+            <p className="font-hand text-xs text-center text-charcoal/70 mt-1">{p.label}</p>
+          </div>
+        ))}
+      </div>
 
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
         {floaters.map((emoji, i) => (
@@ -78,6 +152,20 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
 
       <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-brand/20 blur-3xl animate-blob" aria-hidden />
       <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-amber-300/20 blur-3xl animate-blob" style={{ animationDelay: "2s" }} aria-hidden />
+
+      {/* Cursor sparkle trail */}
+      <div className="fixed inset-0 pointer-events-none z-40" aria-hidden>
+        {sparkles.map((s) => (
+          <span
+            key={s.id}
+            className="absolute text-lg animate-sparkle-fade"
+            style={{ left: s.x, top: s.y, transform: "translate(-50%, -50%)", color: isNight ? "#fde68a" : "#f59e0b" }}
+          >
+            {s.emoji}
+          </span>
+        ))}
+      </div>
+
 
       <div className={`relative w-full max-w-md ${shake ? "animate-[funny-shake_0.7s_ease-in-out]" : "animate-card-in"} ${errorFlash ? "animate-[error-flash_0.9s_ease-out]" : ""}`}>
         <div className="paper-card rounded-3xl p-8 md:p-10 relative">
@@ -310,6 +398,32 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
           15% { opacity: 1; }
           100% { opacity: 0; }
         }
+        @keyframes aurora-1 {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(15vw, 10vh) scale(1.15); }
+        }
+        .animate-aurora-1 { animation: aurora-1 18s ease-in-out infinite; }
+        @keyframes aurora-2 {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(-12vw, 8vh) scale(0.9); }
+        }
+        .animate-aurora-2 { animation: aurora-2 22s ease-in-out infinite; }
+        @keyframes aurora-3 {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(8vw, -12vh) scale(1.1); }
+        }
+        .animate-aurora-3 { animation: aurora-3 26s ease-in-out infinite; }
+        @keyframes polaroid-drift {
+          0%, 100% { transform: rotate(var(--r, 0deg)) translateY(0); }
+          50% { transform: rotate(calc(var(--r, 0deg) + 1deg)) translateY(-8px); }
+        }
+        .animate-polaroid-drift { animation: polaroid-drift 8s ease-in-out infinite; }
+        @keyframes sparkle-fade {
+          0% { opacity: 1; transform: translate(-50%, -50%) scale(0.4) rotate(0deg); }
+          50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2) rotate(90deg); }
+          100% { opacity: 0; transform: translate(-50%, -80%) scale(0.2) rotate(180deg); }
+        }
+        .animate-sparkle-fade { animation: sparkle-fade 0.9s ease-out forwards; }
       `}</style>
     </div>
   );
