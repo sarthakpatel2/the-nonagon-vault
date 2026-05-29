@@ -27,7 +27,26 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
       setUnlocked(true);
     }
     setChecked(true);
+    const h = new Date().getHours();
+    setMood(h < 6 ? "night" : h < 10 ? "dawn" : h < 17 ? "day" : h < 20 ? "dusk" : "night");
   }, []);
+
+  useEffect(() => {
+    if (unlocked || !checked) return;
+    let id = 0;
+    const emojis = ["✨", "·", "✦", "˖", "✧"];
+    let last = 0;
+    const onMove = (e: MouseEvent) => {
+      const now = performance.now();
+      if (now - last < 40) return;
+      last = now;
+      const sparkle = { id: id++, x: e.clientX, y: e.clientY, emoji: emojis[Math.floor(Math.random() * emojis.length)] };
+      setSparkles((prev) => [...prev.slice(-18), sparkle]);
+      setTimeout(() => setSparkles((prev) => prev.filter((s) => s.id !== sparkle.id)), 900);
+    };
+    window.addEventListener("mousemove", onMove);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, [unlocked, checked]);
 
   if (!checked) return null;
   if (unlocked) return <>{children}</>;
