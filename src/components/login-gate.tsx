@@ -179,6 +179,26 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
             <h1 className="font-serif text-3xl md:text-4xl italic leading-tight">
               The <span className="text-brand animate-shimmer">Nonagon</span> Vault.
             </h1>
+            <svg viewBox="0 0 300 60" className="mx-auto mt-2 h-10 w-56 overflow-visible" aria-hidden>
+              <path
+                d="M10 38 C 30 8, 55 8, 70 35 S 105 55, 120 30 Q 135 8, 155 32 T 200 34 C 220 36, 235 18, 255 28 Q 275 36, 290 22"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                className="text-brand animate-signature"
+                style={{ strokeDasharray: 600, strokeDashoffset: 600 }}
+              />
+              <path
+                d="M250 42 q 8 6 18 2"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                className="text-brand animate-signature-flourish"
+                style={{ strokeDasharray: 40, strokeDashoffset: 40 }}
+              />
+            </svg>
             <p className="mt-3 text-sm text-charcoal/60">
               If you weren&rsquo;t in the group chat, you weren&rsquo;t in the group.
               Whisper the password.
@@ -424,6 +444,16 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
           100% { opacity: 0; transform: translate(-50%, -80%) scale(0.2) rotate(180deg); }
         }
         .animate-sparkle-fade { animation: sparkle-fade 0.9s ease-out forwards; }
+        @keyframes signature-draw {
+          0% { stroke-dashoffset: 600; opacity: 0.4; }
+          100% { stroke-dashoffset: 0; opacity: 1; }
+        }
+        .animate-signature { animation: signature-draw 2.4s cubic-bezier(0.65, 0, 0.35, 1) 0.4s forwards; }
+        @keyframes signature-flourish {
+          0% { stroke-dashoffset: 40; }
+          100% { stroke-dashoffset: 0; }
+        }
+        .animate-signature-flourish { animation: signature-flourish 0.6s ease-out 2.6s forwards; }
       `}</style>
     </div>
   );
