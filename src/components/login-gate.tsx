@@ -242,10 +242,17 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
               <input
                 type={showPassword ? "text" : "password"}
                 value={pass}
-                onChange={(e) => setPass(e.target.value)}
+                onChange={(e) => { setPass(e.target.value); triggerTyping(); }}
+                onKeyUp={handleKey}
+                onKeyDown={handleKey}
                 placeholder="••••••••••••••"
                 className={`w-full bg-cream/60 border rounded-xl px-4 py-3 pr-12 font-serif text-base outline-none focus:border-brand focus:scale-[1.02] transition-all duration-300 ${errorFlash ? "border-brand animate-[input-wobble_0.5s_ease-in-out]" : "border-charcoal/15"}`}
               />
+              {capsOn && (
+                <p className="absolute -bottom-5 left-0 font-mono text-[10px] tracking-wider uppercase text-brand animate-[pop-in_0.3s_ease-out]">
+                  🔠 Caps lock is ON — typing in shouty mode
+                </p>
+              )}
               <button
                 type="button"
                 onClick={() => setShowPassword((v) => !v)}
