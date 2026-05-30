@@ -227,7 +227,9 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
               <input
                 type="text"
                 value={user}
-                onChange={(e) => setUser(e.target.value)}
+                onChange={(e) => { setUser(e.target.value); triggerTyping(); }}
+                onKeyUp={handleKey}
+                onKeyDown={handleKey}
                 placeholder="Two words. You know it."
                 className={`w-full bg-cream/60 border rounded-xl px-4 py-3 font-serif text-base outline-none focus:border-brand focus:scale-[1.02] transition-all duration-300 ${errorFlash ? "border-brand animate-[input-wobble_0.5s_ease-in-out]" : "border-charcoal/15"}`}
                 autoFocus
