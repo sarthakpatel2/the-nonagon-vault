@@ -21,6 +21,7 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
   const [sparkles, setSparkles] = useState<{ id: number; x: number; y: number; emoji: string }[]>([]);
   const [capsOn, setCapsOn] = useState(false);
   const [typing, setTyping] = useState(false);
+  const typingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const navigate = useNavigate();
   const currentPath = useRouterState({ select: (s) => s.location.pathname });
 
