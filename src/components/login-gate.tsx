@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { Eye, EyeOff } from "lucide-react";
 
@@ -19,6 +19,9 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
   const [celebrating, setCelebrating] = useState(false);
   const [mood, setMood] = useState<"dawn" | "day" | "dusk" | "night">("day");
   const [sparkles, setSparkles] = useState<{ id: number; x: number; y: number; emoji: string }[]>([]);
+  const [capsOn, setCapsOn] = useState(false);
+  const [typing, setTyping] = useState(false);
+  const typingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const navigate = useNavigate();
   const currentPath = useRouterState({ select: (s) => s.location.pathname });
 
@@ -70,6 +73,15 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
       setTimeout(() => setShake(false), 700);
       setTimeout(() => setErrorFlash(false), 900);
     }
+  };
+
+  const triggerTyping = () => {
+    setTyping(true);
+    if (typingTimerRef.current) clearTimeout(typingTimerRef.current);
+    typingTimerRef.current = setTimeout(() => setTyping(false), 450);
+  };
+  const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    setCapsOn(e.getModifierState && e.getModifierState("CapsLock"));
   };
 
   const floaters = ["💌", "✨", "🥂", "💕", "📸", "🌙", "⭐", "🍸", "💫", "🪩"];
@@ -172,7 +184,9 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
           <span className="tape left-1/2 -translate-x-1/2 -top-4 w-32 h-6 rotate-[-2deg] animate-tape-sway" aria-hidden />
 
           <div className="text-center mb-8">
-            <div className={`inline-block text-4xl mb-3 ${shake ? "animate-[lock-rattle_0.7s_ease-in-out]" : "animate-lock-bounce"}`}>🔒</div>
+            <div className={`inline-block text-4xl mb-3 ${shake ? "animate-[lock-rattle_0.7s_ease-in-out]" : capsOn ? "animate-[lock-warn_0.6s_ease-in-out_infinite]" : typing ? "animate-[lock-wink_0.5s_ease-in-out]" : "animate-lock-bounce"}`}>
+              {capsOn ? "🔠" : typing ? "😉" : "🔒"}
+            </div>
             <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-charcoal/50 mb-2">
               Members only · Est. 2022
             </p>
@@ -213,7 +227,9 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
               <input
                 type="text"
                 value={user}
-                onChange={(e) => setUser(e.target.value)}
+                onChange={(e) => { setUser(e.target.value); triggerTyping(); }}
+                onKeyUp={handleKey}
+                onKeyDown={handleKey}
                 placeholder="Two words. You know it."
                 className={`w-full bg-cream/60 border rounded-xl px-4 py-3 font-serif text-base outline-none focus:border-brand focus:scale-[1.02] transition-all duration-300 ${errorFlash ? "border-brand animate-[input-wobble_0.5s_ease-in-out]" : "border-charcoal/15"}`}
                 autoFocus
@@ -226,10 +242,17 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
               <input
                 type={showPassword ? "text" : "password"}
                 value={pass}
-                onChange={(e) => setPass(e.target.value)}
+                onChange={(e) => { setPass(e.target.value); triggerTyping(); }}
+                onKeyUp={handleKey}
+                onKeyDown={handleKey}
                 placeholder="••••••••••••••"
                 className={`w-full bg-cream/60 border rounded-xl px-4 py-3 pr-12 font-serif text-base outline-none focus:border-brand focus:scale-[1.02] transition-all duration-300 ${errorFlash ? "border-brand animate-[input-wobble_0.5s_ease-in-out]" : "border-charcoal/15"}`}
               />
+              {capsOn && (
+                <p className="absolute -bottom-5 left-0 font-mono text-[10px] tracking-wider uppercase text-brand animate-[pop-in_0.3s_ease-out]">
+                  🔠 Caps lock is ON — typing in shouty mode
+                </p>
+              )}
               <button
                 type="button"
                 onClick={() => setShowPassword((v) => !v)}
@@ -359,6 +382,15 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
           50% { transform: translate(-1px, 0px) rotate(-4deg); }
           60% { transform: translate(1px, 0px) rotate(3deg); }
           100% { transform: translate(0, 0) rotate(0deg); }
+        }
+        @keyframes lock-wink {
+          0%, 100% { transform: scale(1) rotate(0deg); }
+          40% { transform: scale(1.15) rotate(-8deg); }
+          70% { transform: scale(0.95) rotate(4deg); }
+        }
+        @keyframes lock-warn {
+          0%, 100% { transform: translateY(0) rotate(-3deg); }
+          50% { transform: translateY(-4px) rotate(3deg); }
         }
         @keyframes pop-in {
           0% { opacity: 0; transform: scale(0.5) translateY(8px); }
