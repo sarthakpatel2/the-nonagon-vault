@@ -11,6 +11,7 @@ import {
 import appCss from "../styles.css?url";
 import { LoginGate } from "@/components/login-gate";
 import { SendLove } from "@/components/send-love";
+import { AuroraBackground } from "@/components/aurora-bg";
 
 import { Toaster } from "@/components/ui/sonner";
 
@@ -123,6 +124,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <LoginGate>
+        <AuroraBackground />
         <Outlet />
         <SendLove />
         
