@@ -124,6 +124,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <LoginGate>
+        <AuroraBackground />
         <Outlet />
         <SendLove />
         
