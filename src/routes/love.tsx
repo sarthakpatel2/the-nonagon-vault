@@ -87,7 +87,7 @@ function LovePage() {
   );
 
   return (
-    <div className="min-h-screen bg-paper">
+    <div className="min-h-screen relative">
       <SiteNav />
 
       {/* Hero */}
