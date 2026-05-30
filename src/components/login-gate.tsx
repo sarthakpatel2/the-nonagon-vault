@@ -75,11 +75,10 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
     }
   };
 
-  let typingTimer: ReturnType<typeof setTimeout> | undefined;
   const triggerTyping = () => {
     setTyping(true);
-    if (typingTimer) clearTimeout(typingTimer);
-    typingTimer = setTimeout(() => setTyping(false), 450);
+    if (typingTimerRef.current) clearTimeout(typingTimerRef.current);
+    typingTimerRef.current = setTimeout(() => setTyping(false), 450);
   };
   const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     setCapsOn(e.getModifierState && e.getModifierState("CapsLock"));
