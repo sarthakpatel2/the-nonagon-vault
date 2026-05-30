@@ -383,6 +383,15 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
           60% { transform: translate(1px, 0px) rotate(3deg); }
           100% { transform: translate(0, 0) rotate(0deg); }
         }
+        @keyframes lock-wink {
+          0%, 100% { transform: scale(1) rotate(0deg); }
+          40% { transform: scale(1.15) rotate(-8deg); }
+          70% { transform: scale(0.95) rotate(4deg); }
+        }
+        @keyframes lock-warn {
+          0%, 100% { transform: translateY(0) rotate(-3deg); }
+          50% { transform: translateY(-4px) rotate(3deg); }
+        }
         @keyframes pop-in {
           0% { opacity: 0; transform: scale(0.5) translateY(8px); }
           60% { opacity: 1; transform: scale(1.1) translateY(-2px); }
