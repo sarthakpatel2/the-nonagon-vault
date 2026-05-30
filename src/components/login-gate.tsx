@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { Eye, EyeOff } from "lucide-react";
 
