@@ -19,6 +19,8 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
   const [celebrating, setCelebrating] = useState(false);
   const [mood, setMood] = useState<"dawn" | "day" | "dusk" | "night">("day");
   const [sparkles, setSparkles] = useState<{ id: number; x: number; y: number; emoji: string }[]>([]);
+  const [capsOn, setCapsOn] = useState(false);
+  const [typing, setTyping] = useState(false);
   const navigate = useNavigate();
   const currentPath = useRouterState({ select: (s) => s.location.pathname });
 
