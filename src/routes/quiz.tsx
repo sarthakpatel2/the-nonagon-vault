@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 
@@ -17,91 +17,159 @@ export const Route = createFileRoute("/quiz")({
 
 type Question = {
   q: string;
-  options: string[];
-  answer: number;
-  reveal: string; // emotional payoff shown after answering
+  options: string[];   // correct answer is always options[0] — we shuffle at runtime
+  reveal: string;      // emotional payoff shown after answering
 };
 
-const questions: Question[] = [
+// NOTE: options[0] is ALWAYS the correct answer. We shuffle options + question order per session.
+const POOL: Question[] = [
   {
-    q: "Who is most likely to say 'bhai ek last sutta' at 3 AM?",
-    options: ["Aditi", "Racheet", "Sarthak", "Madhav Sharma"],
-    answer: 1,
-    reveal: "Racheet. Always Racheet. And it was never the last one — that's how we got the best 3 AM conversations of our lives. Tapri uncle still asks about him.",
+    q: "Who actually runs this group even though he pretends he doesn't?",
+    options: ["Sarthak", "Madhav Khandelwal", "Aditi", "Aman Singh"],
+    reveal: "Sarthak. The quiet captain. Threatens to leave the group every other week, then quietly plans the next trip. The glue we don't thank enough.",
+  },
+  {
+    q: "Whose voice can be heard from the next hostel block?",
+    options: ["Madhav Khandelwal", "Madhav Sharma", "Shivendra", "Racheet"],
+    reveal: "Madhav Khandelwal. The original broadcast system. If he laughed in the canteen, the library knew. We'll miss that volume in every quiet room.",
+  },
+  {
+    q: "Who's always late but somehow loves train journeys the most?",
+    options: ["Aman Saxena", "Sarthak", "Madhav Sharma", "Aman Singh"],
+    reveal: "Aman Saxena. Misses every deadline, never misses a train window seat. He'd talk to strangers like old friends by the time we reached the next station.",
+  },
+  {
+    q: "Pick the official sutta circle of the Nonagon.",
+    options: [
+      "Sarthak, Aman Singh, Aman Saxena, Madhav Khandelwal & Shivendra",
+      "Aditi, Pragati & Racheet",
+      "Madhav Sharma & Racheet",
+      "Just Sarthak, alone, dramatically",
+    ],
+    reveal: "The five. Behind the canteen, after every class, with that one specific lighter that kept getting lost. Tapri uncle knew the order by heart.",
+  },
+  {
+    q: "Who is the undisputed chai person of the group?",
+    options: ["Aditi", "Pragati", "Madhav Sharma", "Racheet"],
+    reveal: "Aditi. Chai over everything. Chai before drama, chai during drama, chai to fix the drama. The therapist with a kulhad in her hand.",
   },
   {
     q: "Whose stomach is the actual ninth member of the Nonagon?",
-    options: ["Aman Saxena", "Shivendra", "Aman Singh", "Pragati"],
-    answer: 2,
-    reveal: "Aman Singh's stomach has a separate Aadhaar card. We've watched him finish a full biryani plate while crying about his life — and somehow that became our favourite memory.",
+    options: ["Aman Singh", "Shivendra", "Aman Saxena", "Pragati"],
+    reveal: "Aman Singh. The biryani mercenary. We've watched him finish a full plate while crying about his life — and somehow that became our favourite memory.",
   },
   {
     q: "Who would calmly solve everyone's drama while staying completely out of it?",
     options: ["Aditi", "Pragati", "Madhav Khandelwal", "Sarthak"],
-    answer: 0,
-    reveal: "Aditi. The therapist we never paid. The one who listened without judging, then dropped one sentence that fixed everything. We don't say it enough — thank you.",
+    reveal: "Aditi. The therapist we never paid. Listened without judging, dropped one sentence that fixed everything. Thank you — we don't say it enough.",
   },
   {
     q: "Who is the official keeper of every single group photo?",
-    options: ["Pragati", "Shivendra", "Madhav Sharma", "Racheet"],
-    answer: 0,
+    options: ["Pragati", "Aditi", "Madhav Sharma", "Racheet"],
     reveal: "Pragati. Without her camera roll, this entire website wouldn't exist. She remembered the moments while we were too busy living them.",
   },
   {
-    q: "Who would 100% miss the train and somehow still make it to the destination first?",
-    options: ["Madhav Khandelwal", "Aman Saxena", "Sarthak", "Shivendra"],
-    answer: 2,
-    reveal: "Sarthak. Universe-bending logistics. He'd miss the train, hitchhike, befriend the driver, and be waiting at the platform with chai for us. Legend.",
+    q: "Who studies the most before exams and still scores the least?",
+    options: ["Shivendra", "Madhav Sharma", "Racheet", "Aman Singh"],
+    reveal: "Shivendra. The Hulk with a GPA. Reads the textbook cover to cover, swears the examiner checked it wrong. We believe him every single time.",
   },
   {
-    q: "Whose laugh is louder than the lecture hall?",
-    options: ["Aman Singh", "Madhav Sharma", "Aditi", "Shivendra"],
-    answer: 1,
-    reveal: "Madhav Sharma. We heard that laugh through three walls and one closed door. Half the professors learned to pause for it. We'll miss it the most in quiet rooms.",
+    q: "Who cancels plans with the consistency of a Japanese train schedule?",
+    options: ["Madhav Sharma", "Aditi", "Aman Saxena", "Pragati"],
+    reveal: "Madhav Sharma. 'Bhai body nhi bn rhi hai' = plan cancelled. We still invited him every time. That's love.",
   },
   {
-    q: "Who gave the most proxy attendances in 4 years?",
-    options: ["All nine, collectively", "Aman Singh", "Racheet", "Madhav Khandelwal"],
-    answer: 0,
-    reveal: "All of us. Every. Single. One. We held each other's attendance the way we held each other's secrets — quietly, loyally, and without question.",
+    q: "Who's the baniya who'll definitely pay you back… kal?",
+    options: ["Madhav Khandelwal", "Aman Saxena", "Racheet", "Sarthak"],
+    reveal: "Madhav Khandelwal. 'Bhai paise kal de dunga, pakka.' That kal is now in its fourth year. We'll collect it at the reunion. Probably.",
   },
   {
-    q: "Who is most likely to remember a random Tuesday from second year vividly?",
-    options: ["Pragati", "Aditi", "Madhav Khandelwal", "Aman Saxena"],
-    answer: 2,
-    reveal: "Madhav Khandelwal. The human archive. He remembers what you wore, what you said, what you ordered. Be nice to him — he's holding the receipts of our entire youth.",
+    q: "Who randomly switches topics mid-sentence while eating raita?",
+    options: ["Racheet", "Aman Saxena", "Madhav Sharma", "Aditi"],
+    reveal: "Racheet. Started talking about gravity. Ended talking about his ex. Raita was involved. Somehow it all made sense at 2 AM.",
+  },
+  {
+    q: "Whose mummy's phone call can freeze the entire group instantly?",
+    options: ["Pragati", "Aditi", "Madhav Sharma", "Aman Singh"],
+    reveal: "Pragati. Phone rings, room goes silent. She becomes a different person for 90 seconds. We've all witnessed it. We've all respected it.",
+  },
+  {
+    q: "Who falls in love at least twice a semester?",
+    options: ["Aman Saxena", "Racheet", "Madhav Khandelwal", "Sarthak"],
+    reveal: "Aman Saxena. 'Bhai usne mujhe dekha tha, I swear.' She didn't. But his hope is the most consistent thing in this group.",
   },
   {
     q: "Who would say 'aaj nhi yaar' and show up anyway?",
-    options: ["Aman Saxena", "Shivendra", "Aman Singh", "All of them"],
-    answer: 3,
+    options: ["All nine of them", "Just Sarthak", "Just Aditi", "Nobody, ever"],
     reveal: "All of them. Every single one. Because that's what this group is — nine people who complain about plans and then show up first. That's love in its rawest form.",
   },
   {
     q: "What's the one thing the Nonagon will never run out of?",
-    options: ["Plans", "Chai", "Excuses", "Each other"],
-    answer: 3,
+    options: ["Each other", "Plans", "Chai", "Excuses"],
     reveal: "Each other. Distances will stretch. Schedules will clash. Some weeks you won't text. But nine becomes nine again the second one of you says 'guys.' Always.",
   },
 ];
 
+const QUIZ_SIZE = 10;
+
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+type RuntimeQuestion = {
+  q: string;
+  options: string[];
+  answer: number;
+  reveal: string;
+};
+
+function buildQuiz(): RuntimeQuestion[] {
+  return shuffle(POOL)
+    .slice(0, QUIZ_SIZE)
+    .map((item) => {
+      const correct = item.options[0];
+      const shuffled = shuffle(item.options);
+      return {
+        q: item.q,
+        options: shuffled,
+        answer: shuffled.indexOf(correct),
+        reveal: item.reveal,
+      };
+    });
+}
+
 function QuizPage() {
+  const [quiz, setQuiz] = useState<RuntimeQuestion[]>([]);
   const [i, setI] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
 
-  const q = questions[i];
-  const progress = useMemo(() => ((i + (picked !== null ? 1 : 0)) / questions.length) * 100, [i, picked]);
+  // Build on mount (client-only so SSR + client match cleanly)
+  useEffect(() => {
+    setQuiz(buildQuiz());
+  }, []);
+
+  const total = quiz.length || QUIZ_SIZE;
+  const q = quiz[i];
+  const progress = useMemo(
+    () => ((i + (picked !== null ? 1 : 0)) / total) * 100,
+    [i, picked, total],
+  );
 
   const pick = (idx: number) => {
-    if (picked !== null) return;
+    if (picked !== null || !q) return;
     setPicked(idx);
     if (idx === q.answer) setScore((s) => s + 1);
   };
 
   const next = () => {
-    if (i + 1 >= questions.length) {
+    if (i + 1 >= quiz.length) {
       setDone(true);
     } else {
       setI(i + 1);
@@ -110,6 +178,7 @@ function QuizPage() {
   };
 
   const restart = () => {
+    setQuiz(buildQuiz());
     setI(0);
     setPicked(null);
     setScore(0);
@@ -117,7 +186,7 @@ function QuizPage() {
   };
 
   const verdict = (() => {
-    const pct = score / questions.length;
+    const pct = score / total;
     if (pct === 1) return { title: "Honorary Tenth Member", line: "You know them like you lived it. Maybe you did." };
     if (pct >= 0.7) return { title: "Inner Circle Confirmed", line: "You've earned a spot at the back bench. Welcome." };
     if (pct >= 0.4) return { title: "Tapri Acquaintance", line: "You've seen the chaos from a respectful distance. Come closer." };
@@ -131,15 +200,17 @@ function QuizPage() {
         <header className="mb-8 text-center">
           <p className="font-mono text-xs text-brand uppercase tracking-widest mb-3">// the_nonagon_quiz.exe</p>
           <h1 className="text-4xl md:text-5xl font-serif italic text-charcoal mb-3">How well do you know us?</h1>
-          <p className="text-charcoal/70 text-sm">Ten questions. Tissues optional.</p>
+          <p className="text-charcoal/70 text-sm">Ten questions, shuffled fresh every time. Tissues optional.</p>
         </header>
 
-        {!done ? (
+        {!q && !done ? (
+          <div className="text-center font-mono text-xs text-charcoal/50 py-20">// shuffling memories…</div>
+        ) : !done && q ? (
           <>
             {/* Progress bar */}
             <div className="mb-6">
               <div className="flex justify-between text-xs font-mono text-charcoal/60 mb-2">
-                <span>Q{i + 1} / {questions.length}</span>
+                <span>Q{i + 1} / {total}</span>
                 <span>Score: {score}</span>
               </div>
               <div className="h-1.5 bg-charcoal/10 rounded-full overflow-hidden">
@@ -200,7 +271,7 @@ function QuizPage() {
                     onClick={next}
                     className="mt-6 inline-flex items-center gap-2 bg-charcoal text-paper px-5 py-2.5 rounded-full text-sm font-medium hover:bg-brand transition-colors group"
                   >
-                    {i + 1 >= questions.length ? "See the verdict" : "Next question"}
+                    {i + 1 >= quiz.length ? "See the verdict" : "Next question"}
                     <span className="group-hover:translate-x-1 transition-transform">→</span>
                   </button>
                 </div>
@@ -211,7 +282,7 @@ function QuizPage() {
           <div className="bg-paper/80 backdrop-blur-sm border border-charcoal/10 rounded-2xl p-8 md:p-10 text-center animate-fade-in">
             <p className="font-mono text-xs text-brand uppercase tracking-widest mb-4">// final_verdict</p>
             <div className="font-serif text-6xl md:text-7xl text-brand mb-3 tabular-nums">
-              {score}<span className="text-charcoal/30 text-4xl">/{questions.length}</span>
+              {score}<span className="text-charcoal/30 text-4xl">/{total}</span>
             </div>
             <h2 className="font-serif italic text-3xl md:text-4xl text-charcoal mb-3">{verdict.title}</h2>
             <p className="text-charcoal/70 max-w-md mx-auto mb-8">{verdict.line}</p>
