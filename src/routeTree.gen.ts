@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as YearbookRouteImport } from './routes/yearbook'
 import { Route as TimelineRouteImport } from './routes/timeline'
+import { Route as StatsRouteImport } from './routes/stats'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as LoveRouteImport } from './routes/love'
 import { Route as LetterRouteImport } from './routes/letter'
@@ -26,6 +27,11 @@ const YearbookRoute = YearbookRouteImport.update({
 const TimelineRoute = TimelineRouteImport.update({
   id: '/timeline',
   path: '/timeline',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StatsRoute = StatsRouteImport.update({
+  id: '/stats',
+  path: '/stats',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/letter': typeof LetterRoute
   '/love': typeof LoveRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/stats': typeof StatsRoute
   '/timeline': typeof TimelineRoute
   '/yearbook': typeof YearbookRoute
 }
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/letter': typeof LetterRoute
   '/love': typeof LoveRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/stats': typeof StatsRoute
   '/timeline': typeof TimelineRoute
   '/yearbook': typeof YearbookRoute
 }
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   '/letter': typeof LetterRoute
   '/love': typeof LoveRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/stats': typeof StatsRoute
   '/timeline': typeof TimelineRoute
   '/yearbook': typeof YearbookRoute
 }
@@ -99,6 +108,7 @@ export interface FileRouteTypes {
     | '/letter'
     | '/love'
     | '/sitemap.xml'
+    | '/stats'
     | '/timeline'
     | '/yearbook'
   fileRoutesByTo: FileRoutesByTo
@@ -109,6 +119,7 @@ export interface FileRouteTypes {
     | '/letter'
     | '/love'
     | '/sitemap.xml'
+    | '/stats'
     | '/timeline'
     | '/yearbook'
   id:
@@ -119,6 +130,7 @@ export interface FileRouteTypes {
     | '/letter'
     | '/love'
     | '/sitemap.xml'
+    | '/stats'
     | '/timeline'
     | '/yearbook'
   fileRoutesById: FileRoutesById
@@ -130,6 +142,7 @@ export interface RootRouteChildren {
   LetterRoute: typeof LetterRoute
   LoveRoute: typeof LoveRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  StatsRoute: typeof StatsRoute
   TimelineRoute: typeof TimelineRoute
   YearbookRoute: typeof YearbookRoute
 }
@@ -148,6 +161,13 @@ declare module '@tanstack/react-router' {
       path: '/timeline'
       fullPath: '/timeline'
       preLoaderRoute: typeof TimelineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stats': {
+      id: '/stats'
+      path: '/stats'
+      fullPath: '/stats'
+      preLoaderRoute: typeof StatsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -202,6 +222,7 @@ const rootRouteChildren: RootRouteChildren = {
   LetterRoute: LetterRoute,
   LoveRoute: LoveRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  StatsRoute: StatsRoute,
   TimelineRoute: TimelineRoute,
   YearbookRoute: YearbookRoute,
 }
