@@ -5,7 +5,7 @@ const links = [
   { to: "/gallery", label: "Gallery" },
   { to: "/timeline", label: "Timeline" },
   { to: "/yearbook", label: "Know the Group" },
-  { to: "/stats", label: "Stats" },
+  { to: "/quiz", label: "Quiz" },
   { to: "/letter", label: "Letter" },
   { to: "/from-prags", label: "From Prags" },
   { to: "/love", label: "Wall of Love" },
