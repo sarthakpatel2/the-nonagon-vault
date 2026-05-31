@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as YearbookRouteImport } from './routes/yearbook'
 import { Route as TimelineRouteImport } from './routes/timeline'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as LoveRouteImport } from './routes/love'
 import { Route as LetterRouteImport } from './routes/letter'
 import { Route as GalleryRouteImport } from './routes/gallery'
@@ -31,6 +32,11 @@ const TimelineRoute = TimelineRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuizRoute = QuizRouteImport.update({
+  id: '/quiz',
+  path: '/quiz',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoveRoute = LoveRouteImport.update({
@@ -65,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/gallery': typeof GalleryRoute
   '/letter': typeof LetterRoute
   '/love': typeof LoveRoute
+  '/quiz': typeof QuizRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/timeline': typeof TimelineRoute
   '/yearbook': typeof YearbookRoute
@@ -75,6 +82,7 @@ export interface FileRoutesByTo {
   '/gallery': typeof GalleryRoute
   '/letter': typeof LetterRoute
   '/love': typeof LoveRoute
+  '/quiz': typeof QuizRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/timeline': typeof TimelineRoute
   '/yearbook': typeof YearbookRoute
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   '/gallery': typeof GalleryRoute
   '/letter': typeof LetterRoute
   '/love': typeof LoveRoute
+  '/quiz': typeof QuizRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/timeline': typeof TimelineRoute
   '/yearbook': typeof YearbookRoute
@@ -98,6 +107,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/letter'
     | '/love'
+    | '/quiz'
     | '/sitemap.xml'
     | '/timeline'
     | '/yearbook'
@@ -108,6 +118,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/letter'
     | '/love'
+    | '/quiz'
     | '/sitemap.xml'
     | '/timeline'
     | '/yearbook'
@@ -118,6 +129,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/letter'
     | '/love'
+    | '/quiz'
     | '/sitemap.xml'
     | '/timeline'
     | '/yearbook'
@@ -129,6 +141,7 @@ export interface RootRouteChildren {
   GalleryRoute: typeof GalleryRoute
   LetterRoute: typeof LetterRoute
   LoveRoute: typeof LoveRoute
+  QuizRoute: typeof QuizRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TimelineRoute: typeof TimelineRoute
   YearbookRoute: typeof YearbookRoute
@@ -155,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quiz': {
+      id: '/quiz'
+      path: '/quiz'
+      fullPath: '/quiz'
+      preLoaderRoute: typeof QuizRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/love': {
@@ -201,6 +221,7 @@ const rootRouteChildren: RootRouteChildren = {
   GalleryRoute: GalleryRoute,
   LetterRoute: LetterRoute,
   LoveRoute: LoveRoute,
+  QuizRoute: QuizRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TimelineRoute: TimelineRoute,
   YearbookRoute: YearbookRoute,
