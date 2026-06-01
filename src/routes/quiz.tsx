@@ -108,6 +108,66 @@ const POOL: Question[] = [
     options: ["Each other", "Plans", "Chai", "Excuses"],
     reveal: "Each other. Distances will stretch. Schedules will clash. Some weeks you won't text. But nine becomes nine again the second one of you says 'guys.' Always.",
   },
+  {
+    q: "Who's the human alarm clock that wakes everyone up before exams?",
+    options: ["Shivendra", "Sarthak", "Aditi", "Pragati"],
+    reveal: "Shivendra. 4 AM calls, voice notes, threats. Half the group passed because he refused to sleep alone with anxiety.",
+  },
+  {
+    q: "Whose hostel room secretly became everyone's second home?",
+    options: ["Sarthak", "Madhav Khandelwal", "Aman Singh", "Racheet"],
+    reveal: "Sarthak. Door never locked, fan always on, charger always missing. That room held more therapy sessions than any office ever will.",
+  },
+  {
+    q: "Who'd start a fight in the group chat and then go offline for 12 hours?",
+    options: ["Madhav Sharma", "Racheet", "Aman Saxena", "Madhav Khandelwal"],
+    reveal: "Madhav Sharma. Drops one savage line. Vanishes. Returns next morning like nothing happened. Classic.",
+  },
+  {
+    q: "Whose laugh has been certified as the official soundtrack of the Nonagon?",
+    options: ["Madhav Khandelwal", "Pragati", "Aman Singh", "Racheet"],
+    reveal: "Madhav Khandelwal. That laugh. Echoing through hostel corridors, photo backgrounds, every voice note. You can hear it just reading this.",
+  },
+  {
+    q: "Who would 100% miss the train but make it the funniest story of the trip?",
+    options: ["Aman Saxena", "Madhav Sharma", "Racheet", "Aman Singh"],
+    reveal: "Aman Saxena. Misses the train, books another, somehow reaches before us. The chaos is the plot. The plot is the memory.",
+  },
+  {
+    q: "Whose 'one chai' actually means a 90-minute tapri session?",
+    options: ["Aditi", "Sarthak", "Madhav Khandelwal", "Shivendra"],
+    reveal: "Aditi. 'Bas ek chai' is a lie we agreed to believe. Two cups in, the whole group's life had been decoded.",
+  },
+  {
+    q: "Who is the unofficial photographer of every trip?",
+    options: ["Pragati", "Racheet", "Aditi", "Sarthak"],
+    reveal: "Pragati. Half-eaten, mid-laugh, eyes-closed candids — those are the ones we'll cry over in ten years. Thank you for pressing the button.",
+  },
+  {
+    q: "Who's the philosopher at 2 AM and the menace at 2 PM?",
+    options: ["Racheet", "Madhav Sharma", "Aman Singh", "Shivendra"],
+    reveal: "Racheet. By night: 'bro what even is reality.' By day: stealing your fries. Both are equally real. Both are equally loved.",
+  },
+  {
+    q: "Who quietly remembers everyone's birthdays without making a big deal of it?",
+    options: ["Aditi", "Pragati", "Sarthak", "Shivendra"],
+    reveal: "Aditi. First message at 12:00:01 AM. Every year. No reminder needed. That's a kind of love nobody talks about.",
+  },
+  {
+    q: "Who would absolutely thrive if the Nonagon opened a tapri together?",
+    options: ["All nine, obviously", "Just Aditi and Madhav K.", "Sarthak and Shivendra", "Aman Singh, alone, eating the stock"],
+    reveal: "All nine. Aditi runs chai. Pragati handles socials. Sarthak manages money. Madhav K. yells the menu. Aman Singh eats the profits. Open soon, hopefully.",
+  },
+  {
+    q: "Whose 'I'm coming in 5 minutes' is a full 45-minute commitment?",
+    options: ["Aman Saxena", "Madhav Sharma", "Racheet", "Pragati"],
+    reveal: "Aman Saxena. The man bends time. We've stopped asking. We've started planning around it.",
+  },
+  {
+    q: "Who actually paid for everyone at least once and never asked for it back?",
+    options: ["Sarthak", "Aditi", "Shivendra", "Pragati"],
+    reveal: "Sarthak. Quietly. Multiple times. Never mentioned it. We noticed. We always notice.",
+  },
 ];
 
 const QUIZ_SIZE = 10;
