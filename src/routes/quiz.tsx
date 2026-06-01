@@ -17,11 +17,10 @@ export const Route = createFileRoute("/quiz")({
 
 type Question = {
   q: string;
-  options: string[];   // correct answer is always options[0] — we shuffle at runtime
-  reveal: string;      // emotional payoff shown after answering
+  options: string[];
+  reveal: string;
 };
 
-// NOTE: options[0] is ALWAYS the correct answer. We shuffle options + question order per session.
 const POOL: Question[] = [
   {
     q: "Who actually runs this group even though he pretends he doesn't?",
@@ -108,6 +107,66 @@ const POOL: Question[] = [
     options: ["Each other", "Plans", "Chai", "Excuses"],
     reveal: "Each other. Distances will stretch. Schedules will clash. Some weeks you won't text. But nine becomes nine again the second one of you says 'guys.' Always.",
   },
+  {
+    q: "Who's the human alarm clock that wakes everyone up before exams?",
+    options: ["Shivendra", "Sarthak", "Aditi", "Pragati"],
+    reveal: "Shivendra. 4 AM calls, voice notes, threats. Half the group passed because he refused to suffer alone with anxiety.",
+  },
+  {
+    q: "Whose hostel room secretly became everyone's second home?",
+    options: ["Sarthak", "Madhav Khandelwal", "Aman Singh", "Racheet"],
+    reveal: "Sarthak. Door never locked, fan always on, charger always missing. That room held more therapy sessions than any office ever will.",
+  },
+  {
+    q: "Who'd start a fight in the group chat and then go offline for 12 hours?",
+    options: ["Madhav Sharma", "Racheet", "Aman Saxena", "Madhav Khandelwal"],
+    reveal: "Madhav Sharma. Drops one savage line. Vanishes. Returns next morning like nothing happened. Classic.",
+  },
+  {
+    q: "Whose laugh is the official soundtrack of the Nonagon?",
+    options: ["Madhav Khandelwal", "Pragati", "Aman Singh", "Racheet"],
+    reveal: "Madhav Khandelwal. That laugh. Echoing through hostel corridors, photo backgrounds, every voice note. You can hear it just reading this.",
+  },
+  {
+    q: "Who would 100% miss the train but make it the funniest story of the trip?",
+    options: ["Aman Saxena", "Madhav Sharma", "Racheet", "Aman Singh"],
+    reveal: "Aman Saxena. Misses the train, books another, somehow reaches before us. The chaos is the plot. The plot is the memory.",
+  },
+  {
+    q: "Whose 'one chai' actually means a 90-minute tapri session?",
+    options: ["Aditi", "Sarthak", "Madhav Khandelwal", "Shivendra"],
+    reveal: "Aditi. 'Bas ek chai' is a lie we agreed to believe. Two cups in, the whole group's life had been decoded.",
+  },
+  {
+    q: "Who is the unofficial photographer of every trip?",
+    options: ["Pragati", "Racheet", "Aditi", "Sarthak"],
+    reveal: "Pragati. Half-eaten, mid-laugh, eyes-closed candids — those are the ones we'll cry over in ten years. Thank you for pressing the button.",
+  },
+  {
+    q: "Who's the philosopher at 2 AM and the menace at 2 PM?",
+    options: ["Racheet", "Madhav Sharma", "Aman Singh", "Shivendra"],
+    reveal: "Racheet. By night: 'bro what even is reality.' By day: stealing your fries. Both are equally real. Both are equally loved.",
+  },
+  {
+    q: "Who quietly remembers everyone's birthdays without making a big deal of it?",
+    options: ["Aditi", "Pragati", "Sarthak", "Shivendra"],
+    reveal: "Aditi. First message at 12:00:01 AM. Every year. No reminder needed. That's a kind of love nobody talks about.",
+  },
+  {
+    q: "Who would thrive if the Nonagon opened a tapri together?",
+    options: ["All nine, obviously", "Just Aditi and Madhav K.", "Sarthak and Shivendra", "Aman Singh, alone, eating the stock"],
+    reveal: "All nine. Aditi runs chai. Pragati handles socials. Sarthak manages money. Madhav K. yells the menu. Aman Singh eats the profits. Open soon, hopefully.",
+  },
+  {
+    q: "Whose 'I'm coming in 5 minutes' is a full 45-minute commitment?",
+    options: ["Aman Saxena", "Madhav Sharma", "Racheet", "Pragati"],
+    reveal: "Aman Saxena. The man bends time. We've stopped asking. We've started planning around it.",
+  },
+  {
+    q: "Who actually paid for everyone at least once and never asked for it back?",
+    options: ["Sarthak", "Aditi", "Shivendra", "Pragati"],
+    reveal: "Sarthak. Quietly. Multiple times. Never mentioned it. We noticed. We always notice.",
+  },
 ];
 
 const QUIZ_SIZE = 10;
@@ -147,10 +206,11 @@ function QuizPage() {
   const [quiz, setQuiz] = useState<RuntimeQuestion[]>([]);
   const [i, setI] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
+  const [answers, setAnswers] = useState<number[]>([]);
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
+  const [showReview, setShowReview] = useState(false);
 
-  // Build on mount (client-only so SSR + client match cleanly)
   useEffect(() => {
     setQuiz(buildQuiz());
   }, []);
@@ -165,6 +225,7 @@ function QuizPage() {
   const pick = (idx: number) => {
     if (picked !== null || !q) return;
     setPicked(idx);
+    setAnswers((a) => [...a, idx]);
     if (idx === q.answer) setScore((s) => s + 1);
   };
 
@@ -181,8 +242,10 @@ function QuizPage() {
     setQuiz(buildQuiz());
     setI(0);
     setPicked(null);
+    setAnswers([]);
     setScore(0);
     setDone(false);
+    setShowReview(false);
   };
 
   const verdict = (() => {
@@ -200,14 +263,13 @@ function QuizPage() {
         <header className="mb-8 text-center">
           <p className="font-mono text-xs text-brand uppercase tracking-widest mb-3">// the_nonagon_quiz.exe</p>
           <h1 className="text-4xl md:text-5xl font-serif italic text-charcoal mb-3">How well do you know us?</h1>
-          <p className="text-charcoal/70 text-sm">Ten questions, shuffled fresh every time. Tissues optional.</p>
+          <p className="text-charcoal/70 text-sm">Shuffled fresh every time. Tissues optional.</p>
         </header>
 
         {!q && !done ? (
           <div className="text-center font-mono text-xs text-charcoal/50 py-20">// shuffling memories…</div>
         ) : !done && q ? (
           <>
-            {/* Progress bar */}
             <div className="mb-6">
               <div className="flex justify-between text-xs font-mono text-charcoal/60 mb-2">
                 <span>Q{i + 1} / {total}</span>
@@ -221,7 +283,6 @@ function QuizPage() {
               </div>
             </div>
 
-            {/* Question card */}
             <div
               key={i}
               className="bg-paper/80 backdrop-blur-sm border border-charcoal/10 rounded-2xl p-6 md:p-8 shadow-sm animate-fade-in"
@@ -258,7 +319,6 @@ function QuizPage() {
                 })}
               </div>
 
-              {/* Emotional reveal */}
               {picked !== null && (
                 <div className="mt-6 pt-6 border-t border-dashed border-charcoal/15 animate-fade-in">
                   <p className="font-mono text-[10px] text-brand uppercase tracking-widest mb-2">
@@ -278,6 +338,75 @@ function QuizPage() {
               )}
             </div>
           </>
+        ) : showReview ? (
+          <div className="animate-fade-in">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <p className="font-mono text-xs text-brand uppercase tracking-widest mb-1">// the_review</p>
+                <h2 className="font-serif italic text-2xl md:text-3xl text-charcoal">Every answer, every memory.</h2>
+              </div>
+              <button
+                onClick={() => setShowReview(false)}
+                className="font-mono text-xs text-charcoal/60 hover:text-brand transition-colors"
+              >
+                ← back
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {quiz.map((item, idx) => {
+                const userIdx = answers[idx];
+                const correct = userIdx === item.answer;
+                return (
+                  <div
+                    key={idx}
+                    className={`bg-paper/80 backdrop-blur-sm border border-charcoal/10 border-l-4 rounded-xl p-5 md:p-6 shadow-sm ${
+                      correct ? "border-l-emerald-500/70" : "border-l-rose-400/70"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className={`font-mono text-[10px] px-2 py-1 rounded uppercase tracking-wider ${correct ? "bg-emerald-500/15 text-emerald-700" : "bg-rose-400/15 text-rose-700"}`}>
+                        {correct ? "✓ right" : "✗ wrong"}
+                      </span>
+                      <span className="font-mono text-xs text-charcoal/40">Q{idx + 1}</span>
+                    </div>
+                    <h3 className="font-serif text-lg md:text-xl text-charcoal mb-3 leading-snug">{item.q}</h3>
+                    <div className="space-y-1.5 mb-4 text-sm">
+                      <div className="flex gap-3">
+                        <span className="font-mono text-[10px] text-charcoal/50 uppercase tracking-wider pt-1 w-16 shrink-0">you said</span>
+                        <span className={correct ? "text-emerald-700" : "text-rose-700"}>{item.options[userIdx]}</span>
+                      </div>
+                      {!correct && (
+                        <div className="flex gap-3">
+                          <span className="font-mono text-[10px] text-charcoal/50 uppercase tracking-wider pt-1 w-16 shrink-0">truth</span>
+                          <span className="text-emerald-700">{item.options[item.answer]}</span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="pt-3 border-t border-dashed border-charcoal/15">
+                      <p className="font-mono text-[10px] text-brand uppercase tracking-widest mb-1.5">// the memory</p>
+                      <p className="font-serif italic text-charcoal/80 leading-relaxed">{item.reveal}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <button
+                onClick={() => setShowReview(false)}
+                className="bg-paper border border-charcoal/20 text-charcoal px-5 py-2.5 rounded-full text-sm font-medium hover:border-brand hover:text-brand transition-colors"
+              >
+                Back to verdict
+              </button>
+              <button
+                onClick={restart}
+                className="bg-charcoal text-paper px-5 py-2.5 rounded-full text-sm font-medium hover:bg-brand transition-colors"
+              >
+                Take it again
+              </button>
+            </div>
+          </div>
         ) : (
           <div className="bg-paper/80 backdrop-blur-sm border border-charcoal/10 rounded-2xl p-8 md:p-10 text-center animate-fade-in">
             <p className="font-mono text-xs text-brand uppercase tracking-widest mb-4">// final_verdict</p>
@@ -289,12 +418,20 @@ function QuizPage() {
             <p className="font-serif italic text-charcoal/60 text-sm max-w-md mx-auto mb-8">
               "The score doesn't matter. The fact that you cared enough to play does."
             </p>
-            <button
-              onClick={restart}
-              className="bg-charcoal text-paper px-6 py-3 rounded-full text-sm font-medium hover:bg-brand transition-colors"
-            >
-              Take it again
-            </button>
+            <div className="flex flex-wrap justify-center gap-3">
+              <button
+                onClick={() => setShowReview(true)}
+                className="bg-paper border border-charcoal/20 text-charcoal px-6 py-3 rounded-full text-sm font-medium hover:border-brand hover:text-brand transition-colors"
+              >
+                Review my answers
+              </button>
+              <button
+                onClick={restart}
+                className="bg-charcoal text-paper px-6 py-3 rounded-full text-sm font-medium hover:bg-brand transition-colors"
+              >
+                Take it again
+              </button>
+            </div>
           </div>
         )}
       </main>
