@@ -483,39 +483,54 @@ function QuizPage() {
 
               {picked !== null && (
                 <div className="mt-8 pt-6 border-t border-dashed border-charcoal/15">
-                  <p className="font-mono text-[10px] text-brand uppercase tracking-widest mb-4 animate-fade-in">
+                  {/* 1. Stamp */}
+                  <div className="flex justify-center mb-6">
+                    <div
+                      className={`animate-stamp inline-block font-mono font-bold text-xl md:text-2xl tracking-[0.25em] px-5 py-2 border-4 ${
+                        picked === q.answer
+                          ? "text-emerald-700 border-emerald-700/70"
+                          : "text-rose-700 border-rose-700/70"
+                      }`}
+                      style={{ borderStyle: "double" }}
+                    >
+                      {picked === q.answer ? "CORRECT" : "NOT QUITE"}
+                    </div>
+                  </div>
+
+                  {/* 2. Label drifts in */}
+                  <p
+                    className="font-mono text-[10px] text-brand uppercase tracking-widest mb-4 text-center animate-fade-in"
+                    style={{ animationDelay: "650ms", animationFillMode: "both" }}
+                  >
                     // the_real_answer
                   </p>
 
-                  <div className="relative mx-auto max-w-sm animate-drift-in">
-                    {/* tape */}
+                  {/* 3. Quote card drifts in */}
+                  <div
+                    className="relative mx-auto max-w-md animate-drift-in"
+                    style={{ animationDelay: "800ms", animationFillMode: "both" }}
+                  >
                     <span className={`tape h-5 w-20 left-1/2 -translate-x-1/2 -top-2 rounded-sm ${q.tilt}`} />
-                    {/* polaroid */}
-                    <figure className={`paper-card relative p-3 pb-5 bg-white ${q.tilt} transition-transform duration-500`}>
-                      <div className="relative aspect-[4/5] overflow-hidden bg-charcoal/5">
-                        <img
-                          src={q.photo}
-                          alt="A moment from the Nonagon"
-                          loading="lazy"
-                          className="w-full h-full object-cover animate-slow-zoom"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/20 via-transparent to-transparent" />
-                      </div>
-                      <figcaption className="pt-4 px-1">
-                        <p className="font-hand text-xl md:text-2xl text-charcoal leading-tight text-center">
-                          {q.caption}
+                    <figure className={`paper-card relative px-6 py-7 bg-white ${q.tilt}`}>
+                      <p className="font-hand text-2xl md:text-3xl text-charcoal leading-tight text-center">
+                        {q.caption}
+                      </p>
+                      {q.body && (
+                        <p
+                          className="mt-4 font-serif italic text-charcoal/80 text-base leading-relaxed text-center animate-reveal"
+                          style={{ animationDelay: "1300ms", animationFillMode: "both" }}
+                        >
+                          {q.body}
                         </p>
-                      </figcaption>
+                      )}
                     </figure>
                   </div>
 
-                  {q.body && (
-                    <p className="mt-6 font-serif italic text-charcoal/85 text-base md:text-lg leading-relaxed text-center max-w-md mx-auto animate-reveal">
-                      {q.body}
-                    </p>
-                  )}
-
-                  <div className="mt-7 flex justify-center animate-fade-in">
+                  {/* 4. Next button fades in last */}
+                  <div
+                    className="mt-8 flex justify-center animate-fade-in"
+                    style={{ animationDelay: "1900ms", animationFillMode: "both" }}
+                  >
                     <button
                       onClick={next}
                       className="inline-flex items-center gap-2 bg-charcoal text-paper px-5 py-2.5 rounded-full text-sm font-medium hover:bg-brand transition-colors group"
@@ -526,6 +541,7 @@ function QuizPage() {
                   </div>
                 </div>
               )}
+
 
             </div>
           </>
