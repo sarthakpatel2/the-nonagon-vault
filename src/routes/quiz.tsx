@@ -460,7 +460,9 @@ function QuizPage() {
 
             <div
               key={i}
-              className="bg-paper/80 backdrop-blur-sm border border-charcoal/10 rounded-2xl p-6 md:p-8 shadow-sm animate-fade-in"
+              className={`bg-paper/80 backdrop-blur-sm border border-charcoal/10 rounded-2xl p-6 md:p-8 shadow-sm animate-fade-in ${
+                picked === null ? "" : picked === q.answer ? "animate-glow" : "animate-shake"
+              }`}
             >
               <h2 className="font-serif text-2xl md:text-3xl text-charcoal mb-6 leading-snug">
                 {q.q}
