@@ -2,6 +2,22 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
+import { photoMap } from "@/lib/photos";
+
+const PHOTO_KEYS = Object.keys(photoMap);
+
+function pickPhoto(seed: number): string {
+  return photoMap[PHOTO_KEYS[seed % PHOTO_KEYS.length] as keyof typeof photoMap];
+}
+
+function splitReveal(reveal: string): { caption: string; body: string } {
+  const m = reveal.match(/^(.*?[.!?])\s+(.*)$/);
+  if (m) return { caption: m[1].trim(), body: m[2].trim() };
+  return { caption: reveal, body: "" };
+}
+
+const TAPE_ROTATIONS = ["-rotate-3", "-rotate-2", "-rotate-1", "rotate-1", "rotate-2", "rotate-3"];
+
 
 export const Route = createFileRoute("/quiz")({
   head: () => ({
@@ -320,19 +336,29 @@ type RuntimeQuestion = {
   options: string[];
   answer: number;
   reveal: string;
+  photo: string;
+  caption: string;
+  body: string;
+  tilt: string;
 };
 
 function buildQuiz(): RuntimeQuestion[] {
+  const photoSeed = Math.floor(Math.random() * PHOTO_KEYS.length);
   return shuffle(POOL)
     .slice(0, QUIZ_SIZE)
-    .map((item) => {
+    .map((item, idx) => {
       const correct = item.options[0];
       const shuffled = shuffle(item.options);
+      const { caption, body } = splitReveal(item.reveal);
       return {
         q: item.q,
         options: shuffled,
         answer: shuffled.indexOf(correct),
         reveal: item.reveal,
+        photo: pickPhoto(photoSeed + idx * 7),
+        caption,
+        body,
+        tilt: TAPE_ROTATIONS[(photoSeed + idx) % TAPE_ROTATIONS.length],
       };
     });
 }
@@ -345,6 +371,7 @@ function QuizPage() {
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
   const [showReview, setShowReview] = useState(false);
+
 
   useEffect(() => {
     setQuiz(buildQuiz());
@@ -455,22 +482,51 @@ function QuizPage() {
               </div>
 
               {picked !== null && (
-                <div className="mt-6 pt-6 border-t border-dashed border-charcoal/15 animate-fade-in">
-                  <p className="font-mono text-[10px] text-brand uppercase tracking-widest mb-2">
+                <div className="mt-8 pt-6 border-t border-dashed border-charcoal/15">
+                  <p className="font-mono text-[10px] text-brand uppercase tracking-widest mb-4 animate-fade-in">
                     // the_real_answer
                   </p>
-                  <p className="font-serif italic text-charcoal/85 text-lg leading-relaxed">
-                    {q.reveal}
-                  </p>
-                  <button
-                    onClick={next}
-                    className="mt-6 inline-flex items-center gap-2 bg-charcoal text-paper px-5 py-2.5 rounded-full text-sm font-medium hover:bg-brand transition-colors group"
-                  >
-                    {i + 1 >= quiz.length ? "See the verdict" : "Next question"}
-                    <span className="group-hover:translate-x-1 transition-transform">→</span>
-                  </button>
+
+                  <div className="relative mx-auto max-w-sm animate-drift-in">
+                    {/* tape */}
+                    <span className={`tape h-5 w-20 left-1/2 -translate-x-1/2 -top-2 rounded-sm ${q.tilt}`} />
+                    {/* polaroid */}
+                    <figure className={`paper-card relative p-3 pb-5 bg-white ${q.tilt} transition-transform duration-500`}>
+                      <div className="relative aspect-[4/5] overflow-hidden bg-charcoal/5">
+                        <img
+                          src={q.photo}
+                          alt="A moment from the Nonagon"
+                          loading="lazy"
+                          className="w-full h-full object-cover animate-slow-zoom"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/20 via-transparent to-transparent" />
+                      </div>
+                      <figcaption className="pt-4 px-1">
+                        <p className="font-hand text-xl md:text-2xl text-charcoal leading-tight text-center">
+                          {q.caption}
+                        </p>
+                      </figcaption>
+                    </figure>
+                  </div>
+
+                  {q.body && (
+                    <p className="mt-6 font-serif italic text-charcoal/85 text-base md:text-lg leading-relaxed text-center max-w-md mx-auto animate-reveal">
+                      {q.body}
+                    </p>
+                  )}
+
+                  <div className="mt-7 flex justify-center animate-fade-in">
+                    <button
+                      onClick={next}
+                      className="inline-flex items-center gap-2 bg-charcoal text-paper px-5 py-2.5 rounded-full text-sm font-medium hover:bg-brand transition-colors group"
+                    >
+                      {i + 1 >= quiz.length ? "See the verdict" : "Next memory"}
+                      <span className="group-hover:translate-x-1 transition-transform">→</span>
+                    </button>
+                  </div>
                 </div>
               )}
+
             </div>
           </>
         ) : showReview ? (
@@ -518,10 +574,17 @@ function QuizPage() {
                         </div>
                       )}
                     </div>
-                    <div className="pt-3 border-t border-dashed border-charcoal/15">
-                      <p className="font-mono text-[10px] text-brand uppercase tracking-widest mb-1.5">// the memory</p>
-                      <p className="font-serif italic text-charcoal/80 leading-relaxed">{item.reveal}</p>
+                    <div className="pt-3 border-t border-dashed border-charcoal/15 flex gap-4 items-start">
+                      <div className={`paper-card shrink-0 p-1.5 pb-3 bg-white ${item.tilt} w-20 md:w-24`}>
+                        <img src={item.photo} alt="" loading="lazy" className="w-full aspect-[4/5] object-cover" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="font-mono text-[10px] text-brand uppercase tracking-widest mb-1.5">// the memory</p>
+                        <p className="font-hand text-lg text-charcoal leading-tight mb-1.5">{item.caption}</p>
+                        {item.body && <p className="font-serif italic text-charcoal/75 text-sm leading-relaxed">{item.body}</p>}
+                      </div>
                     </div>
+
                   </div>
                 );
               })}
