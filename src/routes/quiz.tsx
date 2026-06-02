@@ -336,19 +336,29 @@ type RuntimeQuestion = {
   options: string[];
   answer: number;
   reveal: string;
+  photo: string;
+  caption: string;
+  body: string;
+  tilt: string;
 };
 
 function buildQuiz(): RuntimeQuestion[] {
+  const photoSeed = Math.floor(Math.random() * PHOTO_KEYS.length);
   return shuffle(POOL)
     .slice(0, QUIZ_SIZE)
-    .map((item) => {
+    .map((item, idx) => {
       const correct = item.options[0];
       const shuffled = shuffle(item.options);
+      const { caption, body } = splitReveal(item.reveal);
       return {
         q: item.q,
         options: shuffled,
         answer: shuffled.indexOf(correct),
         reveal: item.reveal,
+        photo: pickPhoto(photoSeed + idx * 7),
+        caption,
+        body,
+        tilt: TAPE_ROTATIONS[(photoSeed + idx) % TAPE_ROTATIONS.length],
       };
     });
 }
@@ -361,6 +371,7 @@ function QuizPage() {
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
   const [showReview, setShowReview] = useState(false);
+
 
   useEffect(() => {
     setQuiz(buildQuiz());
