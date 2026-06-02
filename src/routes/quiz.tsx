@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { photoMap } from "@/lib/photos";
+import { playTap, playCorrect, playWrong } from "@/lib/quiz-feedback";
+
 
 const PHOTO_KEYS = Object.keys(photoMap);
 
