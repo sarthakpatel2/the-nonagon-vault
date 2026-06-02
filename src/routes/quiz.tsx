@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { photoMap } from "@/lib/photos";
+import { playTap, playCorrect, playWrong } from "@/lib/quiz-feedback";
+
 
 const PHOTO_KEYS = Object.keys(photoMap);
 
@@ -384,11 +386,22 @@ function QuizPage() {
     [i, picked, total],
   );
 
+  const feedbackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (feedbackTimer.current) clearTimeout(feedbackTimer.current); }, []);
+
   const pick = (idx: number) => {
     if (picked !== null || !q) return;
+    playTap();
     setPicked(idx);
     setAnswers((a) => [...a, idx]);
-    if (idx === q.answer) setScore((s) => s + 1);
+    const isRight = idx === q.answer;
+    if (isRight) setScore((s) => s + 1);
+    // sync chime / soft thud with the stamp drop
+    if (feedbackTimer.current) clearTimeout(feedbackTimer.current);
+    feedbackTimer.current = setTimeout(() => {
+      if (isRight) playCorrect();
+      else playWrong();
+    }, 90);
   };
 
   const next = () => {
@@ -447,7 +460,9 @@ function QuizPage() {
 
             <div
               key={i}
-              className="bg-paper/80 backdrop-blur-sm border border-charcoal/10 rounded-2xl p-6 md:p-8 shadow-sm animate-fade-in"
+              className={`bg-paper/80 backdrop-blur-sm border border-charcoal/10 rounded-2xl p-6 md:p-8 shadow-sm animate-fade-in ${
+                picked === null ? "" : picked === q.answer ? "animate-glow" : "animate-shake"
+              }`}
             >
               <h2 className="font-serif text-2xl md:text-3xl text-charcoal mb-6 leading-snug">
                 {q.q}
