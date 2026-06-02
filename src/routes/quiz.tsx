@@ -2,6 +2,22 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
+import { photoMap } from "@/lib/photos";
+
+const PHOTO_KEYS = Object.keys(photoMap);
+
+function pickPhoto(seed: number): string {
+  return photoMap[PHOTO_KEYS[seed % PHOTO_KEYS.length] as keyof typeof photoMap];
+}
+
+function splitReveal(reveal: string): { caption: string; body: string } {
+  const m = reveal.match(/^(.*?[.!?])\s+(.*)$/);
+  if (m) return { caption: m[1].trim(), body: m[2].trim() };
+  return { caption: reveal, body: "" };
+}
+
+const TAPE_ROTATIONS = ["-rotate-3", "-rotate-2", "-rotate-1", "rotate-1", "rotate-2", "rotate-3"];
+
 
 export const Route = createFileRoute("/quiz")({
   head: () => ({
