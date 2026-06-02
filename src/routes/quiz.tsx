@@ -574,10 +574,17 @@ function QuizPage() {
                         </div>
                       )}
                     </div>
-                    <div className="pt-3 border-t border-dashed border-charcoal/15">
-                      <p className="font-mono text-[10px] text-brand uppercase tracking-widest mb-1.5">// the memory</p>
-                      <p className="font-serif italic text-charcoal/80 leading-relaxed">{item.reveal}</p>
+                    <div className="pt-3 border-t border-dashed border-charcoal/15 flex gap-4 items-start">
+                      <div className={`paper-card shrink-0 p-1.5 pb-3 bg-white ${item.tilt} w-20 md:w-24`}>
+                        <img src={item.photo} alt="" loading="lazy" className="w-full aspect-[4/5] object-cover" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="font-mono text-[10px] text-brand uppercase tracking-widest mb-1.5">// the memory</p>
+                        <p className="font-hand text-lg text-charcoal leading-tight mb-1.5">{item.caption}</p>
+                        {item.body && <p className="font-serif italic text-charcoal/75 text-sm leading-relaxed">{item.body}</p>}
+                      </div>
                     </div>
+
                   </div>
                 );
               })}
