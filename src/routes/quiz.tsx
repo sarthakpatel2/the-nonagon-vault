@@ -386,11 +386,22 @@ function QuizPage() {
     [i, picked, total],
   );
 
+  const feedbackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (feedbackTimer.current) clearTimeout(feedbackTimer.current); }, []);
+
   const pick = (idx: number) => {
     if (picked !== null || !q) return;
+    playTap();
     setPicked(idx);
     setAnswers((a) => [...a, idx]);
-    if (idx === q.answer) setScore((s) => s + 1);
+    const isRight = idx === q.answer;
+    if (isRight) setScore((s) => s + 1);
+    // sync chime / soft thud with the stamp drop
+    if (feedbackTimer.current) clearTimeout(feedbackTimer.current);
+    feedbackTimer.current = setTimeout(() => {
+      if (isRight) playCorrect();
+      else playWrong();
+    }, 90);
   };
 
   const next = () => {
