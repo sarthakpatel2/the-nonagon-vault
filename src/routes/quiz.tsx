@@ -167,8 +167,8 @@ const POOL: Question[] = [
   },
   {
     q: "Who quietly remembers everyone's birthdays without making a big deal of it?",
-    options: ["Aditi", "Pragati", "Sarthak", "Shivendra"],
-    reveal: "Aditi. First message at 12:00:01 AM. Every year. No reminder needed. That's a kind of love nobody talks about.",
+    options: ["Sarthak", "Aditi", "Pragati", "Shivendra"],
+    reveal: "Sarthak. First message at 12:00:01 AM. Every year. No reminder needed. That's a kind of love nobody talks about.",
   },
   {
     q: "Who would thrive if the Nonagon opened a tapri together?",
@@ -222,8 +222,8 @@ const POOL: Question[] = [
   },
   {
     q: "Who gives the best relationship advice despite being permanently single?",
-    options: ["Racheet", "Shivendra", "Aditi", "Madhav Khandelwal"],
-    reveal: "Racheet. The irony is not lost on anyone. He'll quote Rumi at 2 AM, cry about his own love life, and still fix yours in three sentences.",
+    options: ["No one", "Racheet", "Shivendra", "Madhav Khandelwal"],
+    reveal: "No one. Let's be honest — we're all disasters in love. But somehow we all have opinions. That's the real friendship.",
   },
   {
     q: "Who's most likely to start crying during a movie scene?",
@@ -232,8 +232,8 @@ const POOL: Question[] = [
   },
   {
     q: "Who secretly has the best snacks stash in their room?",
-    options: ["Aman Singh", "Madhav Khandelwal", "Racheet", "Madhav Sharma"],
-    reveal: "Aman Singh. Maggi, chips, biscuits, that one random packet of soan papdi from Diwali. Open his cupboard at 1 AM and you've found the promised land.",
+    options: ["Shivendra", "Aman Singh", "Madhav Khandelwal", "Madhav Sharma"],
+    reveal: "Shivendra. Maggi, chips, biscuits, that one random packet of soan papdi from Diwali. Open his cupboard at 1 AM and you've found the promised land.",
   },
   {
     q: "Who is the oneliner king — one sentence, instant legend?",
@@ -242,8 +242,8 @@ const POOL: Question[] = [
   },
   {
     q: "Who's the comeback king that destroys you in one sentence?",
-    options: ["Madhav Sharma", "Racheet", "Madhav Khandelwal", "Aman Saxena"],
-    reveal: "Madhav Sharma. Silent for 20 minutes. Listens to your whole story. Delivers one line that ends your career. Bows. Leaves.",
+    options: ["Racheet", "Madhav Sharma", "Madhav Khandelwal", "Aman Saxena"],
+    reveal: "Racheet. Silent for 20 minutes. Listens to your whole story. Delivers one line that ends your career. Bows. Leaves.",
   },
   {
     q: "Who'd survive a zombie apocalypse by making friends with the zombies?",
@@ -281,9 +281,9 @@ const POOL: Question[] = [
     reveal: "Madhav Khandelwal. One raindrop on his shoe and it's a Shakespearian tragedy. One cold dosa and the chef has personally wronged him. The drama is the gift.",
   },
   {
-    q: "Who'd write a long emotional paragraph at 3 AM and delete it?",
-    options: ["Racheet", "Aman Saxena", "Shivendra", "Aditi"],
-    reveal: "Racheet. Typed it out. Cried a little. Selected all. Deleted. We've seen the 'typing...' for ten minutes and received nothing. We know. We love him anyway.",
+    q: "Who is the unofficial fashion consultant of the group?",
+    options: ["Pragati", "Aditi", "Madhav Sharma", "Racheet"],
+    reveal: "Pragati. 'Bhai ye shirt mat pehenna.' Her word is law. We've all looked better because of her honesty. The group aesthetic is her legacy.",
   },
   {
     q: "Who is the unofficial fashion consultant of the group?",
