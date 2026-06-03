@@ -236,6 +236,11 @@ const POOL: Question[] = [
     reveal: "Aman Singh. Maggi, chips, biscuits, that one random packet of soan papdi from Diwali. Open his cupboard at 1 AM and you've found the promised land.",
   },
   {
+    q: "Who is the oneliner king — one sentence, instant legend?",
+    options: ["Racheet", "Madhav Khandelwal", "Madhav Sharma", "Aman Singh"],
+    reveal: "Racheet. One line. Perfect timing. The whole group quotes it for months. The oneliner king doesn't need a stage — just a moment, and a witness.",
+  },
+  {
     q: "Who's the comeback king that destroys you in one sentence?",
     options: ["Madhav Sharma", "Racheet", "Madhav Khandelwal", "Aman Saxena"],
     reveal: "Madhav Sharma. Silent for 20 minutes. Listens to your whole story. Delivers one line that ends your career. Bows. Leaves.",
