@@ -56,16 +56,6 @@ const POOL: Question[] = [
     reveal: "Aman Saxena. Misses every deadline, never misses a train window seat. He'd talk to strangers like old friends by the time we reached the next station.",
   },
   {
-    q: "Pick the official sutta circle of the Nonagon.",
-    options: [
-      "Sarthak, Aman Singh, Aman Saxena, Madhav Khandelwal & Shivendra",
-      "Aditi, Pragati & Racheet",
-      "Madhav Sharma & Racheet",
-      "Just Sarthak, alone, dramatically",
-    ],
-    reveal: "The five. Behind the canteen, after every class, with that one specific lighter that kept getting lost. Tapri uncle knew the order by heart.",
-  },
-  {
     q: "Who is the undisputed chai person of the group?",
     options: ["Aditi", "Pragati", "Madhav Sharma", "Racheet"],
     reveal: "Aditi. Chai over everything. Chai before drama, chai during drama, chai to fix the drama. The therapist with a kulhad in her hand.",
@@ -197,8 +187,8 @@ const POOL: Question[] = [
   },
   {
     q: "Who always forgets their wallet but never forgets the order?",
-    options: ["Racheet", "Aman Singh", "Madhav Sharma", "Shivendra"],
-    reveal: "Racheet. 'Bhai tere paise hain na? I'll pay you back.' He's said this at every canteen visit. We stopped expecting it. We kept feeding him anyway.",
+    options: ["Madhav Khandelwal", "Aman Singh", "Madhav Sharma", "Shivendra"],
+    reveal: "Madhav Khandelwal. 'Bhai tere paise hain na? I'll pay you back.' He's said this at every canteen visit. We stopped expecting it. We kept feeding him anyway.",
   },
   {
     q: "Who starts a 'serious study session' that becomes a roast battle in 10 minutes?",
@@ -262,8 +252,8 @@ const POOL: Question[] = [
   },
   {
     q: "Who's the first to suggest 'chalo kahin ghoom ke aate hain' at midnight?",
-    options: ["Aman Saxena", "Racheet", "Madhav Sharma", "Aman Singh"],
-    reveal: "Aman Saxena. 11 PM, everyone is tired, he says 'bhai gurgaon chalein?' We say no. We go. Every single time. He's the chaos we need.",
+    options: ["Shivendra", "Aman Saxena", "Racheet", "Aman Singh"],
+    reveal: "Shivendra. 11 PM, everyone is tired, he says 'bhai gurgaon chalein?' We say no. We go. Every single time. He's the chaos we need.",
   },
   {
     q: "Who actually reads the terms and conditions before clicking 'I agree'?",
