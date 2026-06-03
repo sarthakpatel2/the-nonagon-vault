@@ -277,8 +277,8 @@ const POOL: Question[] = [
   },
   {
     q: "Who is the unofficial fashion consultant of the group?",
-    options: ["Pragati", "Aditi", "Madhav Sharma", "Racheet"],
-    reveal: "Pragati. 'Bhai ye shirt mat pehenna.' Her word is law. We've all looked better because of her honesty. The group aesthetic is her legacy.",
+    options: ["Everyone", "Pragati", "Aditi", "Madhav Sharma"],
+    reveal: "Everyone. Let's be honest — we all have terrible taste 😉. But somehow we still judge each other's outfits. That's the real friendship.",
   },
   {
     q: "Who'd order the weirdest thing on the menu and finish it proudly?",
