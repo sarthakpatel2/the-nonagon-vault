@@ -199,6 +199,149 @@
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { scrollbar-width: none; }
 
+/* ============================================================
+   Gen-Z hover / loop animations
+   ============================================================ */
+
+/* Word flip — top word slides up, bottom comes in on hover */
+.word-flip {
+  display: inline-flex;
+  flex-direction: column;
+  overflow: hidden;
+  line-height: 1;
+  vertical-align: bottom;
+  height: 1em;
+}
+.word-flip > span {
+  display: block;
+  transition: transform 0.45s cubic-bezier(0.7, 0, 0.2, 1);
+}
+.group:hover .word-flip > span,
+.word-flip:hover > span {
+  transform: translateY(-100%);
+}
+
+/* Animated underline grow */
+.hover-underline { position: relative; display: inline-block; }
+.hover-underline::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -2px;
+  height: 2px; width: 100%;
+  background: currentColor;
+  transform-origin: right center;
+  transform: scaleX(0);
+  transition: transform 0.4s var(--ease-out-expo);
+}
+.hover-underline:hover::after {
+  transform-origin: left center;
+  transform: scaleX(1);
+}
+
+/* Sticker wiggle */
+@keyframes sticker-bounce {
+  0%   { transform: rotate(0) scale(1); }
+  25%  { transform: rotate(-6deg) scale(1.08); }
+  50%  { transform: rotate(5deg) scale(1.05); }
+  75%  { transform: rotate(-3deg) scale(1.07); }
+  100% { transform: rotate(0) scale(1); }
+}
+.hover-sticker:hover { animation: sticker-bounce 0.7s ease-in-out; }
+
+/* Gradient sweep across text on hover */
+.hover-sweep {
+  background-image: linear-gradient(
+    100deg,
+    currentColor 0%,
+    currentColor 45%,
+    var(--brand) 50%,
+    currentColor 55%,
+    currentColor 100%
+  );
+  background-size: 220% auto;
+  background-position: 200% center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: background-position 0.7s var(--ease-out-expo);
+}
+.hover-sweep:hover { background-position: 0% center; }
+
+/* Looping marquee — pauses on hover when wrapped in .loop-marquee-pausable */
+@keyframes loop-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.loop-marquee {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: loop-marquee 22s linear infinite;
+}
+.loop-marquee-pausable:hover .loop-marquee {
+  animation-play-state: paused;
+}
+
+/* Slide-arrow reveal on hover */
+.slide-arrow {
+  display: inline-flex;
+  align-items: center;
+  transition: padding 0.35s var(--ease-out-expo);
+}
+.slide-arrow .arrow {
+  display: inline-block;
+  width: 0;
+  margin-left: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: width 0.35s var(--ease-out-expo), opacity 0.35s var(--ease-out-expo),
+              transform 0.35s var(--ease-out-expo), margin-left 0.35s var(--ease-out-expo);
+}
+.slide-arrow:hover .arrow {
+  width: 1.4em;
+  margin-left: 0.35em;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Tilt-on-hover */
+.hover-tilt {
+  transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s var(--ease-out-expo);
+}
+.hover-tilt:hover {
+  transform: translateY(-4px) rotate(-1.2deg);
+  box-shadow: 0 16px 40px oklch(0 0 0 / 0.16);
+}
+
+/* Spin-once */
+@keyframes spin-once { to { transform: rotate(360deg); } }
+.hover-spin-once:hover { animation: spin-once 0.7s var(--ease-out-expo); }
+
+/* Magnetic press */
+.press-down { transition: transform 0.2s ease-out; }
+.press-down:active { transform: scale(0.94); }
+
+/* Reveal overlay (rises from bottom) */
+.reveal-overlay { position: relative; overflow: hidden; isolation: isolate; }
+.reveal-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--brand);
+  transform: translateY(100%);
+  transition: transform 0.45s var(--ease-out-expo);
+  z-index: -1;
+}
+.reveal-overlay:hover::before { transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .loop-marquee,
+  .animate-marquee,
+  .animate-float,
+  .animate-walk-away,
+  .animate-slow-zoom { animation: none !important; }
+}
+
 #lovable-badge {
   display: none !important;
 }
