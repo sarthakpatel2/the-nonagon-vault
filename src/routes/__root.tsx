@@ -129,7 +129,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <LoginGate>
         <AuroraBackground />
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={key}
             initial={{ opacity: 0, y: 16 }}
