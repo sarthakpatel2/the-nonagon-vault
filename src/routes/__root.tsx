@@ -122,14 +122,25 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const state = useRouterState();
+  const key = state.location.pathname;
 
   return (
     <QueryClientProvider client={queryClient}>
       <LoginGate>
         <AuroraBackground />
-        <Outlet />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={key}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <Outlet />
+          </motion.div>
+        </AnimatePresence>
         <SendLove />
-        
         <Toaster position="top-center" />
       </LoginGate>
     </QueryClientProvider>
