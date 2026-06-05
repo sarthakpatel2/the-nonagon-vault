@@ -199,9 +199,6 @@ function Home() {
         </div>
       </section>
 
-      {/* SPOTLIGHT REVEAL */}
-      <SpotlightReveal />
-
       {/* THE LAST FRAME */}
       <section className="relative px-6 md:px-10 py-20 md:py-28 max-w-7xl mx-auto">
         <div className="grid md:grid-cols-12 gap-8 md:gap-10 items-center">
