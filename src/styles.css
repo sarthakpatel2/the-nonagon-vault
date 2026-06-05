@@ -87,10 +87,11 @@
 
   html {
     scroll-behavior: smooth;
+    background-color: var(--color-paper);
   }
 
   body {
-    background-color: var(--color-paper);
+    background-color: transparent;
     color: var(--color-charcoal);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
