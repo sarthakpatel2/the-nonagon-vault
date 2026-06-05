@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { VisitCounter } from "@/components/visit-counter";
+import { SpotlightReveal } from "@/components/spotlight-reveal";
 import { photoMap } from "@/lib/photos";
 
 import gradMorning from "@/assets/timeline/grad-morning.jpeg";
@@ -198,6 +199,9 @@ function Home() {
           </div>
         </div>
       </section>
+
+      {/* SPOTLIGHT REVEAL */}
+      <SpotlightReveal />
 
       {/* THE LAST FRAME */}
       <section className="relative px-6 md:px-10 py-20 md:py-28 max-w-7xl mx-auto">
