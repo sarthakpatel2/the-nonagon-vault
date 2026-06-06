@@ -11,15 +11,15 @@ import shivendra from "@/assets/crew/shivendra.jpeg";
 
 // 9 tiles in a 3x3, each with its own parallax depth
 const tiles = [
-  { src: shivendra, depth: 18 },
-  { src: sarthak, depth: 10 },
-  { src: racheet, depth: 24 },
-  { src: madhavK, depth: 14 },
-  { src: aditi, depth: 8 },
-  { src: madhavS, depth: 20 },
-  { src: pragati, depth: 12 },
-  { src: amanSax, depth: 22 },
-  { src: amanSingh, depth: 16 },
+  { src: shivendra, depth: 18, pos: "50% 25%" },
+  { src: sarthak, depth: 10, pos: "50% 20%" },
+  { src: racheet, depth: 24, pos: "50% 22%" },
+  { src: madhavK, depth: 14, pos: "50% 25%" },
+  { src: aditi, depth: 8, pos: "50% 22%" },
+  { src: madhavS, depth: 20, pos: "50% 25%" },
+  { src: pragati, depth: 12, pos: "50% 22%" },
+  { src: amanSax, depth: 22, pos: "50% 25%" },
+  { src: amanSingh, depth: 16, pos: "50% 25%" },
 ];
 
 export function CollageBackground() {
@@ -67,11 +67,12 @@ export function CollageBackground() {
             <img
               src={t.src}
               alt=""
-              className="absolute inset-0 w-[115%] h-[115%] object-cover grayscale contrast-110"
+              className="absolute inset-0 w-[108%] h-[108%] object-cover grayscale contrast-110"
               style={{
                 transform: `translate3d(calc(var(--mx) / ${60 / t.depth} * -1), calc(var(--my) / ${60 / t.depth} * -1), 0)`,
                 transition: "transform 400ms cubic-bezier(0.16,1,0.3,1)",
                 willChange: "transform",
+                objectPosition: t.pos,
               }}
               draggable={false}
             />
@@ -94,11 +95,12 @@ export function CollageBackground() {
             <img
               src={t.src}
               alt=""
-              className="absolute inset-0 w-[115%] h-[115%] object-cover saturate-125"
+              className="absolute inset-0 w-[108%] h-[108%] object-cover saturate-125"
               style={{
                 transform: `translate3d(calc(var(--mx) / ${60 / t.depth} * -1), calc(var(--my) / ${60 / t.depth} * -1), 0)`,
                 transition: "transform 400ms cubic-bezier(0.16,1,0.3,1)",
                 willChange: "transform",
+                objectPosition: t.pos,
               }}
               draggable={false}
             />
