@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { VisitCounter } from "@/components/visit-counter";
+import { TiltCard } from "@/components/tilt-card";
+import { Reveal } from "@/components/reveal";
 import { photoMap } from "@/lib/photos";
 
 import gradMorning from "@/assets/timeline/grad-morning.jpeg";
@@ -54,7 +56,7 @@ function Home() {
         </p>
         <h1 className="font-serif font-bold leading-[0.88] tracking-tight text-[clamp(3rem,11vw,9.5rem)] animate-reveal [animation-delay:120ms]">
           Four years.<br />
-          One <span className="italic text-brand">infinite</span> loop.
+          One <span className="italic text-brand text-shimmer">infinite</span> loop.
         </h1>
         <div className="mt-10 grid md:grid-cols-2 gap-8 items-end animate-reveal [animation-delay:240ms]">
           <p className="max-w-md text-base md:text-lg leading-relaxed text-charcoal/70">
@@ -65,7 +67,7 @@ function Home() {
           <div className="flex md:justify-end gap-3">
             <Link
               to="/gallery"
-              className="group inline-flex items-center gap-2 bg-charcoal text-paper px-5 py-3 rounded-full font-medium text-sm hover:bg-brand transition-colors"
+              className="cta-rise press-down group inline-flex items-center gap-2 bg-charcoal text-paper px-5 py-3 rounded-full font-medium text-sm hover:bg-brand transition-colors"
             >
               Open the scrapbook
               <span className="transition-transform group-hover:translate-x-1">→</span>
@@ -95,21 +97,23 @@ function Home() {
       {/* MASONRY MEMORIES */}
       <section className="px-6 md:px-10 py-20 md:py-28 max-w-7xl mx-auto">
         <div className="grid grid-cols-12 gap-4 md:gap-6">
-          <div className="col-span-12 md:col-span-8 group">
-            <div className="relative w-full aspect-[16/10] overflow-hidden rounded-2xl bg-charcoal/5">
-              <img
-                src={graduation}
-                alt="Graduation morning with friends throwing caps in the air"
-                width={1280}
-                height={800}
-                className="w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-105"
-              />
-            </div>
+          <Reveal className="col-span-12 md:col-span-8 group" y={40}>
+            <TiltCard max={6} className="w-full">
+              <div className="relative w-full aspect-[16/10] overflow-hidden rounded-2xl bg-charcoal/5">
+                <img
+                  src={graduation}
+                  alt="Graduation morning with friends throwing caps in the air"
+                  width={1280}
+                  height={800}
+                  className="w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-105"
+                />
+              </div>
+            </TiltCard>
             <div className="flex justify-between items-start mt-4">
               <h3 className="font-serif text-xl md:text-2xl">The Graduation Morning</h3>
               <span className="font-mono text-xs text-charcoal/40">05.24.2026</span>
             </div>
-          </div>
+          </Reveal>
 
           <div className="col-span-12 md:col-span-4 flex flex-col gap-4 md:gap-6">
             <div className="relative bg-brand text-white p-6 md:p-8 rounded-2xl flex-1 flex flex-col justify-between overflow-hidden grain">
@@ -180,22 +184,24 @@ function Home() {
             </p>
           </div>
 
-          <div className="col-span-12 mt-6 group">
-            <div className="relative w-full aspect-[21/9] overflow-hidden rounded-2xl bg-charcoal/5">
-              <img
-                src={sunrise}
-                alt="Friends watching the sunrise from the hostel terrace"
-                width={1600}
-                height={686}
-                loading="lazy"
-                className="w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-105"
-              />
-            </div>
+          <Reveal className="col-span-12 mt-6 group" y={50} delay={120}>
+            <TiltCard max={4} className="w-full">
+              <div className="relative w-full aspect-[21/9] overflow-hidden rounded-2xl bg-charcoal/5">
+                <img
+                  src={sunrise}
+                  alt="Friends watching the sunrise from the hostel terrace"
+                  width={1600}
+                  height={686}
+                  loading="lazy"
+                  className="w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-105"
+                />
+              </div>
+            </TiltCard>
             <div className="flex justify-between items-baseline mt-4">
               <h3 className="font-serif text-xl md:text-2xl">5:42 AM, hostel terrace</h3>
               <span className="font-mono text-xs text-charcoal/40">After-viva sunrise</span>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -243,21 +249,27 @@ function Home() {
 
       {/* CTA STRIPS */}
       <section className="px-6 md:px-10 pb-24 max-w-7xl mx-auto grid md:grid-cols-3 gap-4">
-        <Link to="/timeline" className="group p-8 rounded-2xl bg-charcoal text-paper hover:bg-brand transition-colors">
-          <p className="font-mono text-[10px] tracking-[0.25em] uppercase opacity-60 mb-6">01 / The arc</p>
-          <h3 className="font-serif text-3xl mb-10 leading-tight">From freshers to final-year zombies.</h3>
-          <span className="font-serif italic group-hover:translate-x-1 inline-block transition-transform">View timeline →</span>
-        </Link>
-        <Link to="/yearbook" className="group p-8 rounded-2xl bg-cream hover:bg-brand hover:text-white transition-colors">
-          <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-charcoal/60 group-hover:text-white/70 mb-6">02 / The crew</p>
-          <h3 className="font-serif text-3xl mb-10 leading-tight">Nine characters that ran this season.</h3>
-          <span className="font-serif italic group-hover:translate-x-1 inline-block transition-transform">Open yearbook →</span>
-        </Link>
-        <Link to="/letter" className="group p-8 rounded-2xl border border-charcoal/15 hover:bg-brand hover:text-white hover:border-brand transition-colors">
-          <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-charcoal/60 group-hover:text-white/70 mb-6">03 / The goodbye</p>
-          <h3 className="font-serif text-3xl mb-10 leading-tight">A letter to the friends I won&rsquo;t see daily.</h3>
-          <span className="font-serif italic group-hover:translate-x-1 inline-block transition-transform">Read letter →</span>
-        </Link>
+        <Reveal delay={0}>
+          <Link to="/timeline" className="cta-rise press-down block h-full group p-8 rounded-2xl bg-charcoal text-paper hover:bg-brand transition-colors">
+            <p className="font-mono text-[10px] tracking-[0.25em] uppercase opacity-60 mb-6">01 / The arc</p>
+            <h3 className="font-serif text-3xl mb-10 leading-tight">From freshers to final-year zombies.</h3>
+            <span className="font-serif italic group-hover:translate-x-1 inline-block transition-transform">View timeline →</span>
+          </Link>
+        </Reveal>
+        <Reveal delay={120}>
+          <Link to="/yearbook" className="cta-rise press-down block h-full group p-8 rounded-2xl bg-cream hover:bg-brand hover:text-white transition-colors">
+            <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-charcoal/60 group-hover:text-white/70 mb-6">02 / The crew</p>
+            <h3 className="font-serif text-3xl mb-10 leading-tight">Nine characters that ran this season.</h3>
+            <span className="font-serif italic group-hover:translate-x-1 inline-block transition-transform">Open yearbook →</span>
+          </Link>
+        </Reveal>
+        <Reveal delay={240}>
+          <Link to="/letter" className="cta-rise press-down block h-full group p-8 rounded-2xl border border-charcoal/15 hover:bg-brand hover:text-white hover:border-brand transition-colors">
+            <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-charcoal/60 group-hover:text-white/70 mb-6">03 / The goodbye</p>
+            <h3 className="font-serif text-3xl mb-10 leading-tight">A letter to the friends I won&rsquo;t see daily.</h3>
+            <span className="font-serif italic group-hover:translate-x-1 inline-block transition-transform">Read letter →</span>
+          </Link>
+        </Reveal>
       </section>
 
       {/* VISIT COUNTER */}

@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { LoginGate } from "@/components/login-gate";
 import { SendLove } from "@/components/send-love";
 import { AuroraBackground } from "@/components/aurora-bg";
+import { CursorGlow } from "@/components/cursor-glow";
 
 import { Toaster } from "@/components/ui/sonner";
 
@@ -129,6 +130,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <LoginGate>
         <AuroraBackground />
+        <CursorGlow />
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={key}
