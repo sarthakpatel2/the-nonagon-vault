@@ -100,6 +100,7 @@ export function CollageBackground() {
                 transform: `translate3d(calc(var(--mx) / ${60 / t.depth} * -1), calc(var(--my) / ${60 / t.depth} * -1), 0)`,
                 transition: "transform 400ms cubic-bezier(0.16,1,0.3,1)",
                 willChange: "transform",
+                objectPosition: t.pos,
               }}
               draggable={false}
             />
