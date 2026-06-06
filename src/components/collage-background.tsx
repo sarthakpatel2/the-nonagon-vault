@@ -11,15 +11,15 @@ import shivendra from "@/assets/crew/shivendra.jpeg";
 
 // 9 tiles in a 3x3, each with its own parallax depth
 const tiles = [
-  { src: shivendra, depth: 18 },
-  { src: sarthak, depth: 10 },
-  { src: racheet, depth: 24 },
-  { src: madhavK, depth: 14 },
-  { src: aditi, depth: 8 },
-  { src: madhavS, depth: 20 },
-  { src: pragati, depth: 12 },
-  { src: amanSax, depth: 22 },
-  { src: amanSingh, depth: 16 },
+  { src: shivendra, depth: 18, pos: "50% 25%" },
+  { src: sarthak, depth: 10, pos: "50% 20%" },
+  { src: racheet, depth: 24, pos: "50% 22%" },
+  { src: madhavK, depth: 14, pos: "50% 25%" },
+  { src: aditi, depth: 8, pos: "50% 22%" },
+  { src: madhavS, depth: 20, pos: "50% 25%" },
+  { src: pragati, depth: 12, pos: "50% 22%" },
+  { src: amanSax, depth: 22, pos: "50% 25%" },
+  { src: amanSingh, depth: 16, pos: "50% 25%" },
 ];
 
 export function CollageBackground() {
