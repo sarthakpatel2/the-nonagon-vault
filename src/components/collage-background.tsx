@@ -67,7 +67,7 @@ export function CollageBackground() {
             <img
               src={t.src}
               alt=""
-              className="absolute inset-0 w-[115%] h-[115%] object-cover grayscale contrast-110"
+              className="absolute inset-0 w-[108%] h-[108%] object-cover grayscale contrast-110"
               style={{
                 transform: `translate3d(calc(var(--mx) / ${60 / t.depth} * -1), calc(var(--my) / ${60 / t.depth} * -1), 0)`,
                 transition: "transform 400ms cubic-bezier(0.16,1,0.3,1)",
