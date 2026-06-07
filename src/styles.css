@@ -450,9 +450,19 @@
   .animate-walk-away,
   .animate-slow-zoom,
   .text-shimmer,
-  .ambient-breathe { animation: none !important; }
+  .ambient-breathe,
+  [class*="animate-aurora"] { animation: none !important; }
   .reveal-on-scroll { opacity: 1; transform: none; transition: none; }
   .tilt-card__inner { transform: none !important; }
+  html { scroll-behavior: auto; }
+}
+
+/* Lighter background work on small / low-power devices */
+@media (max-width: 768px) {
+  [class*="animate-aurora"] {
+    filter: blur(40px);
+    animation-duration: 40s !important;
+  }
 }
 
 #lovable-badge {
