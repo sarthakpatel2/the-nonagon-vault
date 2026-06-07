@@ -136,11 +136,6 @@ const POOL: Question[] = [
     reveal: "Madhav Khandelwal. That laugh. Echoing through hostel corridors, photo backgrounds, every voice note. You can hear it just reading this.",
   },
   {
-    q: "Who would 100% miss the train but make it the funniest story of the trip?",
-    options: ["Aman Saxena", "Madhav Sharma", "Racheet", "Aman Singh"],
-    reveal: "Aman Saxena. Misses the train, books another, somehow reaches before us. The chaos is the plot. The plot is the memory.",
-  },
-  {
     q: "Whose 'one chai' actually means a 90-minute tapri session?",
     options: ["Aditi", "Sarthak", "Madhav Khandelwal", "Shivendra"],
     reveal: "Aditi. 'Bas ek chai' is a lie we agreed to believe. Two cups in, the whole group's life had been decoded.",
@@ -267,8 +262,8 @@ const POOL: Question[] = [
   },
   {
     q: "Who's the most dramatic over a minor inconvenience?",
-    options: ["Madhav Khandelwal", "Racheet", "Aman Saxena", "Madhav Sharma"],
-    reveal: "Madhav Khandelwal. One raindrop on his shoe and it's a Shakespearian tragedy. One cold dosa and the chef has personally wronged him. The drama is the gift.",
+    options: ["Madhav Sharma", "Racheet", "Aman Saxena", "Madhav Khandelwal"],
+    reveal: "Madhav Sharma. One raindrop on his shoe and it's a Shakespearean tragedy. One cold dosa and the chef has personally wronged him. The drama is the gift.",
   },
   {
     q: "Who is the unofficial fashion consultant of the group?",
