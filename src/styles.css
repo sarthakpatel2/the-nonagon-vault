@@ -352,8 +352,8 @@
   transform: rotateX(var(--rx)) rotateY(var(--ry));
   transform-style: preserve-3d;
   transition: transform 0.45s var(--ease-out-expo);
-  will-change: transform;
 }
+.tilt-card.is-active .tilt-card__inner { will-change: transform; }
 .tilt-card__glare {
   pointer-events: none;
   position: absolute;
@@ -368,21 +368,39 @@
   opacity: 0;
   transition: opacity 0.4s var(--ease-out-expo);
 }
+.tilt-card.is-active .tilt-card__glare,
 .tilt-card:hover .tilt-card__glare { opacity: 1; }
 
-/* Scroll reveal */
+/* Scroll reveal — will-change only while pending to avoid permanent layer cost */
 .reveal-on-scroll {
   opacity: 0;
   transform: translate3d(0, var(--reveal-y, 28px), 0);
   transition:
-    opacity 0.9s var(--ease-out-expo),
-    transform 0.9s var(--ease-out-expo);
+    opacity 0.7s var(--ease-out-expo),
+    transform 0.7s var(--ease-out-expo);
   transition-delay: var(--reveal-delay, 0ms);
   will-change: opacity, transform;
 }
 .reveal-on-scroll.is-shown {
   opacity: 1;
   transform: translate3d(0, 0, 0);
+  will-change: auto;
+}
+
+/* Cursor glow ring — class-toggled state, no per-frame filter transitions */
+.cursor-glow-ring {
+  background: radial-gradient(
+    circle at 50% 50%,
+    oklch(0.78 0.18 38 / 0.35),
+    oklch(0.78 0.18 38 / 0) 70%
+  );
+  opacity: 0.55;
+  transform: translate3d(-200px, -200px, 0);
+  transition: opacity 0.3s var(--ease-out-expo), scale 0.3s var(--ease-out-expo);
+}
+.cursor-glow-ring.is-hover {
+  opacity: 0.9;
+  scale: 1.25;
 }
 
 /* Looping shimmer across text — warm brand sweep */
@@ -432,9 +450,19 @@
   .animate-walk-away,
   .animate-slow-zoom,
   .text-shimmer,
-  .ambient-breathe { animation: none !important; }
+  .ambient-breathe,
+  [class*="animate-aurora"] { animation: none !important; }
   .reveal-on-scroll { opacity: 1; transform: none; transition: none; }
   .tilt-card__inner { transform: none !important; }
+  html { scroll-behavior: auto; }
+}
+
+/* Lighter background work on small / low-power devices */
+@media (max-width: 768px) {
+  [class*="animate-aurora"] {
+    filter: blur(40px);
+    animation-duration: 40s !important;
+  }
 }
 
 #lovable-badge {
