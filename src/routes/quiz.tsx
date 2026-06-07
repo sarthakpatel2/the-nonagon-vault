@@ -3,7 +3,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { photoMap } from "@/lib/photos";
-import { playTap, playCorrect, playWrong } from "@/lib/quiz-feedback";
+import { playTap, playCorrect, playWrong, playFinale, isMuted, setMuted } from "@/lib/quiz-feedback";
+import { fireConfetti } from "@/lib/confetti";
 
 
 const PHOTO_KEYS = Object.keys(photoMap);
@@ -358,6 +359,13 @@ function QuizPage() {
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
   const [showReview, setShowReview] = useState(false);
+  const [muted, setMutedState] = useState(false);
+  useEffect(() => { setMutedState(isMuted()); }, []);
+  const toggleMute = () => {
+    const next = !muted;
+    setMuted(next);
+    setMutedState(next);
+  };
 
 
   useEffect(() => {
@@ -392,6 +400,8 @@ function QuizPage() {
   const next = () => {
     if (i + 1 >= quiz.length) {
       setDone(true);
+      fireConfetti();
+      playFinale();
     } else {
       setI(i + 1);
       setPicked(null);
@@ -420,10 +430,21 @@ function QuizPage() {
     <div className="min-h-screen flex flex-col">
       <SiteNav />
       <main className="flex-1 px-6 md:px-10 py-12 md:py-16 max-w-2xl mx-auto w-full">
-        <header className="mb-8 text-center">
+        <header className="mb-8 text-center relative">
           <p className="font-mono text-xs text-brand uppercase tracking-widest mb-3">// the_nonagon_quiz.exe</p>
           <h1 className="text-4xl md:text-5xl font-serif italic text-charcoal mb-3">How well do you know us?</h1>
           <p className="text-charcoal/70 text-sm">Shuffled fresh every time. Tissues optional.</p>
+          <button
+            type="button"
+            onClick={toggleMute}
+            aria-pressed={muted}
+            aria-label={muted ? "Unmute sound effects" : "Mute sound effects"}
+            title={muted ? "Sound off" : "Sound on"}
+            className="absolute right-0 top-0 inline-flex items-center gap-1.5 rounded-full border border-charcoal/15 bg-paper/70 px-3 py-1.5 text-xs font-mono text-charcoal/70 hover:text-brand hover:border-brand transition-colors"
+          >
+            <span aria-hidden="true">{muted ? "🔇" : "🔊"}</span>
+            <span className="hidden sm:inline">{muted ? "muted" : "sound"}</span>
+          </button>
         </header>
 
         {!q && !done ? (
