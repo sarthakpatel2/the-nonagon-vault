@@ -136,11 +136,6 @@ const POOL: Question[] = [
     reveal: "Madhav Khandelwal. That laugh. Echoing through hostel corridors, photo backgrounds, every voice note. You can hear it just reading this.",
   },
   {
-    q: "Who would 100% miss the train but make it the funniest story of the trip?",
-    options: ["Aman Saxena", "Madhav Sharma", "Racheet", "Aman Singh"],
-    reveal: "Aman Saxena. Misses the train, books another, somehow reaches before us. The chaos is the plot. The plot is the memory.",
-  },
-  {
     q: "Whose 'one chai' actually means a 90-minute tapri session?",
     options: ["Aditi", "Sarthak", "Madhav Khandelwal", "Shivendra"],
     reveal: "Aditi. 'Bas ek chai' is a lie we agreed to believe. Two cups in, the whole group's life had been decoded.",
