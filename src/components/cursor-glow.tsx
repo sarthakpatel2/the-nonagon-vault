@@ -3,13 +3,18 @@ import { useEffect, useRef, useState } from "react";
 /**
  * Soft warm cursor halo that lerps toward the mouse for a buttery feel.
  * Grows on interactive elements. Hidden on touch / reduced-motion.
+ *
+ * Perf notes:
+ *  - No React state per mousemove — hover is toggled via classList.
+ *  - Single rAF loop drives both ring lerp + dot position.
+ *  - No filter transitions (blur animations trigger paint every frame).
  */
 export function CursorGlow() {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const target = useRef({ x: -100, y: -100 });
   const ring = useRef({ x: -100, y: -100 });
-  const [hovering, setHovering] = useState(false);
+  const hovering = useRef(false);
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
@@ -18,24 +23,41 @@ export function CursorGlow() {
     if (!hasFinePointer || reduced) return;
     setEnabled(true);
 
+    let pendingHoverCheck = false;
     const onMove = (e: MouseEvent) => {
       target.current.x = e.clientX;
       target.current.y = e.clientY;
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+      // Hover detection is cheap but DOM-touching — coalesce to one per frame.
+      if (!pendingHoverCheck) {
+        pendingHoverCheck = true;
+        const el = e.target as HTMLElement | null;
+        requestAnimationFrame(() => {
+          pendingHoverCheck = false;
+          const isHover = !!el?.closest(
+            "a, button, [role='button'], input, textarea, label, .hover-tilt, .tilt-card"
+          );
+          if (isHover !== hovering.current) {
+            hovering.current = isHover;
+            ringRef.current?.classList.toggle("is-hover", isHover);
+          }
+        });
       }
-      const el = e.target as HTMLElement | null;
-      setHovering(
-        !!el?.closest("a, button, [role='button'], input, textarea, label, .hover-tilt, .group")
-      );
     };
 
     let raf = 0;
-    const loop = () => {
-      ring.current.x += (target.current.x - ring.current.x) * 0.18;
-      ring.current.y += (target.current.y - ring.current.y) * 0.18;
+    let last = 0;
+    const loop = (t: number) => {
+      // Skip frame if browser is already busy (>32ms since last) to avoid jank cascade.
+      const dt = Math.min(32, t - last) || 16;
+      last = t;
+      const k = 1 - Math.pow(1 - 0.18, dt / 16);
+      ring.current.x += (target.current.x - ring.current.x) * k;
+      ring.current.y += (target.current.y - ring.current.y) * k;
       if (ringRef.current) {
         ringRef.current.style.transform = `translate3d(${ring.current.x}px, ${ring.current.y}px, 0)`;
+      }
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${target.current.x}px, ${target.current.y}px, 0)`;
       }
       raf = requestAnimationFrame(loop);
     };
@@ -54,14 +76,7 @@ export function CursorGlow() {
       <div
         ref={ringRef}
         aria-hidden
-        className="pointer-events-none fixed left-0 top-0 z-[60] -ml-12 -mt-12 h-24 w-24 rounded-full mix-blend-multiply transition-[opacity,scale,filter] duration-300 will-change-transform"
-        style={{
-          background:
-            "radial-gradient(circle at 50% 50%, oklch(0.78 0.18 38 / 0.35), oklch(0.78 0.18 38 / 0) 70%)",
-          filter: hovering ? "blur(6px)" : "blur(14px)",
-          opacity: hovering ? 0.9 : 0.55,
-          scale: hovering ? "1.25" : "1",
-        }}
+        className="cursor-glow-ring pointer-events-none fixed left-0 top-0 z-[60] -ml-12 -mt-12 h-24 w-24 rounded-full mix-blend-multiply will-change-transform"
       />
       <div
         ref={dotRef}
