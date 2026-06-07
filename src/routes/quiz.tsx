@@ -3,7 +3,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { photoMap } from "@/lib/photos";
-import { playTap, playCorrect, playWrong } from "@/lib/quiz-feedback";
+import { playTap, playCorrect, playWrong, playFinale, isMuted, setMuted } from "@/lib/quiz-feedback";
+import { fireConfetti } from "@/lib/confetti";
 
 
 const PHOTO_KEYS = Object.keys(photoMap);
@@ -358,6 +359,13 @@ function QuizPage() {
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
   const [showReview, setShowReview] = useState(false);
+  const [muted, setMutedState] = useState(false);
+  useEffect(() => { setMutedState(isMuted()); }, []);
+  const toggleMute = () => {
+    const next = !muted;
+    setMuted(next);
+    setMutedState(next);
+  };
 
 
   useEffect(() => {
@@ -392,6 +400,8 @@ function QuizPage() {
   const next = () => {
     if (i + 1 >= quiz.length) {
       setDone(true);
+      fireConfetti();
+      playFinale();
     } else {
       setI(i + 1);
       setPicked(null);
