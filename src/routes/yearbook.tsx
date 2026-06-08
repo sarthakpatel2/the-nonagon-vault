@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
+import { BeforeAfter } from "@/components/before-after";
 import aditiImg from "@/assets/crew/aditi.jpeg";
 import amanSinghImg from "@/assets/crew/aman-singh.jpeg";
 import amanSaxenaImg from "@/assets/crew/aman-saxena.jpeg";
