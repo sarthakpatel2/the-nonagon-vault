@@ -131,24 +131,34 @@ function YearbookPage() {
           Freshers <span className="italic text-brand">→</span> Final year.
         </h2>
         <p className="text-charcoal/60 mb-12 max-w-xl">
-          Drag the slider. Watch four years happen in one second. (Freshers pics are placeholder-tinted — drop the real ones in <code className="font-mono text-xs bg-charcoal/5 px-1 py-0.5 rounded">src/assets/crew/freshers/</code> and swap them in.)
+          Drag the slider. Watch four years happen in one second.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {crew.map((p) => (
-            <figure key={p.name} className="space-y-3">
-              <BeforeAfter
-                alt={p.name}
-                beforeSrc={p.photo}
-                afterSrc={p.photo}
-                beforeFilter="sepia(0.6) saturate(0.7) brightness(0.95) contrast(0.95) blur(0.3px)"
-              />
-              <figcaption className="flex items-baseline justify-between">
-                <span className="font-serif text-lg">{p.name}</span>
-                <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-charcoal/50">{p.role}</span>
-              </figcaption>
-            </figure>
-          ))}
+          {crew.map((p) => {
+            const freshersSrc = freshers[p.slug];
+            return (
+              <figure key={p.slug} className="space-y-3">
+                <BeforeAfter
+                  alt={p.name}
+                  beforeSrc={freshersSrc ?? p.photo}
+                  afterSrc={p.photo}
+                  beforeFilter={
+                    freshersSrc
+                      ? undefined
+                      : "sepia(0.6) saturate(0.7) brightness(0.95) contrast(0.95) blur(0.3px)"
+                  }
+                />
+                <figcaption className="flex items-baseline justify-between">
+                  <span className="font-serif text-lg">{p.name}</span>
+                  <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-charcoal/50">
+                    {freshersSrc ? p.role : "placeholder — add via /admin/freshers"}
+                  </span>
+                </figcaption>
+              </figure>
+            );
+          })}
         </div>
+
       </section>
 
       {/* SIGNATURE WALL */}
