@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
+import { BeforeAfter } from "@/components/before-after";
 import aditiImg from "@/assets/crew/aditi.jpeg";
 import amanSinghImg from "@/assets/crew/aman-singh.jpeg";
 import amanSaxenaImg from "@/assets/crew/aman-saxena.jpeg";
@@ -238,6 +239,33 @@ function YearbookPage() {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      {/* THEN vs NOW — drag to reveal */}
+      <section className="px-6 md:px-10 py-24 max-w-7xl mx-auto">
+        <p className="font-mono text-xs tracking-[0.3em] uppercase text-charcoal/50 mb-3">Then vs Now</p>
+        <h2 className="font-serif text-3xl md:text-5xl tracking-tight mb-3">
+          Freshers <span className="italic text-brand">→</span> Final year.
+        </h2>
+        <p className="text-charcoal/60 mb-12 max-w-xl">
+          Drag the slider. Watch four years happen in one second. (Freshers pics are placeholder-tinted — drop the real ones in <code className="font-mono text-xs bg-charcoal/5 px-1 py-0.5 rounded">src/assets/crew/freshers/</code> and swap them in.)
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {crew.map((p) => (
+            <figure key={p.name} className="space-y-3">
+              <BeforeAfter
+                alt={p.name}
+                beforeSrc={p.photo}
+                afterSrc={p.photo}
+                beforeFilter="sepia(0.6) saturate(0.7) brightness(0.95) contrast(0.95) blur(0.3px)"
+              />
+              <figcaption className="flex items-baseline justify-between">
+                <span className="font-serif text-lg">{p.name}</span>
+                <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-charcoal/50">{p.role}</span>
+              </figcaption>
+            </figure>
+          ))}
         </div>
       </section>
 
