@@ -14,6 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      freshers_photos: {
+        Row: {
+          created_at: string
+          friend_slug: string
+          image_url: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          friend_slug: string
+          image_url: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          friend_slug?: string
+          image_url?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       gallery_photos: {
         Row: {
           caption: string
