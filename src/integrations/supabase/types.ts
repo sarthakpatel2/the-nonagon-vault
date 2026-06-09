@@ -17,20 +17,23 @@ export type Database = {
       freshers_photos: {
         Row: {
           created_at: string
+          final_image_url: string | null
           friend_slug: string
-          image_url: string
+          image_url: string | null
           updated_at: string
         }
         Insert: {
           created_at?: string
+          final_image_url?: string | null
           friend_slug: string
-          image_url: string
+          image_url?: string | null
           updated_at?: string
         }
         Update: {
           created_at?: string
+          final_image_url?: string | null
           friend_slug?: string
-          image_url?: string
+          image_url?: string | null
           updated_at?: string
         }
         Relationships: []
