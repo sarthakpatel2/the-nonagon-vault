@@ -186,15 +186,15 @@ function PhotoSlot({
       if (upErr) throw upErr;
       const { data: urlData } = supabase.storage.from("gallery").getPublicUrl(path);
 
-      const payload: Record<string, string> = {
+      const payload = {
         friend_slug: member.slug,
         updated_at: new Date().toISOString(),
+        [column]: urlData.publicUrl,
       };
-      payload[column] = urlData.publicUrl;
 
       const { error: insErr } = await supabase
         .from("freshers_photos")
-        .upsert(payload, { onConflict: "friend_slug" });
+        .upsert(payload as never, { onConflict: "friend_slug" });
       if (insErr) throw insErr;
       toast.success(`${member.name} — ${label} photo saved`);
       onChange();
