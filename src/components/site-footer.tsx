@@ -138,12 +138,20 @@ export function SiteFooter() {
         {/* Bottom row */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 font-mono text-[10px] tracking-[0.2em] uppercase text-charcoal/40">
           <p>© 2022 — 2026 · The Nonagon, Inc. (Not actually incorporated)</p>
-          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 items-center">
             <span className="hover:text-brand transition-colors cursor-default">Built with chai &amp; trauma</span>
             <span className="hidden md:inline">·</span>
             <span className="hover:text-brand transition-colors cursor-default">Powered by 9 group admins</span>
             <span className="hidden md:inline">·</span>
             <span className="hover:text-brand transition-colors cursor-default">Bugs are features</span>
+            <span className="hidden md:inline">·</span>
+            <Link
+              to="/admin/freshers"
+              className="hover:text-brand transition-colors inline-flex items-center gap-1"
+              title="Admin"
+            >
+              <span aria-hidden>🔒</span> admin
+            </Link>
           </div>
         </div>
       </div>

@@ -21,19 +21,23 @@ export const Route = createFileRoute("/yearbook")({
 function YearbookPage() {
   const [open, setOpen] = useState<number | null>(null);
   const [freshers, setFreshers] = useState<Record<string, string>>({});
+  const [finals, setFinals] = useState<Record<string, string>>({});
 
   useEffect(() => {
     let cancelled = false;
     supabase
       .from("freshers_photos")
-      .select("friend_slug,image_url")
+      .select("friend_slug,image_url,final_image_url")
       .then(({ data, error }) => {
         if (cancelled || error || !data) return;
-        const map: Record<string, string> = {};
-        data.forEach((r: { friend_slug: string; image_url: string }) => {
-          map[r.friend_slug] = r.image_url;
+        const fmap: Record<string, string> = {};
+        const nmap: Record<string, string> = {};
+        data.forEach((r) => {
+          if (r.image_url) fmap[r.friend_slug] = r.image_url;
+          if (r.final_image_url) nmap[r.friend_slug] = r.final_image_url;
         });
-        setFreshers(map);
+        setFreshers(fmap);
+        setFinals(nmap);
       });
     return () => {
       cancelled = true;
@@ -136,12 +140,13 @@ function YearbookPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {crew.map((p) => {
             const freshersSrc = freshers[p.slug];
+            const finalSrc = finals[p.slug] ?? p.photo;
             return (
               <figure key={p.slug} className="space-y-3">
                 <BeforeAfter
                   alt={p.name}
-                  beforeSrc={freshersSrc ?? p.photo}
-                  afterSrc={p.photo}
+                  beforeSrc={freshersSrc ?? finalSrc}
+                  afterSrc={finalSrc}
                   beforeFilter={
                     freshersSrc
                       ? undefined
@@ -151,7 +156,7 @@ function YearbookPage() {
                 <figcaption className="flex items-baseline justify-between">
                   <span className="font-serif text-lg">{p.name}</span>
                   <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-charcoal/50">
-                    {freshersSrc ? p.role : "placeholder — add via /admin/freshers"}
+                    {freshersSrc ? p.role : "placeholder — add via admin"}
                   </span>
                 </figcaption>
               </figure>
