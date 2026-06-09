@@ -1,9 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Upload, Loader2, Check, Trash2, Pencil } from "lucide-react";
+import { Upload, Loader2, Check, Trash2, Pencil, Settings2 } from "lucide-react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { AdminPasskeyGate } from "@/components/admin-passkey-gate";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { crew, type CrewMember } from "@/lib/crew";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
