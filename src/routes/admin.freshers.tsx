@@ -214,9 +214,10 @@ function PhotoSlot({
     if (!confirm(`Remove ${label} photo for ${member.name}?`)) return;
     setBusy(true);
     try {
+      const updates = { [column]: null, updated_at: new Date().toISOString() } as never;
       const { error } = await supabase
         .from("freshers_photos")
-        .update({ [column]: null, updated_at: new Date().toISOString() })
+        .update(updates)
         .eq("friend_slug", member.slug);
       if (error) throw error;
       toast.success(`${label} photo removed`);
