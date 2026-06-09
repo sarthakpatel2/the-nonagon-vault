@@ -116,36 +116,92 @@ function FriendCard({
   nowUrl?: string;
   onChange: () => void;
 }) {
+  const [open, setOpen] = useState(false);
+  const hasThen = Boolean(thenUrl);
+  const hasNow = Boolean(nowUrl);
+
   return (
     <div className="border border-charcoal/15 rounded-xl p-4 bg-paper">
       <div className="flex items-center gap-3 mb-4">
         <img src={member.photo} alt={member.name} className="w-10 h-10 rounded-full object-cover" />
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <p className="font-serif text-base leading-tight truncate">{member.name}</p>
           <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-charcoal/50 truncate">
             {member.slug}
           </p>
         </div>
+        <div className="flex gap-1">
+          <span
+            className={`size-2 rounded-full ${hasThen ? "bg-emerald-500" : "bg-charcoal/15"}`}
+            title={hasThen ? "Then set" : "Then missing"}
+          />
+          <span
+            className={`size-2 rounded-full ${hasNow ? "bg-emerald-500" : "bg-charcoal/15"}`}
+            title={hasNow ? "Now set" : "Now missing"}
+          />
+        </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <PhotoSlot
-          member={member}
-          slot="then"
-          label="Then"
-          currentUrl={thenUrl}
-          fallback={null}
-          onChange={onChange}
-        />
-        <PhotoSlot
-          member={member}
-          slot="now"
-          label="Now"
-          currentUrl={nowUrl}
-          fallback={member.photo}
-          onChange={onChange}
-        />
+      <div className="grid grid-cols-2 gap-2 mb-3">
+        <div className="aspect-[4/5] bg-charcoal/5 rounded overflow-hidden grid place-items-center">
+          {thenUrl ? (
+            <img src={thenUrl} alt={`Then ${member.name}`} className="w-full h-full object-cover" />
+          ) : (
+            <span className="text-charcoal/40 font-mono text-[9px] tracking-widest uppercase">then —</span>
+          )}
+        </div>
+        <div className="aspect-[4/5] bg-charcoal/5 rounded overflow-hidden grid place-items-center">
+          {nowUrl ? (
+            <img src={nowUrl} alt={`Now ${member.name}`} className="w-full h-full object-cover" />
+          ) : (
+            <img
+              src={member.photo}
+              alt={`Now ${member.name}`}
+              className="w-full h-full object-cover opacity-70"
+            />
+          )}
+        </div>
       </div>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <button
+            type="button"
+            className="w-full inline-flex items-center justify-center gap-2 bg-charcoal text-paper py-2 rounded font-mono text-[10px] tracking-[0.2em] uppercase hover:bg-brand transition-colors"
+          >
+            <Settings2 className="w-3 h-3" /> manage photos
+          </button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="font-serif text-2xl">
+              {member.name} <span className="italic text-brand">— then vs now</span>
+            </DialogTitle>
+            <DialogDescription>
+              Upload, replace, or delete each photo independently. Changes save instantly.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2">
+            <PhotoSlot
+              member={member}
+              slot="then"
+              label="Then"
+              currentUrl={thenUrl}
+              fallback={null}
+              onChange={onChange}
+            />
+            <PhotoSlot
+              member={member}
+              slot="now"
+              label="Now"
+              currentUrl={nowUrl}
+              fallback={member.photo}
+              onChange={onChange}
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
