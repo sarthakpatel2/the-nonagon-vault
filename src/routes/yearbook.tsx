@@ -140,12 +140,13 @@ function YearbookPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {crew.map((p) => {
             const freshersSrc = freshers[p.slug];
+            const finalSrc = finals[p.slug] ?? p.photo;
             return (
               <figure key={p.slug} className="space-y-3">
                 <BeforeAfter
                   alt={p.name}
-                  beforeSrc={freshersSrc ?? p.photo}
-                  afterSrc={p.photo}
+                  beforeSrc={freshersSrc ?? finalSrc}
+                  afterSrc={finalSrc}
                   beforeFilter={
                     freshersSrc
                       ? undefined
@@ -155,7 +156,7 @@ function YearbookPage() {
                 <figcaption className="flex items-baseline justify-between">
                   <span className="font-serif text-lg">{p.name}</span>
                   <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-charcoal/50">
-                    {freshersSrc ? p.role : "placeholder — add via /admin/freshers"}
+                    {freshersSrc ? p.role : "placeholder — add via admin"}
                   </span>
                 </figcaption>
               </figure>
