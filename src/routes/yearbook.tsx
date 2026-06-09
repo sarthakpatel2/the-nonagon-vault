@@ -21,19 +21,23 @@ export const Route = createFileRoute("/yearbook")({
 function YearbookPage() {
   const [open, setOpen] = useState<number | null>(null);
   const [freshers, setFreshers] = useState<Record<string, string>>({});
+  const [finals, setFinals] = useState<Record<string, string>>({});
 
   useEffect(() => {
     let cancelled = false;
     supabase
       .from("freshers_photos")
-      .select("friend_slug,image_url")
+      .select("friend_slug,image_url,final_image_url")
       .then(({ data, error }) => {
         if (cancelled || error || !data) return;
-        const map: Record<string, string> = {};
-        data.forEach((r: { friend_slug: string; image_url: string }) => {
-          map[r.friend_slug] = r.image_url;
+        const fmap: Record<string, string> = {};
+        const nmap: Record<string, string> = {};
+        data.forEach((r) => {
+          if (r.image_url) fmap[r.friend_slug] = r.image_url;
+          if (r.final_image_url) nmap[r.friend_slug] = r.final_image_url;
         });
-        setFreshers(map);
+        setFreshers(fmap);
+        setFinals(nmap);
       });
     return () => {
       cancelled = true;
