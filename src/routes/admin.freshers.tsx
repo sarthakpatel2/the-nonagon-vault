@@ -229,25 +229,19 @@ function PhotoSlot({
   label: string;
   currentUrl?: string;
   fallback: string | null;
-  onChange: () => void;
+  onChange: () => Promise<void> | void;
 }) {
   const [busy, setBusy] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+  const [confirmReplaceOpen, setConfirmReplaceOpen] = useState(false);
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const column = slot === "then" ? "image_url" : "final_image_url";
   const folder = slot === "then" ? "freshers" : "finals";
 
-  const handleFile = async (file: File | null) => {
-    if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      toast.error("Pick an image file");
-      return;
-    }
-    if (file.size > 8 * 1024 * 1024) {
-      toast.error("Image must be under 8 MB");
-      return;
-    }
+  const uploadFile = async (file: File) => {
     const localUrl = URL.createObjectURL(file);
     setPreview(localUrl);
     setBusy(true);
@@ -271,7 +265,7 @@ function PhotoSlot({
         .upsert(payload as never, { onConflict: "friend_slug" });
       if (insErr) throw insErr;
       toast.success(`${member.name} — ${label} photo saved`);
-      onChange();
+      await onChange();
     } catch (err) {
       console.error(err);
       toast.error(err instanceof Error ? err.message : "Upload failed");
@@ -283,9 +277,41 @@ function PhotoSlot({
     }
   };
 
-  const remove = async () => {
+  const onFilePicked = (file: File | null) => {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast.error("Pick an image file");
+      return;
+    }
+    if (file.size > 8 * 1024 * 1024) {
+      toast.error("Image must be under 8 MB");
+      return;
+    }
+    // If a photo already exists, ask before replacing.
+    if (currentUrl) {
+      setPendingFile(file);
+      setConfirmReplaceOpen(true);
+      return;
+    }
+    void uploadFile(file);
+  };
+
+  const confirmReplace = async () => {
+    const file = pendingFile;
+    setConfirmReplaceOpen(false);
+    setPendingFile(null);
+    if (file) await uploadFile(file);
+  };
+
+  const cancelReplace = () => {
+    setConfirmReplaceOpen(false);
+    setPendingFile(null);
+    if (inputRef.current) inputRef.current.value = "";
+  };
+
+  const confirmRemove = async () => {
+    setConfirmDeleteOpen(false);
     if (!currentUrl) return;
-    if (!confirm(`Remove ${label} photo for ${member.name}?`)) return;
     setBusy(true);
     try {
       const updates = { [column]: null, updated_at: new Date().toISOString() } as never;
@@ -295,7 +321,7 @@ function PhotoSlot({
         .eq("friend_slug", member.slug);
       if (error) throw error;
       toast.success(`${label} photo removed`);
-      onChange();
+      await onChange();
     } catch (err) {
       console.error(err);
       toast.error("Couldn't remove");
@@ -368,19 +394,65 @@ function PhotoSlot({
         accept="image/*"
         className="sr-only"
         disabled={busy}
-        onChange={(e) => handleFile(e.target.files?.[0] ?? null)}
+        onChange={(e) => onFilePicked(e.target.files?.[0] ?? null)}
       />
 
       {hasReal && (
         <button
           type="button"
-          onClick={remove}
+          onClick={() => setConfirmDeleteOpen(true)}
           disabled={busy}
           className="mt-2 w-full inline-flex items-center justify-center gap-1.5 px-2 py-1.5 border border-charcoal/15 text-charcoal/70 font-mono text-[10px] tracking-[0.2em] uppercase hover:bg-red-50 hover:text-red-600 hover:border-red-300 transition-colors disabled:opacity-50 rounded"
         >
           <Trash2 className="w-3 h-3" /> delete
         </button>
       )}
+
+      {/* Replace confirmation */}
+      <AlertDialog
+        open={confirmReplaceOpen}
+        onOpenChange={(o) => (o ? setConfirmReplaceOpen(true) : cancelReplace())}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-serif flex items-center gap-2">
+              <Pencil className="w-4 h-4 text-brand" /> Replace {label.toLowerCase()} photo?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              This will overwrite the current <span className="font-medium">{label}</span> photo for{" "}
+              <span className="font-medium">{member.name}</span>. The previous image will no longer appear in the yearbook.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={cancelReplace}>Keep current</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmReplace}>Replace</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Delete confirmation */}
+      <AlertDialog open={confirmDeleteOpen} onOpenChange={setConfirmDeleteOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-serif flex items-center gap-2 text-red-600">
+              <AlertTriangle className="w-4 h-4" /> Delete {label.toLowerCase()} photo?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Remove the <span className="font-medium">{label}</span> photo for{" "}
+              <span className="font-medium">{member.name}</span>? You can re-upload a new one any time.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmRemove}
+              className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
