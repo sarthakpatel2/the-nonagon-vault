@@ -124,7 +124,7 @@ function FriendCard({
   member: CrewMember;
   thenUrl?: string;
   nowUrl?: string;
-  onChange: () => void;
+  onChange: () => Promise<void> | void;
 }) {
   const [open, setOpen] = useState(false);
   const hasThen = Boolean(thenUrl);
