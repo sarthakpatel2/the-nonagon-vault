@@ -1,6 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Upload, Loader2, Trash2, Settings2, AlertTriangle, Plus } from "lucide-react";
+import { Upload, Loader2, Trash2, Settings2, AlertTriangle, Plus, GripVertical } from "lucide-react";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  KeyboardSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  arrayMove,
+  rectSortingStrategy,
+  sortableKeyboardCoordinates,
+  useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { AdminPasskeyGate } from "@/components/admin-passkey-gate";
@@ -220,8 +237,18 @@ function PhotoGroup({
 }) {
   const [busy, setBusy] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Item | null>(null);
+  const [localItems, setLocalItems] = useState<Item[]>(items);
   const inputRef = useRef<HTMLInputElement>(null);
   const folder = kind === "then" ? "freshers" : "finals";
+
+  useEffect(() => {
+    setLocalItems(items);
+  }, [items]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
 
   const upload = async (file: File) => {
     if (!file.type.startsWith("image/")) return toast.error("Pick an image file");
@@ -235,7 +262,7 @@ function PhotoGroup({
         .upload(path, file, { contentType: file.type, upsert: false });
       if (upErr) throw upErr;
       const { data: urlData } = supabase.storage.from("gallery").getPublicUrl(path);
-      const nextSort = items.length ? Math.max(...items.map((i) => i.sort_order)) + 1 : 0;
+      const nextSort = localItems.length ? Math.max(...localItems.map((i) => i.sort_order)) + 1 : 0;
       const { error: insErr } = await supabase
         .from("freshers_photo_items" as never)
         .insert({
@@ -277,11 +304,40 @@ function PhotoGroup({
     }
   };
 
+  const onDragEnd = async (e: DragEndEvent) => {
+    const { active, over } = e;
+    if (!over || active.id === over.id) return;
+    const oldIdx = localItems.findIndex((i) => i.id === active.id);
+    const newIdx = localItems.findIndex((i) => i.id === over.id);
+    if (oldIdx < 0 || newIdx < 0) return;
+    const reordered = arrayMove(localItems, oldIdx, newIdx);
+    setLocalItems(reordered);
+    try {
+      const updates = await Promise.all(
+        reordered.map((it, idx) =>
+          it.sort_order === idx
+            ? Promise.resolve({ error: null })
+            : supabase
+                .from("freshers_photo_items" as never)
+                .update({ sort_order: idx, updated_at: new Date().toISOString() } as never)
+                .eq("id", it.id),
+        ),
+      );
+      const firstErr = updates.find((u) => u.error);
+      if (firstErr?.error) throw firstErr.error;
+      await onChange();
+    } catch (err) {
+      console.error(err);
+      toast.error("Couldn't save order");
+      setLocalItems(items);
+    }
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
         <p className="font-mono text-[10px] tracking-widest uppercase text-charcoal/50">
-          {label} <span className="text-charcoal/30">· {items.length}</span>
+          {label} <span className="text-charcoal/30">· {localItems.length}</span>
         </p>
         <button
           type="button"
@@ -305,7 +361,7 @@ function PhotoGroup({
         }}
       />
 
-      {items.length === 0 ? (
+      {localItems.length === 0 ? (
         <button
           type="button"
           onClick={() => !busy && inputRef.current?.click()}
@@ -317,26 +373,24 @@ function PhotoGroup({
           </span>
         </button>
       ) : (
-        <div className="grid grid-cols-2 gap-2">
-          {items.map((it, idx) => (
-            <div key={it.id} className="relative group aspect-[4/5] bg-charcoal/5 rounded overflow-hidden">
-              <img src={it.image_url} alt={`${label} ${idx + 1}`} className="w-full h-full object-cover" />
-              <span className="absolute top-1 left-1 font-mono text-[9px] px-1.5 py-0.5 rounded bg-black/60 text-white">
-                #{idx + 1}
-              </span>
-              <button
-                type="button"
-                onClick={() => setDeleteTarget(it)}
-                disabled={busy}
-                aria-label="Delete photo"
-                className="absolute top-1 right-1 p-1 rounded bg-black/60 text-white opacity-0 group-hover:opacity-100 hover:bg-red-600 transition-opacity"
-              >
-                <Trash2 className="w-3 h-3" />
-              </button>
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+          <SortableContext items={localItems.map((i) => i.id)} strategy={rectSortingStrategy}>
+            <div className="grid grid-cols-2 gap-2">
+              {localItems.map((it, idx) => (
+                <SortablePhoto
+                  key={it.id}
+                  item={it}
+                  index={idx}
+                  label={label}
+                  disabled={busy}
+                  onDelete={() => setDeleteTarget(it)}
+                />
+              ))}
             </div>
-          ))}
-        </div>
+          </SortableContext>
+        </DndContext>
       )}
+
 
       <AlertDialog open={!!deleteTarget} onOpenChange={(o) => !o && setDeleteTarget(null)}>
         <AlertDialogContent>
@@ -359,6 +413,60 @@ function PhotoGroup({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+    </div>
+  );
+}
+
+function SortablePhoto({
+  item,
+  index,
+  label,
+  disabled,
+  onDelete,
+}: {
+  item: Item;
+  index: number;
+  label: string;
+  disabled: boolean;
+  onDelete: () => void;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: item.id,
+  });
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    zIndex: isDragging ? 10 : undefined,
+  };
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="relative group aspect-[4/5] bg-charcoal/5 rounded overflow-hidden touch-none"
+    >
+      <img src={item.image_url} alt={`${label} ${index + 1}`} className="w-full h-full object-cover pointer-events-none" />
+      <span className="absolute top-1 left-1 font-mono text-[9px] px-1.5 py-0.5 rounded bg-black/60 text-white">
+        #{index + 1}
+      </span>
+      <button
+        type="button"
+        {...attributes}
+        {...listeners}
+        aria-label="Drag to reorder"
+        className="absolute bottom-1 left-1 p-1 rounded bg-black/60 text-white cursor-grab active:cursor-grabbing hover:bg-black/80"
+      >
+        <GripVertical className="w-3 h-3" />
+      </button>
+      <button
+        type="button"
+        onClick={onDelete}
+        disabled={disabled}
+        aria-label="Delete photo"
+        className="absolute top-1 right-1 p-1 rounded bg-black/60 text-white opacity-0 group-hover:opacity-100 hover:bg-red-600 transition-opacity"
+      >
+        <Trash2 className="w-3 h-3" />
+      </button>
     </div>
   );
 }
