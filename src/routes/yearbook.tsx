@@ -20,29 +20,32 @@ export const Route = createFileRoute("/yearbook")({
 
 function YearbookPage() {
   const [open, setOpen] = useState<number | null>(null);
-  const [freshers, setFreshers] = useState<Record<string, string>>({});
-  const [finals, setFinals] = useState<Record<string, string>>({});
+  const [thens, setThens] = useState<Record<string, string[]>>({});
+  const [nows, setNows] = useState<Record<string, string[]>>({});
 
   useEffect(() => {
     let cancelled = false;
     supabase
-      .from("freshers_photos")
-      .select("friend_slug,image_url,final_image_url")
+      .from("freshers_photo_items" as never)
+      .select("friend_slug,kind,image_url,sort_order")
+      .order("sort_order", { ascending: true })
+      .order("created_at", { ascending: true })
       .then(({ data, error }) => {
         if (cancelled || error || !data) return;
-        const fmap: Record<string, string> = {};
-        const nmap: Record<string, string> = {};
-        data.forEach((r) => {
-          if (r.image_url) fmap[r.friend_slug] = r.image_url;
-          if (r.final_image_url) nmap[r.friend_slug] = r.final_image_url;
+        const t: Record<string, string[]> = {};
+        const n: Record<string, string[]> = {};
+        (data as unknown as { friend_slug: string; kind: "then" | "now"; image_url: string }[]).forEach((r) => {
+          const target = r.kind === "then" ? t : n;
+          (target[r.friend_slug] ??= []).push(r.image_url);
         });
-        setFreshers(fmap);
-        setFinals(nmap);
+        setThens(t);
+        setNows(n);
       });
     return () => {
       cancelled = true;
     };
   }, []);
+
 
 
   return (
@@ -138,31 +141,18 @@ function YearbookPage() {
           Drag the slider. Watch four years happen in one second.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {crew.map((p) => {
-            const freshersSrc = freshers[p.slug];
-            const finalSrc = finals[p.slug] ?? p.photo;
-            return (
-              <figure key={p.slug} className="space-y-3">
-                <BeforeAfter
-                  alt={p.name}
-                  beforeSrc={freshersSrc ?? finalSrc}
-                  afterSrc={finalSrc}
-                  beforeFilter={
-                    freshersSrc
-                      ? undefined
-                      : "sepia(0.6) saturate(0.7) brightness(0.95) contrast(0.95) blur(0.3px)"
-                  }
-                />
-                <figcaption className="flex items-baseline justify-between">
-                  <span className="font-serif text-lg">{p.name}</span>
-                  <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-charcoal/50">
-                    {freshersSrc ? p.role : "placeholder — add via admin"}
-                  </span>
-                </figcaption>
-              </figure>
-            );
-          })}
+          {crew.map((p) => (
+            <FriendBeforeAfter
+              key={p.slug}
+              name={p.name}
+              role={p.role}
+              fallback={p.photo}
+              thens={thens[p.slug] ?? []}
+              nows={nows[p.slug] ?? []}
+            />
+          ))}
         </div>
+
 
       </section>
 
@@ -200,3 +190,70 @@ function YearbookPage() {
     </main>
   );
 }
+
+function FriendBeforeAfter({
+  name,
+  role,
+  fallback,
+  thens,
+  nows,
+}: {
+  name: string;
+  role: string;
+  fallback: string;
+  thens: string[];
+  nows: string[];
+}) {
+  const count = Math.max(thens.length, nows.length, 1);
+  const [idx, setIdx] = useState(0);
+  const i = Math.min(idx, count - 1);
+  const thenSrc = thens[i] ?? thens[0];
+  const nowSrc = nows[i] ?? nows[0] ?? fallback;
+  const beforeSrc = thenSrc ?? nowSrc;
+  const hasReal = Boolean(thenSrc);
+
+  return (
+    <figure className="space-y-3">
+      <div className="relative">
+        <BeforeAfter
+          alt={name}
+          beforeSrc={beforeSrc}
+          afterSrc={nowSrc}
+          beforeFilter={
+            hasReal ? undefined : "sepia(0.6) saturate(0.7) brightness(0.95) contrast(0.95) blur(0.3px)"
+          }
+        />
+        {count > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={() => setIdx((p) => (p - 1 + count) % count)}
+              aria-label="Previous pair"
+              className="absolute left-2 bottom-2 z-10 size-8 grid place-items-center rounded-full bg-black/60 text-white hover:bg-black/80 font-mono text-sm"
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              onClick={() => setIdx((p) => (p + 1) % count)}
+              aria-label="Next pair"
+              className="absolute right-2 bottom-2 z-10 size-8 grid place-items-center rounded-full bg-black/60 text-white hover:bg-black/80 font-mono text-sm"
+            >
+              ›
+            </button>
+            <span className="absolute left-1/2 -translate-x-1/2 bottom-2 z-10 px-2 py-0.5 rounded bg-black/60 text-white font-mono text-[10px] tracking-widest">
+              {i + 1} / {count}
+            </span>
+          </>
+        )}
+      </div>
+      <figcaption className="flex items-baseline justify-between">
+        <span className="font-serif text-lg">{name}</span>
+        <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-charcoal/50">
+          {hasReal ? role : "placeholder — add via admin"}
+        </span>
+      </figcaption>
+    </figure>
+  );
+}
+

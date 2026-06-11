@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Upload, Loader2, Check, Trash2, Pencil, Settings2, AlertTriangle } from "lucide-react";
+import { Upload, Loader2, Trash2, Settings2, AlertTriangle, Plus } from "lucide-react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { AdminPasskeyGate } from "@/components/admin-passkey-gate";
@@ -41,31 +41,25 @@ export const Route = createFileRoute("/admin/freshers")({
   ),
 });
 
-type Row = { friend_slug: string; image_url: string | null; final_image_url: string | null };
-type Slot = "then" | "now";
+type Kind = "then" | "now";
+type Item = { id: string; friend_slug: string; kind: Kind; image_url: string; sort_order: number };
 
 function AdminFreshersPage() {
-  const [thenMap, setThenMap] = useState<Record<string, string>>({});
-  const [nowMap, setNowMap] = useState<Record<string, string>>({});
+  const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
 
   const load = useCallback(async () => {
     setLoading(true);
     const { data, error } = await supabase
-      .from("freshers_photos")
-      .select("friend_slug,image_url,final_image_url");
+      .from("freshers_photo_items" as never)
+      .select("id,friend_slug,kind,image_url,sort_order")
+      .order("sort_order", { ascending: true })
+      .order("created_at", { ascending: true });
     if (error) {
       console.error(error);
       toast.error("Couldn't load photos");
     } else {
-      const t: Record<string, string> = {};
-      const n: Record<string, string> = {};
-      (data as Row[] | null)?.forEach((r) => {
-        if (r.image_url) t[r.friend_slug] = r.image_url;
-        if (r.final_image_url) n[r.friend_slug] = r.final_image_url;
-      });
-      setThenMap(t);
-      setNowMap(n);
+      setItems((data ?? []) as unknown as Item[]);
     }
     setLoading(false);
   }, []);
@@ -73,6 +67,9 @@ function AdminFreshersPage() {
   useEffect(() => {
     load();
   }, [load]);
+
+  const byFriend = (slug: string, kind: Kind) =>
+    items.filter((i) => i.friend_slug === slug && i.kind === kind);
 
   return (
     <main className="min-h-screen">
@@ -86,7 +83,7 @@ function AdminFreshersPage() {
           Freshers <span className="italic text-brand">vs</span> Final year.
         </h1>
         <p className="mt-4 max-w-xl text-charcoal/70">
-          Click any tile to upload, replace or delete that photo independently. Then-photos and Now-photos are managed separately.
+          Add as many Then and Now photos as you like per friend. The slider on the yearbook will pair them up in order.
         </p>
       </header>
 
@@ -101,8 +98,8 @@ function AdminFreshersPage() {
               <FriendCard
                 key={m.slug}
                 member={m}
-                thenUrl={thenMap[m.slug]}
-                nowUrl={nowMap[m.slug]}
+                thens={byFriend(m.slug, "then")}
+                nows={byFriend(m.slug, "now")}
                 onChange={load}
               />
             ))}
@@ -117,18 +114,18 @@ function AdminFreshersPage() {
 
 function FriendCard({
   member,
-  thenUrl,
-  nowUrl,
+  thens,
+  nows,
   onChange,
 }: {
   member: CrewMember;
-  thenUrl?: string;
-  nowUrl?: string;
+  thens: Item[];
+  nows: Item[];
   onChange: () => Promise<void> | void;
 }) {
   const [open, setOpen] = useState(false);
-  const hasThen = Boolean(thenUrl);
-  const hasNow = Boolean(nowUrl);
+  const thenCover = thens[0]?.image_url;
+  const nowCover = nows[0]?.image_url;
 
   return (
     <div className="border border-charcoal/15 rounded-xl p-4 bg-paper">
@@ -140,29 +137,23 @@ function FriendCard({
             {member.slug}
           </p>
         </div>
-        <div className="flex gap-1">
-          <span
-            className={`size-2 rounded-full ${hasThen ? "bg-emerald-500" : "bg-charcoal/15"}`}
-            title={hasThen ? "Then set" : "Then missing"}
-          />
-          <span
-            className={`size-2 rounded-full ${hasNow ? "bg-emerald-500" : "bg-charcoal/15"}`}
-            title={hasNow ? "Now set" : "Now missing"}
-          />
+        <div className="flex gap-1 font-mono text-[10px] text-charcoal/60">
+          <span className="px-1.5 rounded bg-charcoal/10">T·{thens.length}</span>
+          <span className="px-1.5 rounded bg-charcoal/10">N·{nows.length}</span>
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-2 mb-3">
         <div className="aspect-[4/5] bg-charcoal/5 rounded overflow-hidden grid place-items-center">
-          {thenUrl ? (
-            <img src={thenUrl} alt={`Then ${member.name}`} className="w-full h-full object-cover" />
+          {thenCover ? (
+            <img src={thenCover} alt={`Then ${member.name}`} className="w-full h-full object-cover" />
           ) : (
             <span className="text-charcoal/40 font-mono text-[9px] tracking-widest uppercase">then —</span>
           )}
         </div>
         <div className="aspect-[4/5] bg-charcoal/5 rounded overflow-hidden grid place-items-center">
-          {nowUrl ? (
-            <img src={nowUrl} alt={`Now ${member.name}`} className="w-full h-full object-cover" />
+          {nowCover ? (
+            <img src={nowCover} alt={`Now ${member.name}`} className="w-full h-full object-cover" />
           ) : (
             <img
               src={member.photo}
@@ -182,31 +173,29 @@ function FriendCard({
             <Settings2 className="w-3 h-3" /> manage photos
           </button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-2xl">
+        <DialogContent className="sm:max-w-3xl max-h-[85vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="font-serif text-2xl">
               {member.name} <span className="italic text-brand">— then vs now</span>
             </DialogTitle>
             <DialogDescription>
-              Upload, replace, or delete each photo independently. Changes save instantly.
+              Add multiple Then and Now photos. They'll be paired in order on the yearbook slider.
             </DialogDescription>
           </DialogHeader>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2">
-            <PhotoSlot
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+            <PhotoGroup
               member={member}
-              slot="then"
+              kind="then"
               label="Then"
-              currentUrl={thenUrl}
-              fallback={null}
+              items={thens}
               onChange={onChange}
             />
-            <PhotoSlot
+            <PhotoGroup
               member={member}
-              slot="now"
+              kind="now"
               label="Now"
-              currentUrl={nowUrl}
-              fallback={member.photo}
+              items={nows}
               onChange={onChange}
             />
           </div>
@@ -216,34 +205,27 @@ function FriendCard({
   );
 }
 
-function PhotoSlot({
+function PhotoGroup({
   member,
-  slot,
+  kind,
   label,
-  currentUrl,
-  fallback,
+  items,
   onChange,
 }: {
   member: CrewMember;
-  slot: Slot;
+  kind: Kind;
   label: string;
-  currentUrl?: string;
-  fallback: string | null;
+  items: Item[];
   onChange: () => Promise<void> | void;
 }) {
   const [busy, setBusy] = useState(false);
-  const [preview, setPreview] = useState<string | null>(null);
-  const [pendingFile, setPendingFile] = useState<File | null>(null);
-  const [confirmReplaceOpen, setConfirmReplaceOpen] = useState(false);
-  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<Item | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const folder = kind === "then" ? "freshers" : "finals";
 
-  const column = slot === "then" ? "image_url" : "final_image_url";
-  const folder = slot === "then" ? "freshers" : "finals";
-
-  const uploadFile = async (file: File) => {
-    const localUrl = URL.createObjectURL(file);
-    setPreview(localUrl);
+  const upload = async (file: File) => {
+    if (!file.type.startsWith("image/")) return toast.error("Pick an image file");
+    if (file.size > 8 * 1024 * 1024) return toast.error("Image must be under 8 MB");
     setBusy(true);
     try {
       const ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
@@ -253,72 +235,37 @@ function PhotoSlot({
         .upload(path, file, { contentType: file.type, upsert: false });
       if (upErr) throw upErr;
       const { data: urlData } = supabase.storage.from("gallery").getPublicUrl(path);
-
-      const payload = {
-        friend_slug: member.slug,
-        updated_at: new Date().toISOString(),
-        [column]: urlData.publicUrl,
-      };
-
+      const nextSort = items.length ? Math.max(...items.map((i) => i.sort_order)) + 1 : 0;
       const { error: insErr } = await supabase
-        .from("freshers_photos")
-        .upsert(payload as never, { onConflict: "friend_slug" });
+        .from("freshers_photo_items" as never)
+        .insert({
+          friend_slug: member.slug,
+          kind,
+          image_url: urlData.publicUrl,
+          sort_order: nextSort,
+        } as never);
       if (insErr) throw insErr;
-      toast.success(`${member.name} — ${label} photo saved`);
+      toast.success(`${label} photo added`);
       await onChange();
     } catch (err) {
       console.error(err);
       toast.error(err instanceof Error ? err.message : "Upload failed");
     } finally {
       setBusy(false);
-      setPreview(null);
-      URL.revokeObjectURL(localUrl);
       if (inputRef.current) inputRef.current.value = "";
     }
   };
 
-  const onFilePicked = (file: File | null) => {
-    if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      toast.error("Pick an image file");
-      return;
-    }
-    if (file.size > 8 * 1024 * 1024) {
-      toast.error("Image must be under 8 MB");
-      return;
-    }
-    // If a photo already exists, ask before replacing.
-    if (currentUrl) {
-      setPendingFile(file);
-      setConfirmReplaceOpen(true);
-      return;
-    }
-    void uploadFile(file);
-  };
-
-  const confirmReplace = async () => {
-    const file = pendingFile;
-    setConfirmReplaceOpen(false);
-    setPendingFile(null);
-    if (file) await uploadFile(file);
-  };
-
-  const cancelReplace = () => {
-    setConfirmReplaceOpen(false);
-    setPendingFile(null);
-    if (inputRef.current) inputRef.current.value = "";
-  };
-
-  const confirmRemove = async () => {
-    setConfirmDeleteOpen(false);
-    if (!currentUrl) return;
+  const confirmDelete = async () => {
+    const target = deleteTarget;
+    setDeleteTarget(null);
+    if (!target) return;
     setBusy(true);
     try {
-      const updates = { [column]: null, updated_at: new Date().toISOString() } as never;
       const { error } = await supabase
-        .from("freshers_photos")
-        .update(updates)
-        .eq("friend_slug", member.slug);
+        .from("freshers_photo_items" as never)
+        .delete()
+        .eq("id", target.id);
       if (error) throw error;
       toast.success(`${label} photo removed`);
       await onChange();
@@ -330,63 +277,21 @@ function PhotoSlot({
     }
   };
 
-  const openPicker = () => {
-    if (busy) return;
-    inputRef.current?.click();
-  };
-
-  const displayUrl = preview || currentUrl || fallback;
-  const hasReal = Boolean(currentUrl);
-
   return (
     <div>
-      <div className="flex items-center justify-between mb-1">
-        <p className="font-mono text-[10px] tracking-widest uppercase text-charcoal/50">{label}</p>
-        {hasReal && !busy && (
-          <span className="inline-flex items-center gap-1 text-[9px] font-mono uppercase tracking-widest text-emerald-700">
-            <Check className="w-3 h-3" /> set
-          </span>
-        )}
+      <div className="flex items-center justify-between mb-2">
+        <p className="font-mono text-[10px] tracking-widest uppercase text-charcoal/50">
+          {label} <span className="text-charcoal/30">· {items.length}</span>
+        </p>
+        <button
+          type="button"
+          onClick={() => !busy && inputRef.current?.click()}
+          disabled={busy}
+          className="inline-flex items-center gap-1 px-2 py-1 rounded bg-brand text-white font-mono text-[10px] tracking-widest uppercase disabled:opacity-50"
+        >
+          {busy ? <Loader2 className="w-3 h-3 animate-spin" /> : <Plus className="w-3 h-3" />} add
+        </button>
       </div>
-
-      <button
-        type="button"
-        onClick={openPicker}
-        disabled={busy}
-        aria-label={`Upload ${label} photo for ${member.name}`}
-        className="group relative w-full aspect-[4/5] bg-charcoal/5 rounded overflow-hidden grid place-items-center border border-transparent hover:border-brand transition-colors"
-      >
-        {displayUrl ? (
-          <img src={displayUrl} alt={`${label} ${member.name}`} className="w-full h-full object-cover" />
-        ) : (
-          <span className="text-charcoal/40 font-mono text-[10px]">click to add</span>
-        )}
-
-        {/* hover overlay */}
-        <div className="absolute inset-0 bg-charcoal/60 opacity-0 group-hover:opacity-100 transition-opacity grid place-items-center pointer-events-none">
-          <span className="inline-flex items-center gap-1.5 text-paper font-mono text-[10px] tracking-[0.2em] uppercase">
-            {busy ? (
-              <>
-                <Loader2 className="w-3 h-3 animate-spin" /> uploading…
-              </>
-            ) : hasReal ? (
-              <>
-                <Pencil className="w-3 h-3" /> replace
-              </>
-            ) : (
-              <>
-                <Upload className="w-3 h-3" /> upload
-              </>
-            )}
-          </span>
-        </div>
-
-        {busy && (
-          <div className="absolute inset-0 bg-paper/60 grid place-items-center">
-            <Loader2 className="w-5 h-5 animate-spin text-brand" />
-          </div>
-        )}
-      </button>
 
       <input
         ref={inputRef}
@@ -394,58 +299,59 @@ function PhotoSlot({
         accept="image/*"
         className="sr-only"
         disabled={busy}
-        onChange={(e) => onFilePicked(e.target.files?.[0] ?? null)}
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          if (f) void upload(f);
+        }}
       />
 
-      {hasReal && (
+      {items.length === 0 ? (
         <button
           type="button"
-          onClick={() => setConfirmDeleteOpen(true)}
+          onClick={() => !busy && inputRef.current?.click()}
           disabled={busy}
-          className="mt-2 w-full inline-flex items-center justify-center gap-1.5 px-2 py-1.5 border border-charcoal/15 text-charcoal/70 font-mono text-[10px] tracking-[0.2em] uppercase hover:bg-red-50 hover:text-red-600 hover:border-red-300 transition-colors disabled:opacity-50 rounded"
+          className="w-full aspect-[4/5] bg-charcoal/5 rounded grid place-items-center border border-dashed border-charcoal/20 hover:border-brand transition-colors"
         >
-          <Trash2 className="w-3 h-3" /> delete
+          <span className="inline-flex items-center gap-1.5 text-charcoal/50 font-mono text-[10px] tracking-[0.2em] uppercase">
+            <Upload className="w-3 h-3" /> click to add
+          </span>
         </button>
+      ) : (
+        <div className="grid grid-cols-2 gap-2">
+          {items.map((it, idx) => (
+            <div key={it.id} className="relative group aspect-[4/5] bg-charcoal/5 rounded overflow-hidden">
+              <img src={it.image_url} alt={`${label} ${idx + 1}`} className="w-full h-full object-cover" />
+              <span className="absolute top-1 left-1 font-mono text-[9px] px-1.5 py-0.5 rounded bg-black/60 text-white">
+                #{idx + 1}
+              </span>
+              <button
+                type="button"
+                onClick={() => setDeleteTarget(it)}
+                disabled={busy}
+                aria-label="Delete photo"
+                className="absolute top-1 right-1 p-1 rounded bg-black/60 text-white opacity-0 group-hover:opacity-100 hover:bg-red-600 transition-opacity"
+              >
+                <Trash2 className="w-3 h-3" />
+              </button>
+            </div>
+          ))}
+        </div>
       )}
 
-      {/* Replace confirmation */}
-      <AlertDialog
-        open={confirmReplaceOpen}
-        onOpenChange={(o) => (o ? setConfirmReplaceOpen(true) : cancelReplace())}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle className="font-serif flex items-center gap-2">
-              <Pencil className="w-4 h-4 text-brand" /> Replace {label.toLowerCase()} photo?
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              This will overwrite the current <span className="font-medium">{label}</span> photo for{" "}
-              <span className="font-medium">{member.name}</span>. The previous image will no longer appear in the yearbook.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={cancelReplace}>Keep current</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmReplace}>Replace</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
-      {/* Delete confirmation */}
-      <AlertDialog open={confirmDeleteOpen} onOpenChange={setConfirmDeleteOpen}>
+      <AlertDialog open={!!deleteTarget} onOpenChange={(o) => !o && setDeleteTarget(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className="font-serif flex items-center gap-2 text-red-600">
-              <AlertTriangle className="w-4 h-4" /> Delete {label.toLowerCase()} photo?
+              <AlertTriangle className="w-4 h-4" /> Delete this {label.toLowerCase()} photo?
             </AlertDialogTitle>
             <AlertDialogDescription>
-              Remove the <span className="font-medium">{label}</span> photo for{" "}
-              <span className="font-medium">{member.name}</span>? You can re-upload a new one any time.
+              This removes the photo from <span className="font-medium">{member.name}</span>'s {label.toLowerCase()} set. You can re-upload anytime.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              onClick={confirmRemove}
+              onClick={confirmDelete}
               className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
             >
               Delete
