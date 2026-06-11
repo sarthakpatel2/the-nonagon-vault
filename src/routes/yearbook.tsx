@@ -20,29 +20,32 @@ export const Route = createFileRoute("/yearbook")({
 
 function YearbookPage() {
   const [open, setOpen] = useState<number | null>(null);
-  const [freshers, setFreshers] = useState<Record<string, string>>({});
-  const [finals, setFinals] = useState<Record<string, string>>({});
+  const [thens, setThens] = useState<Record<string, string[]>>({});
+  const [nows, setNows] = useState<Record<string, string[]>>({});
 
   useEffect(() => {
     let cancelled = false;
     supabase
-      .from("freshers_photos")
-      .select("friend_slug,image_url,final_image_url")
+      .from("freshers_photo_items" as never)
+      .select("friend_slug,kind,image_url,sort_order")
+      .order("sort_order", { ascending: true })
+      .order("created_at", { ascending: true })
       .then(({ data, error }) => {
         if (cancelled || error || !data) return;
-        const fmap: Record<string, string> = {};
-        const nmap: Record<string, string> = {};
-        data.forEach((r) => {
-          if (r.image_url) fmap[r.friend_slug] = r.image_url;
-          if (r.final_image_url) nmap[r.friend_slug] = r.final_image_url;
+        const t: Record<string, string[]> = {};
+        const n: Record<string, string[]> = {};
+        (data as unknown as { friend_slug: string; kind: "then" | "now"; image_url: string }[]).forEach((r) => {
+          const target = r.kind === "then" ? t : n;
+          (target[r.friend_slug] ??= []).push(r.image_url);
         });
-        setFreshers(fmap);
-        setFinals(nmap);
+        setThens(t);
+        setNows(n);
       });
     return () => {
       cancelled = true;
     };
   }, []);
+
 
 
   return (
