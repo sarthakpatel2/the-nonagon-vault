@@ -190,3 +190,70 @@ function YearbookPage() {
     </main>
   );
 }
+
+function FriendBeforeAfter({
+  name,
+  role,
+  fallback,
+  thens,
+  nows,
+}: {
+  name: string;
+  role: string;
+  fallback: string;
+  thens: string[];
+  nows: string[];
+}) {
+  const count = Math.max(thens.length, nows.length, 1);
+  const [idx, setIdx] = useState(0);
+  const i = Math.min(idx, count - 1);
+  const thenSrc = thens[i] ?? thens[0];
+  const nowSrc = nows[i] ?? nows[0] ?? fallback;
+  const beforeSrc = thenSrc ?? nowSrc;
+  const hasReal = Boolean(thenSrc);
+
+  return (
+    <figure className="space-y-3">
+      <div className="relative">
+        <BeforeAfter
+          alt={name}
+          beforeSrc={beforeSrc}
+          afterSrc={nowSrc}
+          beforeFilter={
+            hasReal ? undefined : "sepia(0.6) saturate(0.7) brightness(0.95) contrast(0.95) blur(0.3px)"
+          }
+        />
+        {count > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={() => setIdx((p) => (p - 1 + count) % count)}
+              aria-label="Previous pair"
+              className="absolute left-2 bottom-2 z-10 size-8 grid place-items-center rounded-full bg-black/60 text-white hover:bg-black/80 font-mono text-sm"
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              onClick={() => setIdx((p) => (p + 1) % count)}
+              aria-label="Next pair"
+              className="absolute right-2 bottom-2 z-10 size-8 grid place-items-center rounded-full bg-black/60 text-white hover:bg-black/80 font-mono text-sm"
+            >
+              ›
+            </button>
+            <span className="absolute left-1/2 -translate-x-1/2 bottom-2 z-10 px-2 py-0.5 rounded bg-black/60 text-white font-mono text-[10px] tracking-widest">
+              {i + 1} / {count}
+            </span>
+          </>
+        )}
+      </div>
+      <figcaption className="flex items-baseline justify-between">
+        <span className="font-serif text-lg">{name}</span>
+        <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-charcoal/50">
+          {hasReal ? role : "placeholder — add via admin"}
+        </span>
+      </figcaption>
+    </figure>
+  );
+}
+
