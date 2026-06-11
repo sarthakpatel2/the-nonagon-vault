@@ -416,3 +416,57 @@ function PhotoGroup({
     </div>
   );
 }
+
+function SortablePhoto({
+  item,
+  index,
+  label,
+  disabled,
+  onDelete,
+}: {
+  item: Item;
+  index: number;
+  label: string;
+  disabled: boolean;
+  onDelete: () => void;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: item.id,
+  });
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    zIndex: isDragging ? 10 : undefined,
+  };
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="relative group aspect-[4/5] bg-charcoal/5 rounded overflow-hidden touch-none"
+    >
+      <img src={item.image_url} alt={`${label} ${index + 1}`} className="w-full h-full object-cover pointer-events-none" />
+      <span className="absolute top-1 left-1 font-mono text-[9px] px-1.5 py-0.5 rounded bg-black/60 text-white">
+        #{index + 1}
+      </span>
+      <button
+        type="button"
+        {...attributes}
+        {...listeners}
+        aria-label="Drag to reorder"
+        className="absolute bottom-1 left-1 p-1 rounded bg-black/60 text-white cursor-grab active:cursor-grabbing hover:bg-black/80"
+      >
+        <GripVertical className="w-3 h-3" />
+      </button>
+      <button
+        type="button"
+        onClick={onDelete}
+        disabled={disabled}
+        aria-label="Delete photo"
+        className="absolute top-1 right-1 p-1 rounded bg-black/60 text-white opacity-0 group-hover:opacity-100 hover:bg-red-600 transition-opacity"
+      >
+        <Trash2 className="w-3 h-3" />
+      </button>
+    </div>
+  );
+}
