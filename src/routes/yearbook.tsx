@@ -232,13 +232,41 @@ function FriendBeforeAfter({
     if (i >= count - 1) setIdx(0);
     setPlaying(true);
   };
+
+  const goPrev = () => {
+    setPlaying(false);
+    setIdx((p) => (p - 1 + count) % count);
+  };
+  const goNext = () => {
+    setPlaying(false);
+    setIdx((p) => (p + 1) % count);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (count <= 1) return;
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      goPrev();
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      goNext();
+    } else if (e.key === " " || e.key === "Spacebar") {
+      e.preventDefault();
+      togglePlay();
+    }
+  };
+
   const thenSrc = thens[i] ?? thens[0];
   const nowSrc = nows[i] ?? nows[0] ?? fallback;
   const beforeSrc = thenSrc ?? nowSrc;
   const hasReal = Boolean(thenSrc);
 
   return (
-    <figure className="space-y-3">
+    <figure
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+      className="space-y-3 outline-none focus-visible:ring-2 focus-visible:ring-brand/70 rounded-xl"
+    >
       <div className="relative">
         <BeforeAfter
           alt={name}
@@ -252,7 +280,7 @@ function FriendBeforeAfter({
           <>
             <button
               type="button"
-              onClick={() => { setPlaying(false); setIdx((p) => (p - 1 + count) % count); }}
+              onClick={goPrev}
               aria-label="Previous pair"
               className="absolute left-2 bottom-2 z-10 size-8 grid place-items-center rounded-full bg-black/60 text-white hover:bg-black/80 font-mono text-sm"
             >
@@ -260,7 +288,7 @@ function FriendBeforeAfter({
             </button>
             <button
               type="button"
-              onClick={() => { setPlaying(false); setIdx((p) => (p + 1) % count); }}
+              onClick={goNext}
               aria-label="Next pair"
               className="absolute right-2 bottom-2 z-10 size-8 grid place-items-center rounded-full bg-black/60 text-white hover:bg-black/80 font-mono text-sm"
             >
