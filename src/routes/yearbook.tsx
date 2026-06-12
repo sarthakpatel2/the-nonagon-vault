@@ -280,24 +280,8 @@ function FriendBeforeAfter({
           <>
             <button
               type="button"
-              onClick={goPrev}
-              aria-label="Previous pair"
-              className="absolute left-2 bottom-2 z-10 size-8 grid place-items-center rounded-full bg-black/60 text-white hover:bg-black/80 focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:outline-none font-mono text-sm"
-            >
-              ‹
-            </button>
-            <button
-              type="button"
-              onClick={goNext}
-              aria-label="Next pair"
-              className="absolute right-2 bottom-2 z-10 size-8 grid place-items-center rounded-full bg-black/60 text-white hover:bg-black/80 focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:outline-none font-mono text-sm"
-            >
-              ›
-            </button>
-            <button
-              type="button"
               onClick={togglePlay}
-              aria-label={playing ? "Pause slideshow" : "Play slideshow"}
+              aria-label={playing ? `Pause ${name}'s slideshow` : `Play ${name}'s slideshow`}
               className="absolute right-2 top-2 z-10 size-9 grid place-items-center rounded-full bg-brand text-white hover:bg-brand/90 focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:outline-none shadow-lg"
             >
               {playing ? (
@@ -306,7 +290,23 @@ function FriendBeforeAfter({
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               )}
             </button>
-            <span className="absolute left-1/2 -translate-x-1/2 bottom-2 z-10 px-2 py-0.5 rounded bg-black/60 text-white font-mono text-[10px] tracking-widest">
+            <button
+              type="button"
+              onClick={goPrev}
+              aria-label={`Previous photo of ${name}`}
+              className="absolute left-2 bottom-2 z-10 size-8 grid place-items-center rounded-full bg-black/60 text-white hover:bg-black/80 focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:outline-none font-mono text-sm"
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              onClick={goNext}
+              aria-label={`Next photo of ${name}`}
+              className="absolute right-2 bottom-2 z-10 size-8 grid place-items-center rounded-full bg-black/60 text-white hover:bg-black/80 focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:outline-none font-mono text-sm"
+            >
+              ›
+            </button>
+            <span aria-hidden="true" className="absolute left-1/2 -translate-x-1/2 bottom-2 z-10 px-2 py-0.5 rounded bg-black/60 text-white font-mono text-[10px] tracking-widest">
               {i + 1} / {count}
             </span>
           </>
