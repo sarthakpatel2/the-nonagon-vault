@@ -206,7 +206,32 @@ function FriendBeforeAfter({
 }) {
   const count = Math.max(thens.length, nows.length, 1);
   const [idx, setIdx] = useState(0);
+  const [playing, setPlaying] = useState(false);
   const i = Math.min(idx, count - 1);
+
+  useEffect(() => {
+    if (!playing || count <= 1) return;
+    const t = setInterval(() => {
+      setIdx((p) => {
+        const next = p + 1;
+        if (next >= count) {
+          setPlaying(false);
+          return count - 1;
+        }
+        return next;
+      });
+    }, 2500);
+    return () => clearInterval(t);
+  }, [playing, count]);
+
+  const togglePlay = () => {
+    if (playing) {
+      setPlaying(false);
+      return;
+    }
+    if (i >= count - 1) setIdx(0);
+    setPlaying(true);
+  };
   const thenSrc = thens[i] ?? thens[0];
   const nowSrc = nows[i] ?? nows[0] ?? fallback;
   const beforeSrc = thenSrc ?? nowSrc;
