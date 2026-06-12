@@ -252,7 +252,7 @@ function FriendBeforeAfter({
           <>
             <button
               type="button"
-              onClick={() => setIdx((p) => (p - 1 + count) % count)}
+              onClick={() => { setPlaying(false); setIdx((p) => (p - 1 + count) % count); }}
               aria-label="Previous pair"
               className="absolute left-2 bottom-2 z-10 size-8 grid place-items-center rounded-full bg-black/60 text-white hover:bg-black/80 font-mono text-sm"
             >
@@ -260,11 +260,23 @@ function FriendBeforeAfter({
             </button>
             <button
               type="button"
-              onClick={() => setIdx((p) => (p + 1) % count)}
+              onClick={() => { setPlaying(false); setIdx((p) => (p + 1) % count); }}
               aria-label="Next pair"
               className="absolute right-2 bottom-2 z-10 size-8 grid place-items-center rounded-full bg-black/60 text-white hover:bg-black/80 font-mono text-sm"
             >
               ›
+            </button>
+            <button
+              type="button"
+              onClick={togglePlay}
+              aria-label={playing ? "Pause slideshow" : "Play slideshow"}
+              className="absolute right-2 top-2 z-10 size-9 grid place-items-center rounded-full bg-brand text-white hover:bg-brand/90 shadow-lg"
+            >
+              {playing ? (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+              ) : (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              )}
             </button>
             <span className="absolute left-1/2 -translate-x-1/2 bottom-2 z-10 px-2 py-0.5 rounded bg-black/60 text-white font-mono text-[10px] tracking-widest">
               {i + 1} / {count}
