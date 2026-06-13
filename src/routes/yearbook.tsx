@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
-import { BeforeAfter } from "@/components/before-after";
+
 import { crew } from "@/lib/crew";
 import { supabase } from "@/integrations/supabase/client";
 
