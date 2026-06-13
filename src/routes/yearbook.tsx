@@ -204,10 +204,19 @@ function FriendBeforeAfter({
   thens: string[];
   nows: string[];
 }) {
-  const count = Math.max(thens.length, nows.length, 1);
+  // Single reel: all "then" frames first, then all "now" frames.
+  const reel: { src: string; kind: "then" | "now" }[] = [
+    ...thens.map((src) => ({ src, kind: "then" as const })),
+    ...nows.map((src) => ({ src, kind: "now" as const })),
+  ];
+  const hasReal = reel.length > 0;
+  if (reel.length === 0) reel.push({ src: fallback, kind: "now" });
+  const count = reel.length;
+
   const [idx, setIdx] = useState(0);
   const [playing, setPlaying] = useState(false);
   const i = Math.min(idx, count - 1);
+  const current = reel[i];
 
   useEffect(() => {
     if (!playing || count <= 1) return;
@@ -232,7 +241,6 @@ function FriendBeforeAfter({
     if (i >= count - 1) setIdx(0);
     setPlaying(true);
   };
-
   const goPrev = () => {
     setPlaying(false);
     setIdx((p) => (p - 1 + count) % count);
@@ -256,10 +264,10 @@ function FriendBeforeAfter({
     }
   };
 
-  const thenSrc = thens[i] ?? thens[0];
-  const nowSrc = nows[i] ?? nows[0] ?? fallback;
-  const beforeSrc = thenSrc ?? nowSrc;
-  const hasReal = Boolean(thenSrc);
+  const thenTotal = thens.length;
+  const nowTotal = nows.length || (hasReal ? 0 : 1);
+  const localIndex = current.kind === "then" ? i + 1 : i - thenTotal + 1;
+  const localTotal = current.kind === "then" ? thenTotal : nowTotal;
 
   return (
     <figure
@@ -267,15 +275,32 @@ function FriendBeforeAfter({
       onKeyDown={handleKeyDown}
       className="space-y-3 outline-none focus-visible:ring-2 focus-visible:ring-brand/70 rounded-xl"
     >
-      <div className="relative">
-        <BeforeAfter
-          alt={name}
-          beforeSrc={beforeSrc}
-          afterSrc={nowSrc}
-          beforeFilter={
-            hasReal ? undefined : "sepia(0.6) saturate(0.7) brightness(0.95) contrast(0.95) blur(0.3px)"
-          }
-        />
+      <div className="relative w-full aspect-[4/5] overflow-hidden rounded-xl bg-charcoal select-none">
+        {reel.map((frame, fi) => (
+          <img
+            key={fi}
+            src={frame.src}
+            alt={`${name} — ${frame.kind === "then" ? "Freshers" : "Final Year"}`}
+            loading="lazy"
+            draggable={false}
+            style={
+              !hasReal && frame.kind === "then"
+                ? { filter: "sepia(0.6) saturate(0.7) brightness(0.95) contrast(0.95) blur(0.3px)" }
+                : undefined
+            }
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${fi === i ? "opacity-100" : "opacity-0"}`}
+          />
+        ))}
+
+        <span className="absolute top-3 left-3 font-mono text-[10px] tracking-[0.2em] uppercase px-2 py-1 rounded bg-black/60 text-white backdrop-blur-sm">
+          {current.kind === "then" ? "Freshers" : "Final Year"}
+          {localTotal > 1 && (
+            <span className="ml-2 text-white/60">
+              {localIndex}/{localTotal}
+            </span>
+          )}
+        </span>
+
         {count > 1 && (
           <>
             <button
