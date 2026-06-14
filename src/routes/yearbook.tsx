@@ -226,6 +226,20 @@ function FriendBeforeAfter({
   const [playing, setPlaying] = useState(false);
   const i = Math.min(idx, count - 1);
   const current = reel[i];
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const trackUrl = trackForSlug(slug);
+
+  useEffect(() => {
+    const a = audioRef.current;
+    if (!a) return;
+    if (playing) {
+      a.currentTime = 0;
+      a.volume = 0.5;
+      void a.play().catch(() => {});
+    } else {
+      a.pause();
+    }
+  }, [playing]);
 
   useEffect(() => {
     if (!playing || count <= 1) return;
