@@ -308,7 +308,7 @@ function FriendBeforeAfter({
   const nowTotal = nows.length || (hasReal ? 0 : 1);
   const localIndex = current.kind === "then" ? i + 1 : i - thenTotal + 1;
   const localTotal = current.kind === "then" ? thenTotal : nowTotal;
-  const cover = reel[0];
+  const cover = { src: fallback, kind: "now" as const };
 
   return (
     <figure className="space-y-3">
@@ -326,11 +326,6 @@ function FriendBeforeAfter({
           alt={`${name} — cover`}
           loading="lazy"
           draggable={false}
-          style={
-            !hasReal && cover.kind === "then"
-              ? { filter: "sepia(0.6) saturate(0.7) brightness(0.95) contrast(0.95) blur(0.3px)" }
-              : undefined
-          }
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         {count > 1 && (
