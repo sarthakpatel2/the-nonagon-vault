@@ -199,12 +199,14 @@ function YearbookPage() {
 }
 
 function FriendBeforeAfter({
+  slug,
   name,
   role,
   fallback,
   thens,
   nows,
 }: {
+  slug: string;
   name: string;
   role: string;
   fallback: string;
