@@ -330,7 +330,7 @@ function FriendBeforeAfter({
         />
         {count > 1 && (
           <span className="absolute inset-0 grid place-items-center bg-black/0 group-hover:bg-black/30 transition-colors">
-            <span className="size-14 grid place-items-center rounded-full bg-brand text-white shadow-xl opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all">
+            <span className="size-14 grid place-items-center rounded-full bg-brand text-white shadow-xl opacity-0 group-hover:opacity-100 group-hover:scale-110 transition-all">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </span>
           </span>
