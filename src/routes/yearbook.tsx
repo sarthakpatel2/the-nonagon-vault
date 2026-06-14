@@ -1,10 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 
 import { crew } from "@/lib/crew";
 import { supabase } from "@/integrations/supabase/client";
+import dramaQueenAsset from "@/assets/drama-queen.mp3.asset.json";
+import soniDeNakhreAsset from "@/assets/soni-de-nakhre.mp3.asset.json";
+
+const DRAMA_QUEEN_SLUGS = new Set(["aditi", "pragati"]);
+const trackForSlug = (slug: string) =>
+  DRAMA_QUEEN_SLUGS.has(slug) ? dramaQueenAsset.url : soniDeNakhreAsset.url;
 
 export const Route = createFileRoute("/yearbook")({
   head: () => ({
@@ -144,6 +150,7 @@ function YearbookPage() {
           {crew.map((p) => (
             <FriendBeforeAfter
               key={p.slug}
+              slug={p.slug}
               name={p.name}
               role={p.role}
               fallback={p.photo}
@@ -192,12 +199,14 @@ function YearbookPage() {
 }
 
 function FriendBeforeAfter({
+  slug,
   name,
   role,
   fallback,
   thens,
   nows,
 }: {
+  slug: string;
   name: string;
   role: string;
   fallback: string;
@@ -217,6 +226,20 @@ function FriendBeforeAfter({
   const [playing, setPlaying] = useState(false);
   const i = Math.min(idx, count - 1);
   const current = reel[i];
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const trackUrl = trackForSlug(slug);
+
+  useEffect(() => {
+    const a = audioRef.current;
+    if (!a) return;
+    if (playing) {
+      a.currentTime = 0;
+      a.volume = 0.5;
+      void a.play().catch(() => {});
+    } else {
+      a.pause();
+    }
+  }, [playing]);
 
   useEffect(() => {
     if (!playing || count <= 1) return;
@@ -275,6 +298,7 @@ function FriendBeforeAfter({
       onKeyDown={handleKeyDown}
       className="space-y-3 outline-none focus-visible:ring-2 focus-visible:ring-brand/70 rounded-xl"
     >
+      <audio ref={audioRef} src={trackUrl} loop preload="none" />
       <div className="relative w-full aspect-[4/5] overflow-hidden rounded-xl bg-charcoal select-none">
         {reel.map((frame, fi) => (
           <img
