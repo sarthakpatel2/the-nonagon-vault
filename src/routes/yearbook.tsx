@@ -273,100 +273,166 @@ function FriendBeforeAfter({
     setIdx((p) => (p + 1) % count);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (count <= 1) return;
-    if (e.key === "ArrowLeft") {
-      e.preventDefault();
-      goPrev();
-    } else if (e.key === "ArrowRight") {
-      e.preventDefault();
-      goNext();
-    } else if (e.key === " " || e.key === "Spacebar") {
-      e.preventDefault();
-      togglePlay();
-    }
+  const closeModal = () => {
+    setPlaying(false);
+    setIdx(0);
   };
+
+  useEffect(() => {
+    if (!playing) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        closeModal();
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        setIdx((p) => (p - 1 + count) % count);
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        setIdx((p) => (p + 1) % count);
+      } else if (e.key === " " || e.key === "Spacebar") {
+        e.preventDefault();
+        setPlaying((v) => !v);
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [playing, count]);
 
   const thenTotal = thens.length;
   const nowTotal = nows.length || (hasReal ? 0 : 1);
   const localIndex = current.kind === "then" ? i + 1 : i - thenTotal + 1;
   const localTotal = current.kind === "then" ? thenTotal : nowTotal;
+  const cover = reel[0];
 
   return (
-    <figure
-      tabIndex={0}
-      onKeyDown={handleKeyDown}
-      className="space-y-3 outline-none focus-visible:ring-2 focus-visible:ring-brand/70 rounded-xl"
-    >
+    <figure className="space-y-3">
       <audio ref={audioRef} src={trackUrl} loop preload="none" />
-      <div className="relative w-full aspect-[4/5] overflow-hidden rounded-xl bg-charcoal select-none">
-        {reel.map((frame, fi) => (
-          <img
-            key={fi}
-            src={frame.src}
-            alt={`${name} — ${frame.kind === "then" ? "Freshers" : "Final Year"}`}
-            loading="lazy"
-            draggable={false}
-            style={
-              !hasReal && frame.kind === "then"
-                ? { filter: "sepia(0.6) saturate(0.7) brightness(0.95) contrast(0.95) blur(0.3px)" }
-                : undefined
-            }
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${fi === i ? "opacity-100" : "opacity-0"}`}
-          />
-        ))}
 
-        <span className="absolute top-3 left-3 font-mono text-[10px] tracking-[0.2em] uppercase px-2 py-1 rounded bg-black/60 text-white backdrop-blur-sm">
-          {current.kind === "then" ? "Freshers" : "Final Year"}
-          {localTotal > 1 && (
-            <span className="ml-2 text-white/60">
-              {localIndex}/{localTotal}
-            </span>
-          )}
-        </span>
-
+      {/* Cover card (collapsed state) */}
+      <button
+        type="button"
+        onClick={togglePlay}
+        aria-label={count > 1 ? `Play ${name}'s slideshow` : `${name}'s photo`}
+        className="group relative block w-full aspect-[4/5] overflow-hidden rounded-xl bg-charcoal select-none outline-none focus-visible:ring-2 focus-visible:ring-brand/70"
+      >
+        <img
+          src={cover.src}
+          alt={`${name} — cover`}
+          loading="lazy"
+          draggable={false}
+          style={
+            !hasReal && cover.kind === "then"
+              ? { filter: "sepia(0.6) saturate(0.7) brightness(0.95) contrast(0.95) blur(0.3px)" }
+              : undefined
+          }
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
         {count > 1 && (
-          <>
-            <button
-              type="button"
-              onClick={togglePlay}
-              aria-label={playing ? `Pause ${name}'s slideshow` : `Play ${name}'s slideshow`}
-              className="absolute right-2 top-2 z-10 size-9 grid place-items-center rounded-full bg-brand text-white hover:bg-brand/90 focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:outline-none shadow-lg"
-            >
-              {playing ? (
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
-              ) : (
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              )}
-            </button>
-            <button
-              type="button"
-              onClick={goPrev}
-              aria-label={`Previous photo of ${name}`}
-              className="absolute left-2 bottom-2 z-10 size-8 grid place-items-center rounded-full bg-black/60 text-white hover:bg-black/80 focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:outline-none font-mono text-sm"
-            >
-              ‹
-            </button>
-            <button
-              type="button"
-              onClick={goNext}
-              aria-label={`Next photo of ${name}`}
-              className="absolute right-2 bottom-2 z-10 size-8 grid place-items-center rounded-full bg-black/60 text-white hover:bg-black/80 focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:outline-none font-mono text-sm"
-            >
-              ›
-            </button>
-            <span aria-hidden="true" className="absolute left-1/2 -translate-x-1/2 bottom-2 z-10 px-2 py-0.5 rounded bg-black/60 text-white font-mono text-[10px] tracking-widest">
-              {i + 1} / {count}
+          <span className="absolute inset-0 grid place-items-center bg-black/0 group-hover:bg-black/30 transition-colors">
+            <span className="size-14 grid place-items-center rounded-full bg-brand text-white shadow-xl opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </span>
-          </>
+          </span>
         )}
-      </div>
+      </button>
+
       <figcaption className="flex items-baseline justify-between">
         <span className="font-serif text-lg">{name}</span>
         <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-charcoal/50">
           {hasReal ? role : "placeholder — add via admin"}
         </span>
       </figcaption>
+
+      {/* Modal overlay (playing state) */}
+      {playing && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${name}'s Then vs Now slideshow`}
+          className="fixed inset-0 z-50 grid place-items-center p-4 sm:p-8 bg-black/70 backdrop-blur-xl animate-fade-in"
+          onClick={closeModal}
+        >
+          <div
+            className="relative w-full max-w-[min(90vw,520px)] aspect-[4/5] rounded-2xl overflow-hidden bg-charcoal shadow-2xl animate-scale-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {reel.map((frame, fi) => (
+              <img
+                key={fi}
+                src={frame.src}
+                alt={`${name} — ${frame.kind === "then" ? "Freshers" : "Final Year"}`}
+                draggable={false}
+                style={
+                  !hasReal && frame.kind === "then"
+                    ? { filter: "sepia(0.6) saturate(0.7) brightness(0.95) contrast(0.95) blur(0.3px)" }
+                    : undefined
+                }
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${fi === i ? "opacity-100" : "opacity-0"}`}
+              />
+            ))}
+
+            <span className="absolute top-3 left-3 font-mono text-[10px] tracking-[0.2em] uppercase px-2 py-1 rounded bg-black/60 text-white">
+              {current.kind === "then" ? "Freshers" : "Final Year"}
+              {localTotal > 1 && (
+                <span className="ml-2 text-white/60">
+                  {localIndex}/{localTotal}
+                </span>
+              )}
+            </span>
+
+            <button
+              type="button"
+              onClick={closeModal}
+              aria-label="Close"
+              className="absolute right-3 top-3 z-10 size-9 grid place-items-center rounded-full bg-black/70 text-white hover:bg-black/90 focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:outline-none"
+            >
+              ✕
+            </button>
+
+            {count > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={togglePlay}
+                  aria-label={playing ? "Pause" : "Play"}
+                  className="absolute left-1/2 -translate-x-1/2 bottom-3 z-10 size-10 grid place-items-center rounded-full bg-brand text-white hover:bg-brand/90 focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:outline-none shadow-lg"
+                >
+                  {playing ? (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+                  ) : (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  )}
+                </button>
+                <button
+                  type="button"
+                  onClick={goPrev}
+                  aria-label="Previous"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 z-10 size-10 grid place-items-center rounded-full bg-black/60 text-white hover:bg-black/80 focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:outline-none font-mono text-lg"
+                >
+                  ‹
+                </button>
+                <button
+                  type="button"
+                  onClick={goNext}
+                  aria-label="Next"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 z-10 size-10 grid place-items-center rounded-full bg-black/60 text-white hover:bg-black/80 focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:outline-none font-mono text-lg"
+                >
+                  ›
+                </button>
+                <span aria-hidden="true" className="absolute right-3 bottom-3 z-10 px-2 py-0.5 rounded bg-black/60 text-white font-mono text-[10px] tracking-widest">
+                  {i + 1} / {count}
+                </span>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </figure>
   );
 }
