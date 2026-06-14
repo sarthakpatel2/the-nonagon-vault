@@ -298,6 +298,7 @@ function FriendBeforeAfter({
       onKeyDown={handleKeyDown}
       className="space-y-3 outline-none focus-visible:ring-2 focus-visible:ring-brand/70 rounded-xl"
     >
+      <audio ref={audioRef} src={trackUrl} loop preload="none" />
       <div className="relative w-full aspect-[4/5] overflow-hidden rounded-xl bg-charcoal select-none">
         {reel.map((frame, fi) => (
           <img
