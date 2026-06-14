@@ -150,6 +150,7 @@ function YearbookPage() {
           {crew.map((p) => (
             <FriendBeforeAfter
               key={p.slug}
+              slug={p.slug}
               name={p.name}
               role={p.role}
               fallback={p.photo}
