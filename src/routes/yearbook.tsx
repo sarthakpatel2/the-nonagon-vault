@@ -308,7 +308,7 @@ function FriendBeforeAfter({
   const nowTotal = nows.length || (hasReal ? 0 : 1);
   const localIndex = current.kind === "then" ? i + 1 : i - thenTotal + 1;
   const localTotal = current.kind === "then" ? thenTotal : nowTotal;
-  const cover = reel[0];
+  const cover = { src: fallback, kind: "now" as const };
 
   return (
     <figure className="space-y-3">
