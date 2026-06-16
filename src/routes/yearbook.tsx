@@ -224,6 +224,7 @@ function FriendBeforeAfter({
 
   const [idx, setIdx] = useState(0);
   const [playing, setPlaying] = useState(false);
+  const [audioReady, setAudioReady] = useState(false);
   const i = Math.min(idx, count - 1);
   const current = reel[i];
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -304,6 +305,25 @@ function FriendBeforeAfter({
     };
   }, [playing, count]);
 
+  // Track audio readiness so the play button can show a spinner while buffering.
+  useEffect(() => {
+    const a = audioRef.current;
+    if (!a) return;
+    const onReady = () => setAudioReady(true);
+    const onWait = () => setAudioReady(false);
+    a.addEventListener("canplaythrough", onReady);
+    a.addEventListener("waiting", onWait);
+    a.addEventListener("loadstart", onWait);
+    a.addEventListener("stalled", onWait);
+    setAudioReady(a.readyState >= 3);
+    return () => {
+      a.removeEventListener("canplaythrough", onReady);
+      a.removeEventListener("waiting", onWait);
+      a.removeEventListener("loadstart", onWait);
+      a.removeEventListener("stalled", onWait);
+    };
+  }, [trackUrl]);
+
   const thenTotal = thens.length;
   const nowTotal = nows.length || (hasReal ? 0 : 1);
   const localIndex = current.kind === "then" ? i + 1 : i - thenTotal + 1;
@@ -371,7 +391,11 @@ function FriendBeforeAfter({
         {count > 1 && (
           <span className="absolute inset-0 grid place-items-center bg-black/0 group-hover:bg-black/30 transition-colors">
             <span className="size-14 grid place-items-center rounded-full bg-brand text-white shadow-xl opacity-0 group-hover:opacity-100 group-hover:scale-110 transition-all">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              {audioReady ? (
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              ) : (
+                <span className="size-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              )}
             </span>
           </span>
         )}
@@ -435,13 +459,17 @@ function FriendBeforeAfter({
                 <button
                   type="button"
                   onClick={togglePlay}
-                  aria-label={playing ? "Pause" : "Play"}
+                  aria-label={playing ? (audioReady ? "Pause" : "Buffering") : audioReady ? "Play" : "Loading audio"}
                   className="absolute left-1/2 -translate-x-1/2 bottom-3 z-10 size-10 grid place-items-center rounded-full bg-brand text-white hover:bg-brand/90 focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:outline-none shadow-lg"
                 >
-                  {playing ? (
+                  {playing && !audioReady ? (
+                    <span className="size-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : playing ? (
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
-                  ) : (
+                  ) : audioReady ? (
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  ) : (
+                    <span className="size-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   )}
                 </button>
                 <button
