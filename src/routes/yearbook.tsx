@@ -459,13 +459,17 @@ function FriendBeforeAfter({
                 <button
                   type="button"
                   onClick={togglePlay}
-                  aria-label={playing ? "Pause" : "Play"}
+                  aria-label={playing ? (audioReady ? "Pause" : "Buffering") : audioReady ? "Play" : "Loading audio"}
                   className="absolute left-1/2 -translate-x-1/2 bottom-3 z-10 size-10 grid place-items-center rounded-full bg-brand text-white hover:bg-brand/90 focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:outline-none shadow-lg"
                 >
-                  {playing ? (
+                  {playing && !audioReady ? (
+                    <span className="size-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : playing ? (
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
-                  ) : (
+                  ) : audioReady ? (
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  ) : (
+                    <span className="size-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   )}
                 </button>
                 <button
