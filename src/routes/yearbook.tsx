@@ -224,6 +224,7 @@ function FriendBeforeAfter({
 
   const [idx, setIdx] = useState(0);
   const [playing, setPlaying] = useState(false);
+  const [audioReady, setAudioReady] = useState(false);
   const i = Math.min(idx, count - 1);
   const current = reel[i];
   const audioRef = useRef<HTMLAudioElement | null>(null);
