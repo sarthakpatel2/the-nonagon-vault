@@ -108,6 +108,8 @@ function Home() {
                   alt="Graduation morning with friends throwing caps in the air"
                   width={1280}
                   height={800}
+                  fetchPriority="high"
+                  decoding="async"
                   className="w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-105"
                 />
               </div>
