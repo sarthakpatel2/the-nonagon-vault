@@ -310,14 +310,54 @@ function FriendBeforeAfter({
   const localTotal = current.kind === "then" ? thenTotal : nowTotal;
   const cover = { src: fallback, kind: "now" as const };
 
+  // Adaptive preload: bump up the audio's preload hint as user intent grows.
+  // - idle: "none" (zero bytes)
+  // - card near viewport: "metadata" (~few KB, faster start)
+  // - hover / focus / touchstart on cover: "auto" (full buffering, instant play on click)
+  const coverBtnRef = useRef<HTMLButtonElement | null>(null);
+  const preloadLevel = useRef<"none" | "metadata" | "auto">("none");
+  const bumpPreload = (level: "metadata" | "auto") => {
+    const a = audioRef.current;
+    if (!a) return;
+    const rank = { none: 0, metadata: 1, auto: 2 } as const;
+    if (rank[level] <= rank[preloadLevel.current]) return;
+    preloadLevel.current = level;
+    a.preload = level;
+    try { a.load(); } catch { /* noop */ }
+  };
+
+  // Warm to "metadata" when the card scrolls near the viewport.
+  useEffect(() => {
+    const el = coverBtnRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            bumpPreload("metadata");
+            io.disconnect();
+            break;
+          }
+        }
+      },
+      { rootMargin: "300px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <figure className="space-y-3">
       <audio ref={audioRef} src={trackUrl} loop preload="none" />
 
       {/* Cover card (collapsed state) */}
       <button
+        ref={coverBtnRef}
         type="button"
         onClick={togglePlay}
+        onPointerEnter={() => bumpPreload("auto")}
+        onFocus={() => bumpPreload("auto")}
+        onTouchStart={() => bumpPreload("auto")}
         aria-label={count > 1 ? `Play ${name}'s slideshow` : `${name}'s photo`}
         className="group relative block w-full aspect-[4/5] overflow-hidden rounded-xl bg-charcoal select-none outline-none focus-visible:ring-2 focus-visible:ring-brand/70"
       >
