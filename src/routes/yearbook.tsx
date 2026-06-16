@@ -305,6 +305,25 @@ function FriendBeforeAfter({
     };
   }, [playing, count]);
 
+  // Track audio readiness so the play button can show a spinner while buffering.
+  useEffect(() => {
+    const a = audioRef.current;
+    if (!a) return;
+    const onReady = () => setAudioReady(true);
+    const onWait = () => setAudioReady(false);
+    a.addEventListener("canplaythrough", onReady);
+    a.addEventListener("waiting", onWait);
+    a.addEventListener("loadstart", onWait);
+    a.addEventListener("stalled", onWait);
+    setAudioReady(a.readyState >= 3);
+    return () => {
+      a.removeEventListener("canplaythrough", onReady);
+      a.removeEventListener("waiting", onWait);
+      a.removeEventListener("loadstart", onWait);
+      a.removeEventListener("stalled", onWait);
+    };
+  }, [trackUrl]);
+
   const thenTotal = thens.length;
   const nowTotal = nows.length || (hasReal ? 0 : 1);
   const localIndex = current.kind === "then" ? i + 1 : i - thenTotal + 1;
