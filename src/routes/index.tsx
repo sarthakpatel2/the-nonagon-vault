@@ -22,6 +22,9 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "The Nonagon — Nine humans, one infinite loop" },
       { property: "og:description", content: "A scrapbook of memories from nine B.Tech CSE friends who made the four years unforgettable." },
     ],
+    links: [
+      { rel: "preload", as: "image", href: gradMorning, fetchpriority: "high" } as unknown as { rel: string; href: string },
+    ],
   }),
   component: Home,
 });
@@ -105,6 +108,8 @@ function Home() {
                   alt="Graduation morning with friends throwing caps in the air"
                   width={1280}
                   height={800}
+                  fetchPriority="high"
+                  decoding="async"
                   className="w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-105"
                 />
               </div>
