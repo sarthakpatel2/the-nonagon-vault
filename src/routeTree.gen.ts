@@ -13,6 +13,7 @@ import { Route as YearbookRouteImport } from './routes/yearbook'
 import { Route as TimelineRouteImport } from './routes/timeline'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as QuizRouteImport } from './routes/quiz'
+import { Route as PranksRouteImport } from './routes/pranks'
 import { Route as LoveRouteImport } from './routes/love'
 import { Route as LetterRouteImport } from './routes/letter'
 import { Route as GalleryRouteImport } from './routes/gallery'
@@ -38,6 +39,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const QuizRoute = QuizRouteImport.update({
   id: '/quiz',
   path: '/quiz',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PranksRoute = PranksRouteImport.update({
+  id: '/pranks',
+  path: '/pranks',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoveRoute = LoveRouteImport.update({
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/gallery': typeof GalleryRoute
   '/letter': typeof LetterRoute
   '/love': typeof LoveRoute
+  '/pranks': typeof PranksRoute
   '/quiz': typeof QuizRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/timeline': typeof TimelineRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/gallery': typeof GalleryRoute
   '/letter': typeof LetterRoute
   '/love': typeof LoveRoute
+  '/pranks': typeof PranksRoute
   '/quiz': typeof QuizRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/timeline': typeof TimelineRoute
@@ -102,6 +110,7 @@ export interface FileRoutesById {
   '/gallery': typeof GalleryRoute
   '/letter': typeof LetterRoute
   '/love': typeof LoveRoute
+  '/pranks': typeof PranksRoute
   '/quiz': typeof QuizRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/timeline': typeof TimelineRoute
@@ -116,6 +125,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/letter'
     | '/love'
+    | '/pranks'
     | '/quiz'
     | '/sitemap.xml'
     | '/timeline'
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/letter'
     | '/love'
+    | '/pranks'
     | '/quiz'
     | '/sitemap.xml'
     | '/timeline'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/letter'
     | '/love'
+    | '/pranks'
     | '/quiz'
     | '/sitemap.xml'
     | '/timeline'
@@ -153,6 +165,7 @@ export interface RootRouteChildren {
   GalleryRoute: typeof GalleryRoute
   LetterRoute: typeof LetterRoute
   LoveRoute: typeof LoveRoute
+  PranksRoute: typeof PranksRoute
   QuizRoute: typeof QuizRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TimelineRoute: typeof TimelineRoute
@@ -188,6 +201,13 @@ declare module '@tanstack/react-router' {
       path: '/quiz'
       fullPath: '/quiz'
       preLoaderRoute: typeof QuizRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pranks': {
+      id: '/pranks'
+      path: '/pranks'
+      fullPath: '/pranks'
+      preLoaderRoute: typeof PranksRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/love': {
@@ -241,6 +261,7 @@ const rootRouteChildren: RootRouteChildren = {
   GalleryRoute: GalleryRoute,
   LetterRoute: LetterRoute,
   LoveRoute: LoveRoute,
+  PranksRoute: PranksRoute,
   QuizRoute: QuizRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TimelineRoute: TimelineRoute,
@@ -250,13 +271,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
