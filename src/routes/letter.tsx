@@ -80,7 +80,7 @@ function LetterPage() {
         <p className="font-mono text-xs tracking-[0.3em] uppercase text-charcoal/50 mb-4">
           05 / Epilogue
         </p>
-        <h1 className="font-serif font-bold leading-[0.95] tracking-tight text-[clamp(2.25rem,6vw,4.5rem)]">
+        <h1 className="font-serif font-bold leading-[0.95] tracking-tight text-[clamp(2.25rem,6vw,4.5rem)] text-balance">
           One last <span className="italic text-brand">commit</span>.
         </h1>
       </header>
@@ -106,7 +106,7 @@ function LetterPage() {
 
           {done && (
             <div className="mt-10 pt-8 border-t border-charcoal/10 flex flex-wrap items-end justify-between gap-6">
-              <p className="font-hand text-4xl text-brand">— the nonagon.</p>
+              <p className="font-hand text-3xl md:text-4xl text-brand">— the nonagon.</p>
               <Link
                 to="/yearbook"
                 className="inline-flex items-center gap-2 bg-charcoal text-paper px-5 py-3 rounded-full font-medium text-sm hover:bg-brand transition-colors"

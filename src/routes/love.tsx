@@ -95,7 +95,7 @@ function LovePage() {
         <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-charcoal/50 mb-4">
           The guestbook · {notes.length} note{notes.length === 1 ? "" : "s"}
         </p>
-        <h1 className="font-serif italic text-5xl md:text-7xl leading-[0.95]">
+        <h1 className="font-serif italic text-4xl md:text-7xl leading-[0.95] text-balance">
           Wall of <span className="text-brand">Love</span> 💖
         </h1>
         <p className="text-charcoal/70 mt-5 max-w-xl mx-auto text-base md:text-lg">

@@ -57,7 +57,7 @@ function Home() {
         <p className="font-mono text-xs tracking-[0.3em] uppercase text-charcoal/50 mb-6 animate-reveal">
           A memory archive · 2022 → 2026
         </p>
-        <h1 className="font-serif font-bold leading-[0.88] tracking-tight text-[clamp(3rem,11vw,9.5rem)] animate-reveal [animation-delay:120ms]">
+        <h1 className="font-serif font-bold leading-[0.88] tracking-tight text-[clamp(2.25rem,11vw,9.5rem)] text-balance animate-reveal [animation-delay:120ms]">
           Four years.<br />
           One <span className="italic text-brand text-shimmer">infinite</span> loop.
         </h1>
@@ -128,7 +128,7 @@ function Home() {
   hangout(friends);
   sleep(false);
 }`}</pre>
-              <p className="font-serif text-2xl md:text-3xl leading-tight mt-6">
+              <p className="font-serif text-2xl md:text-3xl leading-tight mt-6 text-balance">
                 The lab sessions that became life sessions.
               </p>
             </div>
@@ -257,21 +257,21 @@ function Home() {
         <Reveal delay={0}>
           <Link to="/timeline" className="cta-rise press-down block h-full group p-8 rounded-2xl bg-charcoal text-paper hover:bg-brand transition-colors">
             <p className="font-mono text-[10px] tracking-[0.25em] uppercase opacity-60 mb-6">01 / The arc</p>
-            <h3 className="font-serif text-3xl mb-10 leading-tight">From freshers to final-year zombies.</h3>
+            <h3 className="font-serif text-2xl md:text-3xl mb-10 leading-tight text-balance">From freshers to final-year zombies.</h3>
             <span className="font-serif italic group-hover:translate-x-1 inline-block transition-transform">View timeline →</span>
           </Link>
         </Reveal>
         <Reveal delay={120}>
           <Link to="/yearbook" className="cta-rise press-down block h-full group p-8 rounded-2xl bg-cream hover:bg-brand hover:text-white transition-colors">
             <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-charcoal/60 group-hover:text-white/70 mb-6">02 / The crew</p>
-            <h3 className="font-serif text-3xl mb-10 leading-tight">Nine characters that ran this season.</h3>
+            <h3 className="font-serif text-2xl md:text-3xl mb-10 leading-tight text-balance">Nine characters that ran this season.</h3>
             <span className="font-serif italic group-hover:translate-x-1 inline-block transition-transform">Open yearbook →</span>
           </Link>
         </Reveal>
         <Reveal delay={240}>
           <Link to="/letter" className="cta-rise press-down block h-full group p-8 rounded-2xl border border-charcoal/15 hover:bg-brand hover:text-white hover:border-brand transition-colors">
             <p className="font-mono text-[10px] tracking-[0.25em] uppercase text-charcoal/60 group-hover:text-white/70 mb-6">03 / The goodbye</p>
-            <h3 className="font-serif text-3xl mb-10 leading-tight">A letter to the friends I won&rsquo;t see daily.</h3>
+            <h3 className="font-serif text-2xl md:text-3xl mb-10 leading-tight text-balance">A letter to the friends I won&rsquo;t see daily.</h3>
             <span className="font-serif italic group-hover:translate-x-1 inline-block transition-transform">Read letter →</span>
           </Link>
         </Reveal>
