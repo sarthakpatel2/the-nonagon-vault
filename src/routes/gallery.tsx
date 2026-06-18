@@ -78,7 +78,7 @@ function GalleryPage() {
         <p className="font-mono text-xs tracking-[0.3em] uppercase text-charcoal/50 mb-4">
           02 / The Gallery
         </p>
-        <h1 className="font-serif font-bold leading-[0.9] tracking-tight text-[clamp(2.5rem,7vw,5.5rem)]">
+        <h1 className="font-serif font-bold leading-[0.9] tracking-tight text-[clamp(2.5rem,7vw,5.5rem)] text-balance">
           A wall of <span className="italic text-brand">polaroids</span>,
           <br />stuck on with tape.
         </h1>
@@ -147,7 +147,7 @@ function GalleryPage() {
               className="w-full max-h-[72vh] object-contain bg-charcoal/5"
             />
             <figcaption className="mt-5 px-2 flex justify-between items-end gap-4">
-              <p className="font-hand text-3xl">{photos[active].caption}</p>
+              <p className="font-hand text-xl md:text-3xl">{photos[active].caption}</p>
               <span className="font-mono text-xs text-charcoal/40 shrink-0">
                 {photos[active].date} · {active + 1}/{photos.length}
               </span>
@@ -256,7 +256,7 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
         <p className="font-mono text-xs tracking-[0.3em] uppercase text-charcoal/50 mb-2">
           Pin a new polaroid
         </p>
-        <h2 className="font-serif text-3xl font-bold mb-5">Add a memory</h2>
+        <h2 className="font-serif text-2xl md:text-3xl font-bold mb-5">Add a memory</h2>
 
         <label className="block">
           <span className="font-mono text-[10px] tracking-widest uppercase text-charcoal/60">Photo</span>

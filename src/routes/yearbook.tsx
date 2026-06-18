@@ -62,7 +62,7 @@ function YearbookPage() {
         <p className="font-mono text-xs tracking-[0.3em] uppercase text-charcoal/50 mb-4">
           04 / The Crew
         </p>
-        <h1 className="font-serif font-bold leading-[0.9] tracking-tight text-[clamp(2.5rem,7vw,5.5rem)]">
+        <h1 className="font-serif font-bold leading-[0.9] tracking-tight text-[clamp(2.5rem,7vw,5.5rem)] text-balance">
           Know the <span className="italic text-brand">group</span>.
         </h1>
         <p className="mt-6 max-w-xl text-charcoal/70">
@@ -73,7 +73,7 @@ function YearbookPage() {
       <section className="bg-charcoal text-paper py-20 px-6 md:px-10">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-end mb-12">
-            <h2 className="font-serif text-3xl md:text-5xl italic">Class of 2026</h2>
+            <h2 className="font-serif text-3xl md:text-5xl italic text-balance">Class of 2026</h2>
             <p className="font-mono text-[10px] md:text-xs text-paper/40 tracking-[0.2em] uppercase hidden sm:block">
               Tap to reveal
             </p>
@@ -140,7 +140,7 @@ function YearbookPage() {
       {/* THEN vs NOW — drag to reveal */}
       <section className="px-6 md:px-10 py-24 max-w-7xl mx-auto">
         <p className="font-mono text-xs tracking-[0.3em] uppercase text-charcoal/50 mb-3">Then vs Now</p>
-        <h2 className="font-serif text-3xl md:text-5xl tracking-tight mb-3">
+        <h2 className="font-serif text-3xl md:text-5xl tracking-tight mb-3 text-balance">
           Freshers <span className="italic text-brand">→</span> Final year.
         </h2>
         <p className="text-charcoal/60 mb-12 max-w-xl">
@@ -166,7 +166,7 @@ function YearbookPage() {
       {/* SIGNATURE WALL */}
       <section className="px-6 md:px-10 py-24 max-w-7xl mx-auto">
         <p className="font-mono text-xs tracking-[0.3em] uppercase text-charcoal/50 mb-3">Signature wall</p>
-        <h2 className="font-serif text-3xl md:text-5xl tracking-tight mb-12">
+        <h2 className="font-serif text-3xl md:text-5xl tracking-tight mb-12 text-balance">
           Last-day <span className="italic text-brand">scribbles</span>.
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">

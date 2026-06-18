@@ -432,7 +432,7 @@ function QuizPage() {
       <main className="flex-1 px-6 md:px-10 py-12 md:py-16 max-w-2xl mx-auto w-full">
         <header className="mb-8 text-center relative">
           <p className="font-mono text-xs text-brand uppercase tracking-widest mb-3">// the_nonagon_quiz.exe</p>
-          <h1 className="text-4xl md:text-5xl font-serif italic text-charcoal mb-3">How well do you know us?</h1>
+          <h1 className="text-4xl md:text-5xl font-serif italic text-charcoal mb-3 text-balance">How well do you know us?</h1>
           <p className="text-charcoal/70 text-sm">Shuffled fresh every time. Tissues optional.</p>
           <button
             type="button"
@@ -470,7 +470,7 @@ function QuizPage() {
                 picked === null ? "" : picked === q.answer ? "animate-glow" : "animate-shake"
               }`}
             >
-              <h2 className="font-serif text-2xl md:text-3xl text-charcoal mb-6 leading-snug">
+              <h2 className="font-serif text-2xl md:text-3xl text-charcoal mb-6 leading-snug text-balance">
                 {q.q}
               </h2>
 

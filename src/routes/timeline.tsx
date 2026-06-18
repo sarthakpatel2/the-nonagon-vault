@@ -107,7 +107,7 @@ function TimelinePage() {
         <p className="font-mono text-xs tracking-[0.3em] uppercase text-charcoal/50 mb-4">
           03 / Stack Trace
         </p>
-        <h1 className="font-serif font-bold leading-[0.9] tracking-tight text-[clamp(2.5rem,7vw,5.5rem)]">
+        <h1 className="font-serif font-bold leading-[0.9] tracking-tight text-[clamp(2.5rem,7vw,5.5rem)] text-balance">
           The four-year <span className="italic text-brand">stack&nbsp;trace</span>.
         </h1>
         <p className="mt-6 max-w-xl text-charcoal/70">
@@ -161,7 +161,7 @@ function TimelinePage() {
               <div className="grid md:grid-cols-2 gap-8 items-start">
                 <div>
                   <p className="font-mono text-xs tracking-[0.25em] uppercase text-brand mb-2">{y.label} · {y.year}</p>
-                  <h2 className="font-serif text-3xl md:text-5xl tracking-tight mb-4">{y.title}</h2>
+                  <h2 className="font-serif text-3xl md:text-5xl tracking-tight mb-4 text-balance">{y.title}</h2>
                   <p className="text-charcoal/75 leading-relaxed mb-5">{y.body}</p>
                   <ul className="space-y-1.5 font-mono text-sm text-charcoal/60">
                     {y.moments.map((m) => (

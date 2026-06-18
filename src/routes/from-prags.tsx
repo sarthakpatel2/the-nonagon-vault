@@ -384,7 +384,7 @@ function FromPragsPage() {
         <p className="font-mono text-xs tracking-[0.3em] uppercase text-charcoal/50 mb-4">
           06 / The tea
         </p>
-        <h1 className="font-serif font-bold leading-[0.95] tracking-tight text-[clamp(2.25rem,6vw,4.5rem)]">
+        <h1 className="font-serif font-bold leading-[0.95] tracking-tight text-[clamp(2.25rem,6vw,4.5rem)] text-balance">
           From <span className="italic text-brand">Prags</span>.
         </h1>
         <p className="mt-4 font-mono text-xs text-charcoal/50">
@@ -413,7 +413,7 @@ function FromPragsPage() {
 
           {done && (
             <div className="mt-10 pt-8 border-t border-charcoal/10 flex flex-wrap items-end justify-between gap-6">
-              <p className="font-hand text-4xl text-brand">— prags.</p>
+              <p className="font-hand text-3xl md:text-4xl text-brand">— prags.</p>
               <Link
                 to="/letter"
                 className="inline-flex items-center gap-2 bg-charcoal text-paper px-5 py-3 rounded-full font-medium text-sm hover:bg-brand transition-colors"
