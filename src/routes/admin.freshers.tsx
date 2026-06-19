@@ -250,37 +250,53 @@ function PhotoGroup({
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
 
-  const upload = async (file: File) => {
-    if (!file.type.startsWith("image/")) return toast.error("Pick an image file");
-    if (file.size > 8 * 1024 * 1024) return toast.error("Image must be under 8 MB");
-    setBusy(true);
+  const uploadOne = async (file: File, sortOrder: number): Promise<boolean> => {
+    if (!file.type.startsWith("image/")) {
+      toast.error(`${file.name}: not an image`);
+      return false;
+    }
+    if (file.size > 8 * 1024 * 1024) {
+      toast.error(`${file.name}: over 8 MB`);
+      return false;
+    }
     try {
       const ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
-      const path = `${folder}/${member.slug}-${Date.now()}.${ext}`;
+      const path = `${folder}/${member.slug}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}.${ext}`;
       const { error: upErr } = await supabase.storage
         .from("gallery")
         .upload(path, file, { contentType: file.type, upsert: false });
       if (upErr) throw upErr;
       const { data: urlData } = supabase.storage.from("gallery").getPublicUrl(path);
-      const nextSort = localItems.length ? Math.max(...localItems.map((i) => i.sort_order)) + 1 : 0;
       const { error: insErr } = await supabase
         .from("freshers_photo_items" as never)
         .insert({
           friend_slug: member.slug,
           kind,
           image_url: urlData.publicUrl,
-          sort_order: nextSort,
+          sort_order: sortOrder,
         } as never);
       if (insErr) throw insErr;
-      toast.success(`${label} photo added`);
-      await onChange();
+      return true;
     } catch (err) {
       console.error(err);
-      toast.error(err instanceof Error ? err.message : "Upload failed");
-    } finally {
-      setBusy(false);
-      if (inputRef.current) inputRef.current.value = "";
+      toast.error(err instanceof Error ? `${file.name}: ${err.message}` : `${file.name}: upload failed`);
+      return false;
     }
+  };
+
+  const uploadFiles = async (files: File[]) => {
+    if (!files.length) return;
+    setBusy(true);
+    const startSort = localItems.length ? Math.max(...localItems.map((i) => i.sort_order)) + 1 : 0;
+    let ok = 0;
+    for (let i = 0; i < files.length; i++) {
+      const success = await uploadOne(files[i], startSort + i);
+      if (success) ok++;
+    }
+    if (ok > 0) toast.success(`${ok} ${label.toLowerCase()} photo${ok > 1 ? "s" : ""} added`);
+    await onChange();
+    setBusy(false);
+    if (inputRef.current) inputRef.current.value = "";
   };
 
   const confirmDelete = async () => {
@@ -353,11 +369,12 @@ function PhotoGroup({
         ref={inputRef}
         type="file"
         accept="image/*"
+        multiple
         className="sr-only"
         disabled={busy}
         onChange={(e) => {
-          const f = e.target.files?.[0];
-          if (f) void upload(f);
+          const files = Array.from(e.target.files ?? []);
+          if (files.length) void uploadFiles(files);
         }}
       />
 
