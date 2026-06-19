@@ -424,7 +424,7 @@ function FriendBeforeAfter({
           onClick={closeModal}
         >
           <div
-            className="relative w-full max-w-[min(90vw,720px)] max-h-[85vh] rounded-2xl overflow-hidden bg-charcoal shadow-2xl animate-scale-in"
+            className="relative w-full max-w-[min(90vw,720px)] aspect-[4/5] max-h-[85vh] rounded-2xl overflow-hidden bg-charcoal shadow-2xl animate-scale-in"
             onClick={(e) => e.stopPropagation()}
           >
             {reel.map((frame, fi) => (
