@@ -144,7 +144,7 @@ function GalleryPage() {
             <img
               src={photos[active].src}
               alt={photos[active].caption}
-              className="w-full max-h-[72vh] object-contain bg-charcoal/5"
+              className="w-full max-h-[85vh] object-contain bg-charcoal/5"
             />
             <figcaption className="mt-5 px-2 flex justify-between items-end gap-4">
               <p className="font-hand text-xl md:text-3xl">{photos[active].caption}</p>
