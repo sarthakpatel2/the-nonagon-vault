@@ -392,7 +392,7 @@ function FriendBeforeAfter({
           alt={`${name} — cover`}
           loading="lazy"
           draggable={false}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="absolute inset-0 w-full h-full object-contain bg-charcoal transition-transform duration-500 group-hover:scale-105"
         />
         {count > 1 && (
           <span className="absolute inset-0 grid place-items-center bg-black/0 group-hover:bg-black/30 transition-colors">
@@ -424,7 +424,7 @@ function FriendBeforeAfter({
           onClick={closeModal}
         >
           <div
-            className="relative w-full max-w-[min(90vw,520px)] aspect-[4/5] rounded-2xl overflow-hidden bg-charcoal shadow-2xl animate-scale-in"
+            className="relative w-full max-w-[min(90vw,720px)] aspect-[4/5] max-h-[85vh] rounded-2xl overflow-hidden bg-charcoal shadow-2xl animate-scale-in"
             onClick={(e) => e.stopPropagation()}
           >
             {reel.map((frame, fi) => (
@@ -438,7 +438,7 @@ function FriendBeforeAfter({
                     ? { filter: "sepia(0.6) saturate(0.7) brightness(0.95) contrast(0.95) blur(0.3px)" }
                     : undefined
                 }
-                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${fi === i ? "opacity-100" : "opacity-0"}`}
+                className={`absolute inset-0 w-full h-full object-contain bg-charcoal transition-opacity duration-700 ${fi === i ? "opacity-100" : "opacity-0"}`}
               />
             ))}
 

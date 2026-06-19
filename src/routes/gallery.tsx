@@ -104,12 +104,12 @@ function GalleryPage() {
               className={`group relative paper-card p-3 pb-12 ${p.rotate} hover:rotate-0 hover:scale-[1.04] hover:z-10 transition-all duration-500 ease-out text-left cursor-zoom-in`}
             >
               <span className="tape left-1/2 -translate-x-1/2 -top-3 w-20 h-5 rotate-[-3deg]" aria-hidden />
-              <div className="w-full aspect-square overflow-hidden bg-charcoal/5">
+              <div className="w-full aspect-square overflow-hidden bg-charcoal/5 grid place-items-center">
                 <img
                   src={p.src}
                   alt={p.caption}
                   loading="lazy"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
               <div className="mt-4 px-1 flex justify-between items-end gap-2">
@@ -144,7 +144,7 @@ function GalleryPage() {
             <img
               src={photos[active].src}
               alt={photos[active].caption}
-              className="w-full max-h-[72vh] object-contain bg-charcoal/5"
+              className="w-full max-h-[85vh] object-contain bg-charcoal/5"
             />
             <figcaption className="mt-5 px-2 flex justify-between items-end gap-4">
               <p className="font-hand text-xl md:text-3xl">{photos[active].caption}</p>
@@ -262,7 +262,7 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
           <span className="font-mono text-[10px] tracking-widest uppercase text-charcoal/60">Photo</span>
           <div className="mt-2 border-2 border-dashed border-charcoal/20 hover:border-brand transition-colors aspect-square w-full overflow-hidden bg-charcoal/5 grid place-items-center cursor-pointer">
             {preview ? (
-              <img src={preview} alt="preview" className="w-full h-full object-cover" />
+              <img src={preview} alt="preview" className="w-full h-full object-contain" />
             ) : (
               <div className="text-center text-charcoal/50 font-mono text-xs">
                 <Upload className="w-6 h-6 mx-auto mb-2" />
