@@ -176,7 +176,7 @@ function TimelinePage() {
                     src={y.img}
                     alt={y.title}
                     loading="lazy"
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full object-contain hover:scale-105 transition-transform duration-700"
                   />
                 </div>
               </div>
