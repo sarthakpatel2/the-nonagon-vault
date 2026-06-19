@@ -414,8 +414,8 @@ function FriendBeforeAfter({
         </span>
       </figcaption>
 
-      {/* Modal overlay (playing state) */}
-      {playing && (
+      {/* Modal overlay */}
+      {open && (
         <div
           role="dialog"
           aria-modal="true"
