@@ -104,12 +104,12 @@ function GalleryPage() {
               className={`group relative paper-card p-3 pb-12 ${p.rotate} hover:rotate-0 hover:scale-[1.04] hover:z-10 transition-all duration-500 ease-out text-left cursor-zoom-in`}
             >
               <span className="tape left-1/2 -translate-x-1/2 -top-3 w-20 h-5 rotate-[-3deg]" aria-hidden />
-              <div className="w-full aspect-square overflow-hidden bg-charcoal/5">
+              <div className="w-full aspect-square overflow-hidden bg-charcoal/5 grid place-items-center">
                 <img
                   src={p.src}
                   alt={p.caption}
                   loading="lazy"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
               <div className="mt-4 px-1 flex justify-between items-end gap-2">
