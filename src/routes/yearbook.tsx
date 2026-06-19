@@ -223,6 +223,7 @@ function FriendBeforeAfter({
   const count = reel.length;
 
   const [idx, setIdx] = useState(0);
+  const [open, setOpen] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [audioReady, setAudioReady] = useState(false);
   const i = Math.min(idx, count - 1);
@@ -234,7 +235,6 @@ function FriendBeforeAfter({
     const a = audioRef.current;
     if (!a) return;
     if (playing) {
-      a.currentTime = 0;
       a.volume = 0.5;
       void a.play().catch(() => {});
     } else {
@@ -257,30 +257,36 @@ function FriendBeforeAfter({
     return () => clearInterval(t);
   }, [playing, count]);
 
-  const togglePlay = () => {
-    if (playing) {
-      setPlaying(false);
-      return;
-    }
+  const openModal = () => {
     if (i >= count - 1) setIdx(0);
+    setOpen(true);
     setPlaying(true);
   };
+  const togglePlay = () => {
+    if (!open) {
+      openModal();
+      return;
+    }
+    setPlaying((v) => {
+      if (!v && i >= count - 1) setIdx(0);
+      return !v;
+    });
+  };
   const goPrev = () => {
-    setPlaying(false);
     setIdx((p) => (p - 1 + count) % count);
   };
   const goNext = () => {
-    setPlaying(false);
     setIdx((p) => (p + 1) % count);
   };
 
   const closeModal = () => {
+    setOpen(false);
     setPlaying(false);
     setIdx(0);
   };
 
   useEffect(() => {
-    if (!playing) return;
+    if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
@@ -303,7 +309,7 @@ function FriendBeforeAfter({
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
     };
-  }, [playing, count]);
+  }, [open, count]);
 
   // Track audio readiness so the play button can show a spinner while buffering.
   useEffect(() => {
@@ -374,7 +380,7 @@ function FriendBeforeAfter({
       <button
         ref={coverBtnRef}
         type="button"
-        onClick={togglePlay}
+        onClick={openModal}
         onPointerEnter={() => bumpPreload("auto")}
         onFocus={() => bumpPreload("auto")}
         onTouchStart={() => bumpPreload("auto")}
@@ -408,8 +414,8 @@ function FriendBeforeAfter({
         </span>
       </figcaption>
 
-      {/* Modal overlay (playing state) */}
-      {playing && (
+      {/* Modal overlay */}
+      {open && (
         <div
           role="dialog"
           aria-modal="true"
