@@ -262,7 +262,7 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
           <span className="font-mono text-[10px] tracking-widest uppercase text-charcoal/60">Photo</span>
           <div className="mt-2 border-2 border-dashed border-charcoal/20 hover:border-brand transition-colors aspect-square w-full overflow-hidden bg-charcoal/5 grid place-items-center cursor-pointer">
             {preview ? (
-              <img src={preview} alt="preview" className="w-full h-full object-cover" />
+              <img src={preview} alt="preview" className="w-full h-full object-contain" />
             ) : (
               <div className="text-center text-charcoal/50 font-mono text-xs">
                 <Upload className="w-6 h-6 mx-auto mb-2" />
