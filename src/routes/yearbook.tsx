@@ -380,7 +380,7 @@ function FriendBeforeAfter({
       <button
         ref={coverBtnRef}
         type="button"
-        onClick={togglePlay}
+        onClick={openModal}
         onPointerEnter={() => bumpPreload("auto")}
         onFocus={() => bumpPreload("auto")}
         onTouchStart={() => bumpPreload("auto")}
