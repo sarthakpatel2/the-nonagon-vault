@@ -369,11 +369,12 @@ function PhotoGroup({
         ref={inputRef}
         type="file"
         accept="image/*"
+        multiple
         className="sr-only"
         disabled={busy}
         onChange={(e) => {
-          const f = e.target.files?.[0];
-          if (f) void upload(f);
+          const files = Array.from(e.target.files ?? []);
+          if (files.length) void uploadFiles(files);
         }}
       />
 
