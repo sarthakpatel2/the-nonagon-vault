@@ -73,7 +73,7 @@ export function BeforeAfter({
         src={afterSrc}
         alt={`${alt} — ${afterLabel}`}
         draggable={false}
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        className="absolute inset-0 w-full h-full object-contain bg-charcoal pointer-events-none"
       />
       {/* BEFORE (clipped) */}
       <div
@@ -85,7 +85,7 @@ export function BeforeAfter({
           alt={`${alt} — ${beforeLabel}`}
           draggable={false}
           style={beforeFilter ? { filter: beforeFilter } : undefined}
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-contain bg-charcoal"
         />
       </div>
 
