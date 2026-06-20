@@ -420,11 +420,11 @@ function FriendBeforeAfter({
           role="dialog"
           aria-modal="true"
           aria-label={`${name}'s Then vs Now slideshow`}
-          className="fixed inset-0 z-50 grid place-items-center p-4 sm:p-8 bg-black/70 backdrop-blur-xl animate-fade-in"
+          className="fixed inset-0 z-50 grid place-items-center p-2 sm:p-4 bg-black/70 backdrop-blur-xl animate-fade-in"
           onClick={closeModal}
         >
           <div
-            className="relative w-full max-w-[min(90vw,720px)] aspect-[4/5] max-h-[85vh] rounded-2xl overflow-hidden bg-charcoal shadow-2xl animate-scale-in"
+            className="relative w-full max-w-[min(95vw,1200px)] aspect-[4/5] max-h-[92vh] rounded-2xl overflow-hidden bg-charcoal shadow-2xl animate-scale-in"
             onClick={(e) => e.stopPropagation()}
           >
             {reel.map((frame, fi) => (
