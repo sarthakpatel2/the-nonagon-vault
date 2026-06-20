@@ -385,7 +385,7 @@ function FriendBeforeAfter({
         onFocus={() => bumpPreload("auto")}
         onTouchStart={() => bumpPreload("auto")}
         aria-label={count > 1 ? `Play ${name}'s slideshow` : `${name}'s photo`}
-        className="group relative block w-full aspect-[4/5] overflow-hidden rounded-xl bg-charcoal select-none outline-none focus-visible:ring-2 focus-visible:ring-brand/70"
+        className="group relative block w-full h-[340px] sm:h-[400px] overflow-hidden rounded-xl bg-charcoal select-none outline-none focus-visible:ring-2 focus-visible:ring-brand/70"
       >
         <img
           src={cover.src}
@@ -424,7 +424,7 @@ function FriendBeforeAfter({
           onClick={closeModal}
         >
           <div
-            className="relative w-full max-w-[min(95vw,1200px)] aspect-[4/5] max-h-[92vh] rounded-2xl overflow-hidden bg-charcoal shadow-2xl animate-scale-in"
+            className="relative w-full max-w-[min(90vw,800px)] h-[80vh] rounded-2xl overflow-hidden bg-charcoal shadow-2xl animate-scale-in"
             onClick={(e) => e.stopPropagation()}
           >
             {reel.map((frame, fi) => (
