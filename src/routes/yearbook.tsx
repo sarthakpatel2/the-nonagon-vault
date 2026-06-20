@@ -392,7 +392,7 @@ function FriendBeforeAfter({
           alt={`${name} — cover`}
           loading="lazy"
           draggable={false}
-          className="absolute inset-0 w-full h-full object-contain bg-charcoal transition-transform duration-500 group-hover:scale-105"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         {count > 1 && (
           <span className="absolute inset-0 grid place-items-center bg-black/0 group-hover:bg-black/30 transition-colors">
