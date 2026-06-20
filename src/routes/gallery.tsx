@@ -139,12 +139,12 @@ function GalleryPage() {
 
           <figure
             onClick={(e) => e.stopPropagation()}
-            className="paper-card p-4 pb-16 max-w-3xl w-full"
+            className="paper-card p-3 sm:p-4 pb-10 sm:pb-14 max-w-[min(95vw,1400px)] w-full"
           >
             <img
               src={photos[active].src}
               alt={photos[active].caption}
-              className="w-full max-h-[85vh] object-contain bg-charcoal/5"
+              className="w-full max-h-[90vh] object-contain bg-charcoal/5"
             />
             <figcaption className="mt-5 px-2 flex justify-between items-end gap-4">
               <p className="font-hand text-xl md:text-3xl">{photos[active].caption}</p>
