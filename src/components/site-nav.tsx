@@ -6,6 +6,7 @@ const links = [
   { to: "/timeline", label: "Timeline" },
   { to: "/yearbook", label: "Know the Group" },
   { to: "/quiz", label: "Quiz" },
+  { to: "/campus", label: "Campus Map" },
   
   { to: "/letter", label: "Letter" },
   { to: "/from-prags", label: "From Prags" },

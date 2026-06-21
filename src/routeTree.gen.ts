@@ -17,6 +17,7 @@ import { Route as LoveRouteImport } from './routes/love'
 import { Route as LetterRouteImport } from './routes/letter'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as FromPragsRouteImport } from './routes/from-prags'
+import { Route as CampusRouteImport } from './routes/campus'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminFreshersRouteImport } from './routes/admin.freshers'
 
@@ -60,6 +61,11 @@ const FromPragsRoute = FromPragsRouteImport.update({
   path: '/from-prags',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CampusRoute = CampusRouteImport.update({
+  id: '/campus',
+  path: '/campus',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -73,6 +79,7 @@ const AdminFreshersRoute = AdminFreshersRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/campus': typeof CampusRoute
   '/from-prags': typeof FromPragsRoute
   '/gallery': typeof GalleryRoute
   '/letter': typeof LetterRoute
@@ -85,6 +92,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/campus': typeof CampusRoute
   '/from-prags': typeof FromPragsRoute
   '/gallery': typeof GalleryRoute
   '/letter': typeof LetterRoute
@@ -98,6 +106,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/campus': typeof CampusRoute
   '/from-prags': typeof FromPragsRoute
   '/gallery': typeof GalleryRoute
   '/letter': typeof LetterRoute
@@ -112,6 +121,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/campus'
     | '/from-prags'
     | '/gallery'
     | '/letter'
@@ -124,6 +134,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/campus'
     | '/from-prags'
     | '/gallery'
     | '/letter'
@@ -136,6 +147,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/campus'
     | '/from-prags'
     | '/gallery'
     | '/letter'
@@ -149,6 +161,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CampusRoute: typeof CampusRoute
   FromPragsRoute: typeof FromPragsRoute
   GalleryRoute: typeof GalleryRoute
   LetterRoute: typeof LetterRoute
@@ -218,6 +231,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FromPragsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/campus': {
+      id: '/campus'
+      path: '/campus'
+      fullPath: '/campus'
+      preLoaderRoute: typeof CampusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -237,6 +257,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CampusRoute: CampusRoute,
   FromPragsRoute: FromPragsRoute,
   GalleryRoute: GalleryRoute,
   LetterRoute: LetterRoute,
@@ -250,13 +271,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
