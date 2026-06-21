@@ -385,7 +385,7 @@ function FriendBeforeAfter({
         onFocus={() => bumpPreload("auto")}
         onTouchStart={() => bumpPreload("auto")}
         aria-label={count > 1 ? `Play ${name}'s slideshow` : `${name}'s photo`}
-        className="group relative block w-full h-[340px] sm:h-[400px] overflow-hidden rounded-xl bg-charcoal select-none outline-none focus-visible:ring-2 focus-visible:ring-brand/70"
+        className="group relative block w-full h-[clamp(260px,42vw,440px)] overflow-hidden rounded-xl bg-charcoal select-none outline-none focus-visible:ring-2 focus-visible:ring-brand/70"
       >
         <img
           src={cover.src}
