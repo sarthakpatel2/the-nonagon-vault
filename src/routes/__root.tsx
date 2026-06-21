@@ -16,7 +16,7 @@ import { SendLove } from "@/components/send-love";
 import { AuroraBackground } from "@/components/aurora-bg";
 import { CursorGlow } from "@/components/cursor-glow";
 import { AdminFab } from "@/components/admin-fab";
-import { Pranks } from "@/components/pranks";
+
 
 import { Toaster } from "@/components/ui/sonner";
 
@@ -146,7 +146,6 @@ function RootComponent() {
         </AnimatePresence>
         <SendLove />
         <AdminFab />
-        <Pranks />
         <Toaster position="top-center" />
       </LoginGate>
     </QueryClientProvider>
