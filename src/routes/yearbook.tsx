@@ -135,7 +135,7 @@ function YearbookPage() {
                     <Link
                       to="/friends/$slug"
                       params={{ slug: p.slug }}
-                      onClick={(e) => e.stopPropagation()}
+                      onClick={(e: MouseEvent<HTMLAnchorElement>) => e.stopPropagation()}
                       className={`font-mono text-[10px] tracking-[0.2em] uppercase px-3 py-1.5 rounded-full border transition ${
                         isOpen
                           ? "border-white/40 text-white hover:bg-white hover:text-brand"
