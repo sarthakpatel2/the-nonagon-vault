@@ -127,9 +127,23 @@ function YearbookPage() {
                       </div>
                     )}
                   </div>
-                  <span className={`font-serif italic mt-6 ${isOpen ? "text-white" : "text-brand"}`}>
-                    {isOpen ? "← close" : "Read more →"}
-                  </span>
+                  <div className="mt-6 flex items-center justify-between gap-3">
+                    <span className={`font-serif italic ${isOpen ? "text-white" : "text-brand"}`}>
+                      {isOpen ? "← close" : "Read more →"}
+                    </span>
+                    <Link
+                      to="/friends/$slug"
+                      params={{ slug: p.slug }}
+                      onClick={(e) => e.stopPropagation()}
+                      className={`font-mono text-[10px] tracking-[0.2em] uppercase px-3 py-1.5 rounded-full border transition ${
+                        isOpen
+                          ? "border-white/40 text-white hover:bg-white hover:text-brand"
+                          : "border-paper/30 text-paper/70 hover:border-brand hover:text-brand"
+                      }`}
+                    >
+                      Profile →
+                    </Link>
+                  </div>
                 </button>
               );
             })}
