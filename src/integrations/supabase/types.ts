@@ -14,33 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      campus_memories: {
-        Row: {
-          created_at: string
-          id: string
-          name: string
-          note: string
-          place_id: string
-          title: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          name?: string
-          note: string
-          place_id: string
-          title: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          name?: string
-          note?: string
-          place_id?: string
-          title?: string
-        }
-        Relationships: []
-      }
       freshers_photo_items: {
         Row: {
           created_at: string
