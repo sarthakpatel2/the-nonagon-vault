@@ -6,8 +6,10 @@ import { SiteFooter } from "@/components/site-footer";
 
 import { crew } from "@/lib/crew";
 import { supabase } from "@/integrations/supabase/client";
+import { useCrewAvatars, avatarImgStyle, defaultAvatarFor } from "@/lib/crew-avatars";
 import dramaQueenAsset from "@/assets/drama-queen.mp3.asset.json";
 import soniDeNakhreAsset from "@/assets/soni-de-nakhre.mp3.asset.json";
+
 
 const DRAMA_QUEEN_SLUGS = new Set(["aditi", "pragati"]);
 const trackForSlug = (slug: string) =>
