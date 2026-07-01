@@ -2,6 +2,8 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { crew } from "@/lib/crew";
+import { useCrewAvatars, avatarImgStyle, defaultAvatarFor } from "@/lib/crew-avatars";
+
 
 export const Route = createFileRoute("/friends/$slug")({
   head: ({ params }) => {
