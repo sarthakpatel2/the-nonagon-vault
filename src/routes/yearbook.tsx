@@ -31,6 +31,8 @@ function YearbookPage() {
   const [open, setOpen] = useState<number | null>(null);
   const [thens, setThens] = useState<Record<string, string[]>>({});
   const [nows, setNows] = useState<Record<string, string[]>>({});
+  const avatars = useCrewAvatars();
+
 
   useEffect(() => {
     let cancelled = false;
