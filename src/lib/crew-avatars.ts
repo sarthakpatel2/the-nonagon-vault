@@ -51,7 +51,7 @@ export function defaultAvatarFor(m: CrewMember): ResolvedAvatar {
   };
 }
 
-export function avatarImgStyle(a: ResolvedAvatar): React.CSSProperties {
+export function avatarImgStyle(a: ResolvedAvatar): CSSProperties {
   return {
     objectPosition: `${a.crop_x}% ${a.crop_y}%`,
     transform: a.crop_scale > 1 ? `scale(${a.crop_scale})` : undefined,
