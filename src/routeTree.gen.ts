@@ -20,6 +20,7 @@ import { Route as FromPragsRouteImport } from './routes/from-prags'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as FriendsSlugRouteImport } from './routes/friends.$slug'
 import { Route as AdminFreshersRouteImport } from './routes/admin.freshers'
+import { Route as AdminAvatarsRouteImport } from './routes/admin.avatars'
 
 const YearbookRoute = YearbookRouteImport.update({
   id: '/yearbook',
@@ -76,6 +77,11 @@ const AdminFreshersRoute = AdminFreshersRouteImport.update({
   path: '/admin/freshers',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminAvatarsRoute = AdminAvatarsRouteImport.update({
+  id: '/admin/avatars',
+  path: '/admin/avatars',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/timeline': typeof TimelineRoute
   '/yearbook': typeof YearbookRoute
+  '/admin/avatars': typeof AdminAvatarsRoute
   '/admin/freshers': typeof AdminFreshersRoute
   '/friends/$slug': typeof FriendsSlugRoute
 }
@@ -100,6 +107,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/timeline': typeof TimelineRoute
   '/yearbook': typeof YearbookRoute
+  '/admin/avatars': typeof AdminAvatarsRoute
   '/admin/freshers': typeof AdminFreshersRoute
   '/friends/$slug': typeof FriendsSlugRoute
 }
@@ -114,6 +122,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/timeline': typeof TimelineRoute
   '/yearbook': typeof YearbookRoute
+  '/admin/avatars': typeof AdminAvatarsRoute
   '/admin/freshers': typeof AdminFreshersRoute
   '/friends/$slug': typeof FriendsSlugRoute
 }
@@ -129,6 +138,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/timeline'
     | '/yearbook'
+    | '/admin/avatars'
     | '/admin/freshers'
     | '/friends/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -142,6 +152,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/timeline'
     | '/yearbook'
+    | '/admin/avatars'
     | '/admin/freshers'
     | '/friends/$slug'
   id:
@@ -155,6 +166,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/timeline'
     | '/yearbook'
+    | '/admin/avatars'
     | '/admin/freshers'
     | '/friends/$slug'
   fileRoutesById: FileRoutesById
@@ -169,6 +181,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TimelineRoute: typeof TimelineRoute
   YearbookRoute: typeof YearbookRoute
+  AdminAvatarsRoute: typeof AdminAvatarsRoute
   AdminFreshersRoute: typeof AdminFreshersRoute
   FriendsSlugRoute: typeof FriendsSlugRoute
 }
@@ -252,6 +265,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminFreshersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/avatars': {
+      id: '/admin/avatars'
+      path: '/admin/avatars'
+      fullPath: '/admin/avatars'
+      preLoaderRoute: typeof AdminAvatarsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -265,6 +285,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TimelineRoute: TimelineRoute,
   YearbookRoute: YearbookRoute,
+  AdminAvatarsRoute: AdminAvatarsRoute,
   AdminFreshersRoute: AdminFreshersRoute,
   FriendsSlugRoute: FriendsSlugRoute,
 }

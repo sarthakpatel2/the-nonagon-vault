@@ -2,6 +2,8 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { crew } from "@/lib/crew";
+import { useCrewAvatars, avatarImgStyle, defaultAvatarFor } from "@/lib/crew-avatars";
+
 
 export const Route = createFileRoute("/friends/$slug")({
   head: ({ params }) => {
@@ -43,6 +45,8 @@ function FriendProfile() {
   const idx = crew.findIndex((c) => c.slug === slug);
   const prev = crew[(idx - 1 + crew.length) % crew.length];
   const next = crew[(idx + 1) % crew.length];
+  const avatars = useCrewAvatars();
+  const av = avatars[member.slug] ?? defaultAvatarFor(member);
 
   return (
     <div className="min-h-screen bg-paper text-charcoal">
@@ -61,15 +65,19 @@ function FriendProfile() {
       <section className="px-6 md:px-10 pb-16 max-w-5xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-8 md:gap-12 items-start">
           <div className="relative">
-            <img
-              src={member.photo}
-              alt={member.name}
-              className="w-full aspect-square object-cover rounded-2xl border border-charcoal/10 shadow-sm"
-            />
+            <div className="relative w-full aspect-square overflow-hidden rounded-2xl border border-charcoal/10 shadow-sm bg-charcoal/5">
+              <img
+                src={av.src}
+                alt={member.name}
+                style={avatarImgStyle(av)}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            </div>
             <span className="absolute -bottom-3 -right-3 bg-brand text-white text-[10px] font-mono tracking-[0.2em] uppercase px-3 py-1.5 rounded-full shadow-md">
               {String(idx + 1).padStart(2, "0")} / {String(crew.length).padStart(2, "0")}
             </span>
           </div>
+
 
           <div>
             <p className="font-mono text-[10px] md:text-xs tracking-[0.3em] uppercase text-charcoal/50 mb-3">

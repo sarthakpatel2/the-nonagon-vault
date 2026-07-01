@@ -6,8 +6,10 @@ import { SiteFooter } from "@/components/site-footer";
 
 import { crew } from "@/lib/crew";
 import { supabase } from "@/integrations/supabase/client";
+import { useCrewAvatars, avatarImgStyle, defaultAvatarFor } from "@/lib/crew-avatars";
 import dramaQueenAsset from "@/assets/drama-queen.mp3.asset.json";
 import soniDeNakhreAsset from "@/assets/soni-de-nakhre.mp3.asset.json";
+
 
 const DRAMA_QUEEN_SLUGS = new Set(["aditi", "pragati"]);
 const trackForSlug = (slug: string) =>
@@ -29,6 +31,8 @@ function YearbookPage() {
   const [open, setOpen] = useState<number | null>(null);
   const [thens, setThens] = useState<Record<string, string[]>>({});
   const [nows, setNows] = useState<Record<string, string[]>>({});
+  const avatars = useCrewAvatars();
+
 
   useEffect(() => {
     let cancelled = false;
@@ -83,6 +87,7 @@ function YearbookPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {crew.map((p, i) => {
               const isOpen = open === i;
+              const av = avatars[p.slug] ?? defaultAvatarFor(p);
               return (
                 <button
                   key={p.name}
@@ -93,16 +98,22 @@ function YearbookPage() {
                 >
                   <div>
                     <div className="flex items-center gap-3 mb-4">
-                      <img
-                        src={p.photo}
-                        alt={p.name}
-                        loading="lazy"
-                        className={`w-14 h-14 rounded-full object-cover border-2 ${isOpen ? "border-white/40" : "border-paper/30"}`}
-                      />
+                      <span
+                        className={`relative block w-14 h-14 rounded-full overflow-hidden border-2 shrink-0 ${isOpen ? "border-white/40" : "border-paper/30"}`}
+                      >
+                        <img
+                          src={av.src}
+                          alt={p.name}
+                          loading="lazy"
+                          style={avatarImgStyle(av)}
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                      </span>
                       <span className={`font-mono text-[10px] tracking-[0.2em] uppercase ${isOpen ? "text-white/70" : "text-paper/40"}`}>
                         {p.name} <span className={isOpen ? "text-white/40" : "text-brand"}>//</span> {p.role}
                       </span>
                     </div>
+
                     {!isOpen ? (
                       <div>
                         <p className="font-serif text-lg leading-snug mb-4">&ldquo;{p.vibe}&rdquo;</p>
