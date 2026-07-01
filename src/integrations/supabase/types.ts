@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      crew_avatars: {
+        Row: {
+          created_at: string
+          crop_scale: number
+          crop_x: number
+          crop_y: number
+          filter: string
+          image_url: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          crop_scale?: number
+          crop_x?: number
+          crop_y?: number
+          filter?: string
+          image_url: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          crop_scale?: number
+          crop_x?: number
+          crop_y?: number
+          filter?: string
+          image_url?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       freshers_photo_items: {
         Row: {
           created_at: string
