@@ -1,4 +1,6 @@
+import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
+
 import { supabase } from "@/integrations/supabase/client";
 import { crew, type CrewMember } from "@/lib/crew";
 
