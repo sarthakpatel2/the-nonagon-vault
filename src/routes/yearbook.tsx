@@ -117,14 +117,14 @@ function YearbookPage() {
                   <div>
                     <div className="flex items-center gap-3 mb-4">
                       <span
-                        className={`relative block w-14 h-14 rounded-full overflow-hidden border-2 shrink-0 ${isOpen ? "border-white/40" : "border-paper/30"}`}
+                        className={`relative block w-14 h-14 rounded-full overflow-hidden border-2 shrink-0 ${isOpen ? "border-white/40 bg-white/90" : "border-paper/30 bg-paper/10"}`}
                       >
                         <img
-                          src={av.src}
+                          src={cartoon ? p.cartoon : av.src}
                           alt={p.name}
                           loading="lazy"
-                          style={avatarImgStyle(av)}
-                          className="absolute inset-0 w-full h-full object-cover"
+                          style={cartoon ? { objectPosition: "50% 15%" } : avatarImgStyle(av)}
+                          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
                         />
                       </span>
                       <span className={`font-mono text-[10px] tracking-[0.2em] uppercase ${isOpen ? "text-white/70" : "text-paper/40"}`}>
