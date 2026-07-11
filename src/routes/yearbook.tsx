@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { crew } from "@/lib/crew";
 import { supabase } from "@/integrations/supabase/client";
 import { useCrewAvatars, avatarImgStyle, defaultAvatarFor } from "@/lib/crew-avatars";
+import { useCartoonMode } from "@/lib/cartoon-mode";
 import dramaQueenAsset from "@/assets/drama-queen.mp3.asset.json";
 import soniDeNakhreAsset from "@/assets/soni-de-nakhre.mp3.asset.json";
 
@@ -32,6 +33,7 @@ function YearbookPage() {
   const [thens, setThens] = useState<Record<string, string[]>>({});
   const [nows, setNows] = useState<Record<string, string[]>>({});
   const avatars = useCrewAvatars();
+  const [cartoon, , toggleCartoon] = useCartoonMode();
 
 
   useEffect(() => {
@@ -77,11 +79,27 @@ function YearbookPage() {
 
       <section className="bg-charcoal text-paper py-20 px-6 md:px-10">
         <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-end mb-12">
+          <div className="flex justify-between items-end mb-12 gap-4 flex-wrap">
             <h2 className="font-serif text-3xl md:text-5xl italic text-balance">Class of 2026</h2>
-            <p className="font-mono text-[10px] md:text-xs text-paper/40 tracking-[0.2em] uppercase hidden sm:block">
-              Tap to reveal
-            </p>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={toggleCartoon}
+                aria-pressed={cartoon}
+                className={`group relative inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.2em] uppercase px-4 py-2 rounded-full border transition-all ${
+                  cartoon
+                    ? "bg-brand text-white border-brand shadow-[0_0_0_4px_rgba(255,80,80,0.15)]"
+                    : "border-paper/30 text-paper/70 hover:border-paper hover:text-paper"
+                }`}
+                title="Toggle Bitmoji-style cartoon avatars"
+              >
+                <span aria-hidden>{cartoon ? "🎨" : "📸"}</span>
+                {cartoon ? "Cartoon on" : "Cartoon me"}
+              </button>
+              <p className="font-mono text-[10px] md:text-xs text-paper/40 tracking-[0.2em] uppercase hidden sm:block">
+                Tap to reveal
+              </p>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -99,14 +117,14 @@ function YearbookPage() {
                   <div>
                     <div className="flex items-center gap-3 mb-4">
                       <span
-                        className={`relative block w-14 h-14 rounded-full overflow-hidden border-2 shrink-0 ${isOpen ? "border-white/40" : "border-paper/30"}`}
+                        className={`relative block w-14 h-14 rounded-full overflow-hidden border-2 shrink-0 ${isOpen ? "border-white/40 bg-white/90" : "border-paper/30 bg-paper/10"}`}
                       >
                         <img
-                          src={av.src}
+                          src={cartoon ? p.cartoon : av.src}
                           alt={p.name}
                           loading="lazy"
-                          style={avatarImgStyle(av)}
-                          className="absolute inset-0 w-full h-full object-cover"
+                          style={cartoon ? { objectPosition: "50% 15%" } : avatarImgStyle(av)}
+                          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
                         />
                       </span>
                       <span className={`font-mono text-[10px] tracking-[0.2em] uppercase ${isOpen ? "text-white/70" : "text-paper/40"}`}>
@@ -179,7 +197,7 @@ function YearbookPage() {
               slug={p.slug}
               name={p.name}
               role={p.role}
-              fallback={p.photo}
+              fallback={cartoon ? p.cartoon : p.photo}
               thens={thens[p.slug] ?? []}
               nows={nows[p.slug] ?? []}
             />
