@@ -79,11 +79,27 @@ function YearbookPage() {
 
       <section className="bg-charcoal text-paper py-20 px-6 md:px-10">
         <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-end mb-12">
+          <div className="flex justify-between items-end mb-12 gap-4 flex-wrap">
             <h2 className="font-serif text-3xl md:text-5xl italic text-balance">Class of 2026</h2>
-            <p className="font-mono text-[10px] md:text-xs text-paper/40 tracking-[0.2em] uppercase hidden sm:block">
-              Tap to reveal
-            </p>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={toggleCartoon}
+                aria-pressed={cartoon}
+                className={`group relative inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.2em] uppercase px-4 py-2 rounded-full border transition-all ${
+                  cartoon
+                    ? "bg-brand text-white border-brand shadow-[0_0_0_4px_rgba(255,80,80,0.15)]"
+                    : "border-paper/30 text-paper/70 hover:border-paper hover:text-paper"
+                }`}
+                title="Toggle Bitmoji-style cartoon avatars"
+              >
+                <span aria-hidden>{cartoon ? "🎨" : "📸"}</span>
+                {cartoon ? "Cartoon on" : "Cartoon me"}
+              </button>
+              <p className="font-mono text-[10px] md:text-xs text-paper/40 tracking-[0.2em] uppercase hidden sm:block">
+                Tap to reveal
+              </p>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
