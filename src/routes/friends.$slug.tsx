@@ -48,30 +48,44 @@ function FriendProfile() {
   const next = crew[(idx + 1) % crew.length];
   const avatars = useCrewAvatars();
   const av = avatars[member.slug] ?? defaultAvatarFor(member);
+  const [cartoon, , toggleCartoon] = useCartoonMode();
 
   return (
     <div className="min-h-screen bg-paper text-charcoal">
       <SiteNav />
 
-      <section className="px-6 md:px-10 pt-12 pb-6 max-w-5xl mx-auto">
+      <section className="px-6 md:px-10 pt-12 pb-6 max-w-5xl mx-auto flex items-center justify-between gap-4">
         <Link
           to="/yearbook"
           className="font-mono text-[10px] tracking-[0.3em] uppercase text-charcoal/50 hover:text-brand"
         >
           ← Know the group
         </Link>
+        <button
+          type="button"
+          onClick={toggleCartoon}
+          aria-pressed={cartoon}
+          className={`inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.2em] uppercase px-3 py-1.5 rounded-full border transition ${
+            cartoon
+              ? "bg-brand text-white border-brand"
+              : "border-charcoal/20 text-charcoal/60 hover:border-brand hover:text-brand"
+          }`}
+        >
+          <span aria-hidden>{cartoon ? "🎨" : "📸"}</span>
+          {cartoon ? "Cartoon" : "Photo"}
+        </button>
       </section>
 
       {/* HERO */}
       <section className="px-6 md:px-10 pb-16 max-w-5xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-8 md:gap-12 items-start">
           <div className="relative">
-            <div className="relative w-full aspect-square overflow-hidden rounded-2xl border border-charcoal/10 shadow-sm bg-charcoal/5">
+            <div className={`relative w-full aspect-square overflow-hidden rounded-2xl border border-charcoal/10 shadow-sm ${cartoon ? "bg-paper" : "bg-charcoal/5"}`}>
               <img
-                src={av.src}
+                src={cartoon ? member.cartoon : av.src}
                 alt={member.name}
-                style={avatarImgStyle(av)}
-                className="absolute inset-0 w-full h-full object-cover"
+                style={cartoon ? { objectPosition: "50% 20%" } : avatarImgStyle(av)}
+                className={`absolute inset-0 w-full h-full ${cartoon ? "object-contain p-2" : "object-cover"} transition-all duration-300`}
               />
             </div>
             <span className="absolute -bottom-3 -right-3 bg-brand text-white text-[10px] font-mono tracking-[0.2em] uppercase px-3 py-1.5 rounded-full shadow-md">
