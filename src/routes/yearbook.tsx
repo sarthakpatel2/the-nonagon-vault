@@ -197,7 +197,7 @@ function YearbookPage() {
               slug={p.slug}
               name={p.name}
               role={p.role}
-              fallback={p.photo}
+              fallback={cartoon ? p.cartoon : p.photo}
               thens={thens[p.slug] ?? []}
               nows={nows[p.slug] ?? []}
             />
