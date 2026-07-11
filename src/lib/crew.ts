@@ -50,7 +50,7 @@ const CARTOONS: Record<string, string> = {
   shivendra: shivendraToon,
 };
 
-export const crew: CrewMember[] = [
+const crewBase: Omit<CrewMember, "cartoon">[] = [
   {
     slug: "aditi",
     name: "Aditi Singh",
