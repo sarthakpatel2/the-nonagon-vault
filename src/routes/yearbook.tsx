@@ -33,6 +33,7 @@ function YearbookPage() {
   const [thens, setThens] = useState<Record<string, string[]>>({});
   const [nows, setNows] = useState<Record<string, string[]>>({});
   const avatars = useCrewAvatars();
+  const [cartoon, , toggleCartoon] = useCartoonMode();
 
 
   useEffect(() => {
