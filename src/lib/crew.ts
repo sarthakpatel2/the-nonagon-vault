@@ -8,6 +8,16 @@ import racheetImg from "@/assets/crew/racheet.jpeg";
 import sarthakImg from "@/assets/crew/sarthak.jpeg";
 import shivendraImg from "@/assets/crew/shivendra.jpeg";
 
+import aditiToon from "@/assets/crew/cartoon/aditi.png";
+import amanSinghToon from "@/assets/crew/cartoon/aman-singh.png";
+import amanSaxenaToon from "@/assets/crew/cartoon/aman-saxena.png";
+import pragatiToon from "@/assets/crew/cartoon/pragati.png";
+import madhavSharmaToon from "@/assets/crew/cartoon/madhav-sharma.png";
+import madhavKhandelwalToon from "@/assets/crew/cartoon/madhav-khandelwal.png";
+import racheetToon from "@/assets/crew/cartoon/racheet.png";
+import sarthakToon from "@/assets/crew/cartoon/sarthak.png";
+import shivendraToon from "@/assets/crew/cartoon/shivendra.png";
+
 export type FavoriteMemory = {
   title: string;
   note: string;
@@ -22,9 +32,22 @@ export type CrewMember = {
   details: string[];
   punchline: string;
   photo: string;
+  cartoon: string;
   bio: string;
   favoriteMemories: FavoriteMemory[];
   sharedMemories: number;
+};
+
+const CARTOONS: Record<string, string> = {
+  aditi: aditiToon,
+  "aman-singh": amanSinghToon,
+  "aman-saxena": amanSaxenaToon,
+  pragati: pragatiToon,
+  "madhav-sharma": madhavSharmaToon,
+  "madhav-khandelwal": madhavKhandelwalToon,
+  racheet: racheetToon,
+  sarthak: sarthakToon,
+  shivendra: shivendraToon,
 };
 
 export const crew: CrewMember[] = [
