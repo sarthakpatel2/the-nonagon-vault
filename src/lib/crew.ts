@@ -242,3 +242,8 @@ const crewBase: Omit<CrewMember, "cartoon">[] = [
     sharedMemories: 47,
   },
 ];
+
+export const crew: CrewMember[] = crewBase.map((m) => ({
+  ...m,
+  cartoon: CARTOONS[m.slug] ?? m.photo,
+}));
