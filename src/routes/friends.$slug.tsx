@@ -3,6 +3,7 @@ import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { crew } from "@/lib/crew";
 import { useCrewAvatars, avatarImgStyle, defaultAvatarFor } from "@/lib/crew-avatars";
+import { useCartoonMode } from "@/lib/cartoon-mode";
 
 
 export const Route = createFileRoute("/friends/$slug")({
