@@ -17,6 +17,7 @@ export function SiteFooter() {
   const links = [
     { to: "/", label: "Home" },
     { to: "/gallery", label: "Gallery" },
+    { to: "/videos", label: "Videos" },
     { to: "/timeline", label: "Timeline" },
     { to: "/yearbook", label: "Know the Group" },
     { to: "/letter", label: "Letter" },

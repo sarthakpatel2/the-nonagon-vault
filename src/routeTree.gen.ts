@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as YearbookRouteImport } from './routes/yearbook'
+import { Route as VideosRouteImport } from './routes/videos'
 import { Route as TimelineRouteImport } from './routes/timeline'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as QuizRouteImport } from './routes/quiz'
@@ -25,6 +26,11 @@ import { Route as AdminAvatarsRouteImport } from './routes/admin.avatars'
 const YearbookRoute = YearbookRouteImport.update({
   id: '/yearbook',
   path: '/yearbook',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VideosRoute = VideosRouteImport.update({
+  id: '/videos',
+  path: '/videos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TimelineRoute = TimelineRouteImport.update({
@@ -92,6 +98,7 @@ export interface FileRoutesByFullPath {
   '/quiz': typeof QuizRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/timeline': typeof TimelineRoute
+  '/videos': typeof VideosRoute
   '/yearbook': typeof YearbookRoute
   '/admin/avatars': typeof AdminAvatarsRoute
   '/admin/freshers': typeof AdminFreshersRoute
@@ -106,6 +113,7 @@ export interface FileRoutesByTo {
   '/quiz': typeof QuizRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/timeline': typeof TimelineRoute
+  '/videos': typeof VideosRoute
   '/yearbook': typeof YearbookRoute
   '/admin/avatars': typeof AdminAvatarsRoute
   '/admin/freshers': typeof AdminFreshersRoute
@@ -121,6 +129,7 @@ export interface FileRoutesById {
   '/quiz': typeof QuizRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/timeline': typeof TimelineRoute
+  '/videos': typeof VideosRoute
   '/yearbook': typeof YearbookRoute
   '/admin/avatars': typeof AdminAvatarsRoute
   '/admin/freshers': typeof AdminFreshersRoute
@@ -137,6 +146,7 @@ export interface FileRouteTypes {
     | '/quiz'
     | '/sitemap.xml'
     | '/timeline'
+    | '/videos'
     | '/yearbook'
     | '/admin/avatars'
     | '/admin/freshers'
@@ -151,6 +161,7 @@ export interface FileRouteTypes {
     | '/quiz'
     | '/sitemap.xml'
     | '/timeline'
+    | '/videos'
     | '/yearbook'
     | '/admin/avatars'
     | '/admin/freshers'
@@ -165,6 +176,7 @@ export interface FileRouteTypes {
     | '/quiz'
     | '/sitemap.xml'
     | '/timeline'
+    | '/videos'
     | '/yearbook'
     | '/admin/avatars'
     | '/admin/freshers'
@@ -180,6 +192,7 @@ export interface RootRouteChildren {
   QuizRoute: typeof QuizRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TimelineRoute: typeof TimelineRoute
+  VideosRoute: typeof VideosRoute
   YearbookRoute: typeof YearbookRoute
   AdminAvatarsRoute: typeof AdminAvatarsRoute
   AdminFreshersRoute: typeof AdminFreshersRoute
@@ -193,6 +206,13 @@ declare module '@tanstack/react-router' {
       path: '/yearbook'
       fullPath: '/yearbook'
       preLoaderRoute: typeof YearbookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/videos': {
+      id: '/videos'
+      path: '/videos'
+      fullPath: '/videos'
+      preLoaderRoute: typeof VideosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/timeline': {
@@ -284,6 +304,7 @@ const rootRouteChildren: RootRouteChildren = {
   QuizRoute: QuizRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TimelineRoute: TimelineRoute,
+  VideosRoute: VideosRoute,
   YearbookRoute: YearbookRoute,
   AdminAvatarsRoute: AdminAvatarsRoute,
   AdminFreshersRoute: AdminFreshersRoute,
