@@ -5,6 +5,8 @@ import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { captureVideoThumbnail } from "@/lib/video-thumb";
+import { uploadResumable } from "@/lib/resumable-upload";
 
 export const Route = createFileRoute("/videos")({
   head: () => ({
