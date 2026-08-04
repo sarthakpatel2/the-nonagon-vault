@@ -342,6 +342,20 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
           />
         </label>
 
+        {busy && (
+          <div className="mt-5">
+            <div className="h-1.5 w-full bg-charcoal/10 overflow-hidden rounded-full">
+              <div
+                className="h-full bg-brand transition-[width] duration-200"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <p className="mt-2 font-mono text-[10px] tracking-widest uppercase text-charcoal/50">
+              {stage} · {progress}%
+            </p>
+          </div>
+        )}
+
         <button
           type="submit"
           disabled={busy || !file}
