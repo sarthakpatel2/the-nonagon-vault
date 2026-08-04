@@ -161,9 +161,13 @@ function VideosPage() {
 function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded: () => void }) {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [thumb, setThumb] = useState<{ blob: Blob; url: string } | null>(null);
+  const [thumbing, setThumbing] = useState(false);
   const [title, setTitle] = useState("");
   const [caption, setCaption] = useState("");
   const [busy, setBusy] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [stage, setStage] = useState("");
 
   useEffect(() => {
     return () => {
@@ -171,7 +175,13 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
     };
   }, [preview]);
 
-  const onFile = (f: File | null) => {
+  useEffect(() => {
+    return () => {
+      if (thumb) URL.revokeObjectURL(thumb.url);
+    };
+  }, [thumb]);
+
+  const onFile = async (f: File | null) => {
     if (f && f.size > MAX_BYTES) {
       toast.error("That clip is over 500 MB — trim it a bit first");
       return;
@@ -179,6 +189,14 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
     setFile(f);
     if (preview) URL.revokeObjectURL(preview);
     setPreview(f ? URL.createObjectURL(f) : null);
+    if (thumb) URL.revokeObjectURL(thumb.url);
+    setThumb(null);
+    if (!f) return;
+
+    setThumbing(true);
+    const shot = await captureVideoThumbnail(f);
+    setThumbing(false);
+    if (shot) setThumb({ blob: shot.blob, url: URL.createObjectURL(shot.blob) });
   };
 
   const submit = async (e: React.FormEvent) => {
@@ -188,16 +206,33 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
       return;
     }
     setBusy(true);
+    setProgress(0);
     try {
+      const id = crypto.randomUUID();
       const ext = file.name.split(".").pop() || "mp4";
-      const path = `videos/${crypto.randomUUID()}.${ext}`;
-      const { error: upErr } = await supabase.storage
-        .from("gallery")
-        .upload(path, file, { contentType: file.type || "video/mp4", upsert: false });
-      if (upErr) throw upErr;
-      const { data: urlData } = supabase.storage.from("gallery").getPublicUrl(path);
+
+      setStage("Uploading video");
+      const videoUrl = await uploadResumable(
+        "gallery",
+        `videos/${id}.${ext}`,
+        file,
+        setProgress,
+      );
+
+      let posterUrl: string | null = null;
+      const shot = thumb?.blob ?? (await captureVideoThumbnail(file))?.blob ?? null;
+      if (shot) {
+        setStage("Saving thumbnail");
+        try {
+          posterUrl = await uploadResumable("gallery", `videos/${id}-poster.jpg`, shot);
+        } catch (thumbErr) {
+          console.warn("[thumbnail] upload failed", thumbErr);
+        }
+      }
+
       const { error: insErr } = await supabase.from("videos").insert({
-        video_url: urlData.publicUrl,
+        video_url: videoUrl,
+        poster_url: posterUrl,
         title: title.trim().slice(0, 120),
         caption: caption.trim().slice(0, 280),
       });
@@ -209,8 +244,10 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
       toast.error(err instanceof Error ? err.message : "Upload failed");
     } finally {
       setBusy(false);
+      setStage("");
     }
   };
+
 
   return (
     <div
