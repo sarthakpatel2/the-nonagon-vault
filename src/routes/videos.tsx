@@ -5,6 +5,8 @@ import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { captureVideoThumbnail } from "@/lib/video-thumb";
+import { uploadResumable } from "@/lib/resumable-upload";
 
 export const Route = createFileRoute("/videos")({
   head: () => ({
@@ -32,6 +34,7 @@ type VideoRow = {
   video_url: string;
   title: string;
   caption: string;
+  poster_url: string | null;
   created_at: string;
 };
 
@@ -114,11 +117,13 @@ function VideosPage() {
                 />
                 <video
                   src={v.video_url}
+                  poster={v.poster_url ?? undefined}
                   controls
                   playsInline
-                  preload="metadata"
+                  preload={v.poster_url ? "none" : "metadata"}
                   className="w-full aspect-video bg-charcoal/90 object-contain rounded-sm"
                 />
+
                 <figcaption className="mt-4 px-1">
                   <p className="font-hand text-xl leading-tight text-charcoal">
                     {v.title || "Untitled clip"}
@@ -158,9 +163,13 @@ function VideosPage() {
 function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded: () => void }) {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [thumb, setThumb] = useState<{ blob: Blob; url: string } | null>(null);
+  const [thumbing, setThumbing] = useState(false);
   const [title, setTitle] = useState("");
   const [caption, setCaption] = useState("");
   const [busy, setBusy] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [stage, setStage] = useState("");
 
   useEffect(() => {
     return () => {
@@ -168,7 +177,13 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
     };
   }, [preview]);
 
-  const onFile = (f: File | null) => {
+  useEffect(() => {
+    return () => {
+      if (thumb) URL.revokeObjectURL(thumb.url);
+    };
+  }, [thumb]);
+
+  const onFile = async (f: File | null) => {
     if (f && f.size > MAX_BYTES) {
       toast.error("That clip is over 500 MB — trim it a bit first");
       return;
@@ -176,6 +191,14 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
     setFile(f);
     if (preview) URL.revokeObjectURL(preview);
     setPreview(f ? URL.createObjectURL(f) : null);
+    if (thumb) URL.revokeObjectURL(thumb.url);
+    setThumb(null);
+    if (!f) return;
+
+    setThumbing(true);
+    const shot = await captureVideoThumbnail(f);
+    setThumbing(false);
+    if (shot) setThumb({ blob: shot.blob, url: URL.createObjectURL(shot.blob) });
   };
 
   const submit = async (e: React.FormEvent) => {
@@ -185,16 +208,33 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
       return;
     }
     setBusy(true);
+    setProgress(0);
     try {
+      const id = crypto.randomUUID();
       const ext = file.name.split(".").pop() || "mp4";
-      const path = `videos/${crypto.randomUUID()}.${ext}`;
-      const { error: upErr } = await supabase.storage
-        .from("gallery")
-        .upload(path, file, { contentType: file.type || "video/mp4", upsert: false });
-      if (upErr) throw upErr;
-      const { data: urlData } = supabase.storage.from("gallery").getPublicUrl(path);
+
+      setStage("Uploading video");
+      const videoUrl = await uploadResumable(
+        "gallery",
+        `videos/${id}.${ext}`,
+        file,
+        setProgress,
+      );
+
+      let posterUrl: string | null = null;
+      const shot = thumb?.blob ?? (await captureVideoThumbnail(file))?.blob ?? null;
+      if (shot) {
+        setStage("Saving thumbnail");
+        try {
+          posterUrl = await uploadResumable("gallery", `videos/${id}-poster.jpg`, shot);
+        } catch (thumbErr) {
+          console.warn("[thumbnail] upload failed", thumbErr);
+        }
+      }
+
       const { error: insErr } = await supabase.from("videos").insert({
-        video_url: urlData.publicUrl,
+        video_url: videoUrl,
+        poster_url: posterUrl,
         title: title.trim().slice(0, 120),
         caption: caption.trim().slice(0, 280),
       });
@@ -206,8 +246,10 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
       toast.error(err instanceof Error ? err.message : "Upload failed");
     } finally {
       setBusy(false);
+      setStage("");
     }
   };
+
 
   return (
     <div
@@ -257,6 +299,21 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
           </div>
         </label>
 
+        {(thumbing || thumb) && (
+          <div className="mt-3 flex items-center gap-3">
+            <div className="w-24 aspect-video bg-charcoal/10 overflow-hidden rounded-sm grid place-items-center shrink-0">
+              {thumb ? (
+                <img src={thumb.url} alt="Auto-generated thumbnail" className="w-full h-full object-cover" />
+              ) : (
+                <Loader2 className="w-4 h-4 animate-spin text-charcoal/50" />
+              )}
+            </div>
+            <p className="font-mono text-[10px] tracking-widest uppercase text-charcoal/50">
+              {thumb ? "Thumbnail captured" : "Grabbing a frame…"}
+            </p>
+          </div>
+        )}
+
         <label className="block mt-4">
           <span className="font-mono text-[10px] tracking-widest uppercase text-charcoal/60">
             Title
@@ -284,6 +341,20 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
             className="mt-1 w-full bg-transparent border-b border-charcoal/30 focus:border-brand outline-none text-sm py-2"
           />
         </label>
+
+        {busy && (
+          <div className="mt-5">
+            <div className="h-1.5 w-full bg-charcoal/10 overflow-hidden rounded-full">
+              <div
+                className="h-full bg-brand transition-[width] duration-200"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <p className="mt-2 font-mono text-[10px] tracking-widest uppercase text-charcoal/50">
+              {stage} · {progress}%
+            </p>
+          </div>
+        )}
 
         <button
           type="submit"
