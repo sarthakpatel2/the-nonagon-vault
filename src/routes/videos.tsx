@@ -35,7 +35,7 @@ type VideoRow = {
   created_at: string;
 };
 
-const MAX_BYTES = 100 * 1024 * 1024; // 100 MB
+const MAX_BYTES = 500 * 1024 * 1024; // 500 MB
 
 function VideosPage() {
   const [videos, setVideos] = useState<VideoRow[]>([]);
@@ -170,7 +170,7 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
 
   const onFile = (f: File | null) => {
     if (f && f.size > MAX_BYTES) {
-      toast.error("That clip is over 100 MB — trim it a bit first");
+      toast.error("That clip is over 500 MB — trim it a bit first");
       return;
     }
     setFile(f);
@@ -237,7 +237,7 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
 
         <label className="block">
           <span className="font-mono text-[10px] tracking-widest uppercase text-charcoal/60">
-            Video (max 100 MB)
+            Video (max 500 MB)
           </span>
           <div className="mt-2 border-2 border-dashed border-charcoal/20 hover:border-brand transition-colors aspect-video w-full overflow-hidden bg-charcoal/5 grid place-items-center cursor-pointer">
             {preview ? (
