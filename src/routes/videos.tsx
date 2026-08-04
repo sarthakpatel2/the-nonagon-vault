@@ -115,11 +115,13 @@ function VideosPage() {
                 />
                 <video
                   src={v.video_url}
+                  poster={v.poster_url ?? undefined}
                   controls
                   playsInline
-                  preload="metadata"
+                  preload={v.poster_url ? "none" : "metadata"}
                   className="w-full aspect-video bg-charcoal/90 object-contain rounded-sm"
                 />
+
                 <figcaption className="mt-4 px-1">
                   <p className="font-hand text-xl leading-tight text-charcoal">
                     {v.title || "Untitled clip"}
