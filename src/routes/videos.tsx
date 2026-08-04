@@ -32,6 +32,7 @@ type VideoRow = {
   video_url: string;
   title: string;
   caption: string;
+  poster_url: string | null;
   created_at: string;
 };
 
