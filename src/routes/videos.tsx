@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
-import { Plus, Upload, Loader2, X, Trash2 } from "lucide-react";
+import { Plus, Upload, Loader2, X, Trash2, Play } from "lucide-react";
+import { VideoViewer } from "@/components/video-viewer";
+
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { supabase } from "@/integrations/supabase/client";
@@ -44,6 +46,8 @@ function VideosPage() {
   const [videos, setVideos] = useState<VideoRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [showUpload, setShowUpload] = useState(false);
+  const [activeId, setActiveId] = useState<string | null>(null);
+
 
   const load = useCallback(async () => {
     const { data, error } = await supabase
@@ -115,14 +119,34 @@ function VideosPage() {
                   className="tape left-1/2 -translate-x-1/2 -top-3 w-20 h-5 rotate-[-3deg]"
                   aria-hidden
                 />
-                <video
-                  src={v.video_url}
-                  poster={v.poster_url ?? undefined}
-                  controls
-                  playsInline
-                  preload={v.poster_url ? "none" : "metadata"}
-                  className="w-full aspect-video bg-charcoal/90 object-contain rounded-sm"
-                />
+                <button
+                  type="button"
+                  onClick={() => setActiveId(v.id)}
+                  aria-label={`Play ${v.title || "clip"}`}
+                  className="relative block w-full aspect-video bg-charcoal/90 overflow-hidden rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                >
+                  {v.poster_url ? (
+                    <img
+                      src={v.poster_url}
+                      alt={v.title || "Video thumbnail"}
+                      loading="lazy"
+                      className="w-full h-full object-contain"
+                    />
+                  ) : (
+                    <video
+                      src={v.video_url}
+                      preload="metadata"
+                      muted
+                      playsInline
+                      className="w-full h-full object-contain pointer-events-none"
+                    />
+                  )}
+                  <span className="absolute inset-0 grid place-items-center bg-charcoal/20 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity">
+                    <span className="grid place-items-center w-14 h-14 rounded-full bg-paper/90 text-charcoal">
+                      <Play className="w-6 h-6 translate-x-[1px]" />
+                    </span>
+                  </span>
+                </button>
 
                 <figcaption className="mt-4 px-1">
                   <p className="font-hand text-xl leading-tight text-charcoal">
@@ -144,6 +168,16 @@ function VideosPage() {
           </div>
         )}
       </section>
+
+      {activeId && (
+        <VideoViewer
+          videos={videos}
+          activeId={activeId}
+          onSelect={setActiveId}
+          onClose={() => setActiveId(null)}
+        />
+      )}
+
 
       {showUpload && (
         <UploadDialog
