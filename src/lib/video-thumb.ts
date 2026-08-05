@@ -71,3 +71,30 @@ export async function captureVideoThumbnail(
     URL.revokeObjectURL(url);
   }
 }
+
+/**
+ * Grabs the currently displayed frame of a live <video> element (used when the
+ * uploader scrubs to a moment they want as the thumbnail).
+ */
+export async function captureFrameFromElement(
+  video: HTMLVideoElement,
+  maxWidth = 1280,
+): Promise<Blob | null> {
+  const vw = video.videoWidth;
+  const vh = video.videoHeight;
+  if (!vw || !vh) return null;
+  const scale = Math.min(1, maxWidth / vw);
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.round(vw * scale);
+  canvas.height = Math.round(vh * scale);
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return null;
+  try {
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  } catch {
+    return null;
+  }
+  return await new Promise<Blob | null>((resolve) =>
+    canvas.toBlob((b) => resolve(b), "image/jpeg", 0.85),
+  );
+}
