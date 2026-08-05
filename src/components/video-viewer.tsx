@@ -49,9 +49,20 @@ export function VideoViewer({
   }, [onClose, step]);
 
   useEffect(() => {
-    videoRef.current?.load();
-    void videoRef.current?.play().catch(() => {});
+    // Pause any other media on the page (e.g. yearbook background music)
+    document.querySelectorAll<HTMLMediaElement>("audio, video").forEach((el) => {
+      if (el !== videoRef.current && !el.paused) el.pause();
+    });
+    const el = videoRef.current;
+    if (!el) return;
+    el.muted = false;
+    el.volume = 1;
+    el.load();
+    void el.play().catch(() => {
+      // autoplay with sound blocked — leave it paused so the user starts it with audio
+    });
   }, [activeId]);
+
 
   if (!active) return null;
   const related = videos.filter((v) => v.id !== activeId);
