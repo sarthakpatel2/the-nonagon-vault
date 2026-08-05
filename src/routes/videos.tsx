@@ -353,7 +353,15 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
           </span>
           <div className="mt-2 border-2 border-dashed border-charcoal/20 hover:border-brand transition-colors aspect-video w-full overflow-hidden bg-charcoal/5 grid place-items-center cursor-pointer">
             {preview ? (
-              <video src={preview} controls playsInline className="w-full h-full object-contain" />
+              <video
+                ref={videoRef}
+                src={preview}
+                controls
+                playsInline
+                crossOrigin="anonymous"
+                onClick={(e) => e.preventDefault()}
+                className="w-full h-full object-contain"
+              />
             ) : (
               <div className="text-center text-charcoal/50 font-mono text-xs">
                 <Upload className="w-6 h-6 mx-auto mb-2" />
@@ -369,20 +377,54 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
           </div>
         </label>
 
-        {(thumbing || thumb) && (
-          <div className="mt-3 flex items-center gap-3">
-            <div className="w-24 aspect-video bg-charcoal/10 overflow-hidden rounded-sm grid place-items-center shrink-0">
-              {thumb ? (
-                <img src={thumb.url} alt="Auto-generated thumbnail" className="w-full h-full object-cover" />
-              ) : (
-                <Loader2 className="w-4 h-4 animate-spin text-charcoal/50" />
-              )}
+        {file && (
+          <div className="mt-4">
+            <span className="font-mono text-[10px] tracking-widest uppercase text-charcoal/60">
+              Thumbnail
+            </span>
+            <div className="mt-2 flex items-center gap-3">
+              <div className="w-28 aspect-video bg-charcoal/10 overflow-hidden rounded-sm grid place-items-center shrink-0">
+                {thumbing ? (
+                  <Loader2 className="w-4 h-4 animate-spin text-charcoal/50" />
+                ) : thumb ? (
+                  <img src={thumb.url} alt="Chosen thumbnail" className="w-full h-full object-cover" />
+                ) : (
+                  <ImageIcon className="w-4 h-4 text-charcoal/40" />
+                )}
+              </div>
+              <div className="flex-1 space-y-2">
+                <button
+                  type="button"
+                  onClick={useCurrentFrame}
+                  className="w-full inline-flex items-center justify-center gap-2 border border-charcoal/25 hover:border-brand hover:text-brand px-3 py-2 font-mono text-[10px] tracking-widest uppercase transition-colors"
+                >
+                  <Camera className="w-3.5 h-3.5" />
+                  Use current frame
+                </button>
+                <label className="w-full inline-flex items-center justify-center gap-2 border border-charcoal/25 hover:border-brand hover:text-brand px-3 py-2 font-mono text-[10px] tracking-widest uppercase transition-colors cursor-pointer">
+                  <ImageIcon className="w-3.5 h-3.5" />
+                  Upload an image
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="sr-only"
+                    onChange={(e) => onCustomImage(e.target.files?.[0] ?? null)}
+                  />
+                </label>
+              </div>
             </div>
-            <p className="font-mono text-[10px] tracking-widest uppercase text-charcoal/50">
-              {thumb ? "Thumbnail captured" : "Grabbing a frame…"}
+            <p className="mt-2 font-mono text-[10px] tracking-widest uppercase text-charcoal/45">
+              {thumbing
+                ? "Grabbing a frame…"
+                : thumbSource === "custom"
+                  ? "Custom image"
+                  : thumbSource === "frame"
+                    ? "Picked frame"
+                    : "Auto-picked — scrub the video and pick your own"}
             </p>
           </div>
         )}
+
 
         <label className="block mt-4">
           <span className="font-mono text-[10px] tracking-widest uppercase text-charcoal/60">
