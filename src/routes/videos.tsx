@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
-import { Plus, Upload, Loader2, X, Trash2 } from "lucide-react";
+import { Plus, Upload, Loader2, X, Trash2, Play } from "lucide-react";
+import { VideoViewer } from "@/components/video-viewer";
+
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { supabase } from "@/integrations/supabase/client";
@@ -44,6 +46,8 @@ function VideosPage() {
   const [videos, setVideos] = useState<VideoRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [showUpload, setShowUpload] = useState(false);
+  const [activeId, setActiveId] = useState<string | null>(null);
+
 
   const load = useCallback(async () => {
     const { data, error } = await supabase
