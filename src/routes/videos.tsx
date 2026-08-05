@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useCallback, useEffect, useState } from "react";
-import { Plus, Upload, Loader2, X, Trash2, Play } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Plus, Upload, Loader2, X, Trash2, Play, Camera, Image as ImageIcon } from "lucide-react";
 import { VideoViewer } from "@/components/video-viewer";
 
 import { SiteNav } from "@/components/site-nav";
