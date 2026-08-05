@@ -198,12 +198,14 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [thumb, setThumb] = useState<{ blob: Blob; url: string } | null>(null);
+  const [thumbSource, setThumbSource] = useState<"auto" | "frame" | "custom">("auto");
   const [thumbing, setThumbing] = useState(false);
   const [title, setTitle] = useState("");
   const [caption, setCaption] = useState("");
   const [busy, setBusy] = useState(false);
   const [progress, setProgress] = useState(0);
   const [stage, setStage] = useState("");
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     return () => {
@@ -217,6 +219,14 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
     };
   }, [thumb]);
 
+  const applyThumb = (blob: Blob, source: "auto" | "frame" | "custom") => {
+    setThumb((prev) => {
+      if (prev) URL.revokeObjectURL(prev.url);
+      return { blob, url: URL.createObjectURL(blob) };
+    });
+    setThumbSource(source);
+  };
+
   const onFile = async (f: File | null) => {
     if (f && f.size > MAX_BYTES) {
       toast.error("That clip is over 500 MB — trim it a bit first");
@@ -227,13 +237,39 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
     setPreview(f ? URL.createObjectURL(f) : null);
     if (thumb) URL.revokeObjectURL(thumb.url);
     setThumb(null);
+    setThumbSource("auto");
     if (!f) return;
 
     setThumbing(true);
     const shot = await captureVideoThumbnail(f);
     setThumbing(false);
-    if (shot) setThumb({ blob: shot.blob, url: URL.createObjectURL(shot.blob) });
+    if (shot) applyThumb(shot.blob, "auto");
   };
+
+  const useCurrentFrame = async () => {
+    const el = videoRef.current;
+    if (!el) return;
+    setThumbing(true);
+    const blob = await captureFrameFromElement(el);
+    setThumbing(false);
+    if (!blob) {
+      toast.error("Couldn't grab that frame — try another moment");
+      return;
+    }
+    applyThumb(blob, "frame");
+    toast.success("Thumbnail set from this frame");
+  };
+
+  const onCustomImage = (f: File | null) => {
+    if (!f) return;
+    if (!f.type.startsWith("image/")) {
+      toast.error("Pick an image file");
+      return;
+    }
+    applyThumb(f, "custom");
+    toast.success("Custom thumbnail set");
+  };
+
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
