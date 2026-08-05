@@ -295,8 +295,9 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
       const shot = thumb?.blob ?? (await captureVideoThumbnail(file))?.blob ?? null;
       if (shot) {
         setStage("Saving thumbnail");
+        const posterExt = shot.type === "image/png" ? "png" : shot.type === "image/webp" ? "webp" : "jpg";
         try {
-          posterUrl = await uploadResumable("gallery", `videos/${id}-poster.jpg`, shot);
+          posterUrl = await uploadResumable("gallery", `videos/${id}-poster.${posterExt}`, shot);
         } catch (thumbErr) {
           console.warn("[thumbnail] upload failed", thumbErr);
         }
