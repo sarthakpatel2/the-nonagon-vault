@@ -9,6 +9,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { captureVideoThumbnail, captureFrameFromElement } from "@/lib/video-thumb";
 import { uploadResumable } from "@/lib/resumable-upload";
+import { ThumbCropper } from "@/components/thumb-cropper";
+import { DEFAULT_CROP, renderCroppedThumb, type CropState } from "@/lib/thumb-crop";
 
 export const Route = createFileRoute("/videos")({
   head: () => ({
@@ -199,6 +201,7 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
   const [preview, setPreview] = useState<string | null>(null);
   const [thumb, setThumb] = useState<{ blob: Blob; url: string } | null>(null);
   const [thumbSource, setThumbSource] = useState<"auto" | "frame" | "custom">("auto");
+  const [crop, setCrop] = useState<CropState>(DEFAULT_CROP);
   const [thumbing, setThumbing] = useState(false);
   const [title, setTitle] = useState("");
   const [caption, setCaption] = useState("");
@@ -225,6 +228,7 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
       return { blob, url: URL.createObjectURL(blob) };
     });
     setThumbSource(source);
+    setCrop(DEFAULT_CROP);
   };
 
   const onFile = async (f: File | null) => {
@@ -292,12 +296,12 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
       );
 
       let posterUrl: string | null = null;
-      const shot = thumb?.blob ?? (await captureVideoThumbnail(file))?.blob ?? null;
-      if (shot) {
+      const raw = thumb?.blob ?? (await captureVideoThumbnail(file))?.blob ?? null;
+      if (raw) {
         setStage("Saving thumbnail");
-        const posterExt = shot.type === "image/png" ? "png" : shot.type === "image/webp" ? "webp" : "jpg";
+        const shot = await renderCroppedThumb(raw, crop);
         try {
-          posterUrl = await uploadResumable("gallery", `videos/${id}-poster.${posterExt}`, shot);
+          posterUrl = await uploadResumable("gallery", `videos/${id}-poster.jpg`, shot);
         } catch (thumbErr) {
           console.warn("[thumbnail] upload failed", thumbErr);
         }
