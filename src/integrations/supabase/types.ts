@@ -223,6 +223,67 @@ export type Database = {
         }
         Relationships: []
       }
+      video_comments: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          name: string
+          video_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          name?: string
+          video_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          name?: string
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_comments_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      video_likes: {
+        Row: {
+          client_id: string
+          created_at: string
+          id: string
+          video_id: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          id?: string
+          video_id: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          id?: string
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_likes_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       videos: {
         Row: {
           caption: string
