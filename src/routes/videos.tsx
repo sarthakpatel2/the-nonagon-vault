@@ -381,47 +381,49 @@ function UploadDialog({ onClose, onUploaded }: { onClose: () => void; onUploaded
         {file && (
           <div className="mt-4">
             <span className="font-mono text-[10px] tracking-widest uppercase text-charcoal/60">
-              Thumbnail
+              Cover thumbnail
             </span>
-            <div className="mt-2 flex items-center gap-3">
-              <div className="w-28 aspect-video bg-charcoal/10 overflow-hidden rounded-sm grid place-items-center shrink-0">
-                {thumbing ? (
-                  <Loader2 className="w-4 h-4 animate-spin text-charcoal/50" />
-                ) : thumb ? (
-                  <img src={thumb.url} alt="Chosen thumbnail" className="w-full h-full object-cover" />
-                ) : (
-                  <ImageIcon className="w-4 h-4 text-charcoal/40" />
-                )}
-              </div>
-              <div className="flex-1 space-y-2">
-                <button
-                  type="button"
-                  onClick={useCurrentFrame}
-                  className="w-full inline-flex items-center justify-center gap-2 border border-charcoal/25 hover:border-brand hover:text-brand px-3 py-2 font-mono text-[10px] tracking-widest uppercase transition-colors"
-                >
-                  <Camera className="w-3.5 h-3.5" />
-                  Use current frame
-                </button>
-                <label className="w-full inline-flex items-center justify-center gap-2 border border-charcoal/25 hover:border-brand hover:text-brand px-3 py-2 font-mono text-[10px] tracking-widest uppercase transition-colors cursor-pointer">
-                  <ImageIcon className="w-3.5 h-3.5" />
-                  Upload an image
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="sr-only"
-                    onChange={(e) => onCustomImage(e.target.files?.[0] ?? null)}
-                  />
-                </label>
-              </div>
+            <div className="mt-2">
+              {thumbing ? (
+                <div className="w-full aspect-video bg-charcoal/10 grid place-items-center rounded-sm">
+                  <Loader2 className="w-5 h-5 animate-spin text-charcoal/50" />
+                </div>
+              ) : thumb ? (
+                <ThumbCropper src={thumb.url} crop={crop} onChange={setCrop} />
+              ) : (
+                <div className="w-full aspect-video bg-charcoal/10 grid place-items-center rounded-sm text-charcoal/40">
+                  <ImageIcon className="w-5 h-5" />
+                </div>
+              )}
+            </div>
+            <div className="mt-3 flex gap-2">
+              <button
+                type="button"
+                onClick={useCurrentFrame}
+                className="flex-1 inline-flex items-center justify-center gap-2 border border-charcoal/25 hover:border-brand hover:text-brand px-3 py-2 font-mono text-[10px] tracking-widest uppercase transition-colors"
+              >
+                <Camera className="w-3.5 h-3.5" />
+                Use current frame
+              </button>
+              <label className="flex-1 inline-flex items-center justify-center gap-2 border border-charcoal/25 hover:border-brand hover:text-brand px-3 py-2 font-mono text-[10px] tracking-widest uppercase transition-colors cursor-pointer">
+                <ImageIcon className="w-3.5 h-3.5" />
+                Upload an image
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="sr-only"
+                  onChange={(e) => onCustomImage(e.target.files?.[0] ?? null)}
+                />
+              </label>
             </div>
             <p className="mt-2 font-mono text-[10px] tracking-widest uppercase text-charcoal/45">
               {thumbing
                 ? "Grabbing a frame…"
                 : thumbSource === "custom"
-                  ? "Custom image"
+                  ? "Custom image — drag & zoom to frame it"
                   : thumbSource === "frame"
-                    ? "Picked frame"
-                    : "Auto-picked — scrub the video and pick your own"}
+                    ? "Picked frame — drag & zoom to frame it"
+                    : "Auto-picked — scrub the video, pick a frame, then drag to frame it"}
             </p>
           </div>
         )}
