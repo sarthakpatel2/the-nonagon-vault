@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import { X, Play } from "lucide-react";
+import { VideoSocial } from "@/components/video-social";
 
 export type VideoItem = {
   id: string;
@@ -108,6 +109,8 @@ export function VideoViewer({
           <p className="mt-3 font-mono text-[10px] tracking-[0.25em] uppercase text-paper/40">
             {new Date(active.created_at).toLocaleDateString()}
           </p>
+
+          <VideoSocial key={active.id} videoId={active.id} tone="dark" />
         </div>
 
         {related.length > 0 && (
