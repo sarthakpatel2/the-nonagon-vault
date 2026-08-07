@@ -80,11 +80,16 @@ export function VideoSocial({ videoId, tone = "dark" }: { videoId: string; tone?
   const post = async (e: React.FormEvent) => {
     e.preventDefault();
     const msg = message.trim();
+    const who = name.trim().slice(0, 60);
+    if (!who) {
+      toast.error("Add your name first — no anonymous comments");
+      return;
+    }
     if (!msg) return;
     setSending(true);
     const { error } = await supabase.from("video_comments").insert({
       video_id: videoId,
-      name: name.trim().slice(0, 60),
+      name: who,
       message: msg.slice(0, 500),
     });
     setSending(false);
@@ -92,9 +97,11 @@ export function VideoSocial({ videoId, tone = "dark" }: { videoId: string; tone?
       toast.error(error.message);
       return;
     }
+    localStorage.setItem(NAME_KEY, who);
     setMessage("");
     load();
   };
+
 
   const remove = async (id: string) => {
     const { error } = await supabase.from("video_comments").delete().eq("id", id);
