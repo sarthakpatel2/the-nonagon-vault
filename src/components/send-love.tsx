@@ -133,16 +133,22 @@ export function SendLove() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const trimmed = message.trim();
-    if (!trimmed) {
+    const trimmedName = name.trim();
+    const trimmedMsg = message.trim();
+    if (!trimmedName) {
+      toast.error("Add your name so we know who sent the love 💌");
+      return;
+    }
+    if (!trimmedMsg) {
       toast.error("Write a little something first 💌");
       return;
     }
-    if (trimmed.length > MAX_MSG) return;
+    if (trimmedName.length > MAX_NAME) return;
+    if (trimmedMsg.length > MAX_MSG) return;
     setSending(true);
     const { error } = await supabase.from("love_notes").insert({
-      name: name.trim().slice(0, MAX_NAME),
-      message: trimmed.slice(0, MAX_MSG),
+      name: trimmedName.slice(0, MAX_NAME),
+      message: trimmedMsg.slice(0, MAX_MSG),
       page: pathname,
       mood,
     });
@@ -269,7 +275,8 @@ export function SendLove() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   maxLength={MAX_NAME}
-                  placeholder="Your name (or stay anonymous)"
+                  placeholder="Your name *"
+                  required
                   className="w-full bg-paper border border-charcoal/15 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand transition-colors"
                 />
                 <div className="relative">
@@ -310,7 +317,7 @@ export function SendLove() {
                 </div>
                 <button
                   type="submit"
-                  disabled={sending || !message.trim()}
+                  disabled={sending || !message.trim() || !name.trim()}
                   className="w-full bg-charcoal text-paper py-3 rounded-full font-medium text-sm hover:bg-brand transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {sending ? "Sending…" : "Send love 💖"}
