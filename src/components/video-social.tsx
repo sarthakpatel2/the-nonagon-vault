@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Heart, Loader2, MessageCircle, Send, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { NAME_KEY } from "@/components/presence-indicator";
 import { toast } from "sonner";
 
 type Comment = {
@@ -55,6 +56,12 @@ export function VideoSocial({ videoId, tone = "dark" }: { videoId: string; tone?
     setLoading(true);
     load();
   }, [load]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem(NAME_KEY);
+    if (saved) setName(saved);
+  }, []);
+
 
   const toggleLike = async () => {
     const me = clientId();
