@@ -52,7 +52,7 @@ export function PresenceIndicator() {
   const count = Math.max(people.length, 1);
 
   return (
-    <div className="fixed bottom-5 right-5 z-40">
+    <div className="fixed bottom-20 left-5 z-40">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
