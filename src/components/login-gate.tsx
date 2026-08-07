@@ -287,7 +287,7 @@ export function LoginGate({ children }: { children: React.ReactNode }) {
           </p>
         </div>
 
-        <p className="text-center font-mono text-[10px] tracking-[0.25em] uppercase text-charcoal/40 mt-6">
+        <p className="text-center font-mono text-[10px] tracking-[0.25em] uppercase text-charcoal/40 dark:text-paper/70 mt-6">
           Unauthorized access will be roasted in the group chat.
         </p>
       </div>
