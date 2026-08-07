@@ -137,19 +137,22 @@ export function VideoSocial({ videoId, tone = "dark" }: { videoId: string; tone?
           value={name}
           onChange={(e) => setName(e.target.value)}
           maxLength={60}
-          placeholder="Your name"
+          required
+          aria-label="Your name (required)"
+          placeholder="Your name *"
           className={`bg-transparent border-b ${line} focus:border-brand outline-none text-sm py-2 ${text}`}
         />
         <input
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           maxLength={500}
+          required
           placeholder="Say something about this clip…"
           className={`bg-transparent border-b ${line} focus:border-brand outline-none text-sm py-2 ${text}`}
         />
         <button
           type="submit"
-          disabled={sending || !message.trim()}
+          disabled={sending || !message.trim() || !name.trim()}
           className="inline-flex items-center justify-center gap-2 bg-brand text-paper px-4 py-2 font-mono text-[10px] tracking-[0.25em] uppercase disabled:opacity-50 hover:bg-charcoal transition-colors"
         >
           {sending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
