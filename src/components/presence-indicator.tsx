@@ -13,11 +13,22 @@ function clientId() {
   return id;
 }
 
-type Who = { id: string; name: string };
+type Who = { id: string; name: string; at: number };
+
+function ago(ms: number) {
+  const s = Math.max(0, Math.round(ms / 1000));
+  if (s < 10) return "just now";
+  if (s < 60) return `${s}s ago`;
+  const m = Math.floor(s / 60);
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  return `${h}h ago`;
+}
 
 export function PresenceIndicator() {
   const [people, setPeople] = useState<Who[]>([]);
   const [open, setOpen] = useState(false);
+  const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
     const me = clientId();
@@ -26,12 +37,16 @@ export function PresenceIndicator() {
     });
 
     const sync = () => {
-      const state = channel.presenceState<{ id: string; name: string }>();
+      const state = channel.presenceState<{ id: string; name: string; at?: string }>();
       const list: Who[] = Object.values(state)
         .map((entries) => entries[0])
         .filter(Boolean)
         .filter((e) => e.id !== me)
-        .map((e) => ({ id: e.id, name: e.name || "Someone" }));
+        .map((e) => ({
+          id: e.id,
+          name: e.name || "Someone",
+          at: e.at ? Date.parse(e.at) : Date.now(),
+        }));
       setPeople(list);
     };
 
@@ -42,13 +57,32 @@ export function PresenceIndicator() {
         await channel.track({
           id: me,
           name: (typeof window !== "undefined" && localStorage.getItem(NAME_KEY)) || "Someone",
+          at: new Date().toISOString(),
         });
       });
 
+    // keep our own presence timestamp fresh
+    const heartbeat = window.setInterval(() => {
+      channel.track({
+        id: me,
+        name: (typeof window !== "undefined" && localStorage.getItem(NAME_KEY)) || "Someone",
+        at: new Date().toISOString(),
+      });
+    }, 30000);
+
     return () => {
+      window.clearInterval(heartbeat);
       supabase.removeChannel(channel);
     };
   }, []);
+
+  // tick the "last active" labels only while the dropdown is open
+  useEffect(() => {
+    if (!open) return;
+    setNow(Date.now());
+    const t = window.setInterval(() => setNow(Date.now()), 5000);
+    return () => window.clearInterval(t);
+  }, [open]);
 
   const count = people.length;
 
@@ -71,13 +105,19 @@ export function PresenceIndicator() {
 
 
       {open && (
-        <ul className="mt-2 w-52 max-h-56 overflow-y-auto rounded-md border border-charcoal/15 bg-paper/95 backdrop-blur-md p-2 shadow-lg">
+        <ul className="mt-2 w-60 max-h-56 overflow-y-auto rounded-md border border-charcoal/15 bg-paper/95 backdrop-blur-md p-2 shadow-lg">
           {people.length === 0 ? (
             <li className="px-2 py-1 font-hand text-lg text-charcoal/50">Just you for now</li>
           ) : (
             people.map((p) => (
-              <li key={p.id} className="px-2 py-1 font-hand text-lg text-charcoal/80">
-                {p.name}
+              <li
+                key={p.id}
+                className="flex items-baseline justify-between gap-2 px-2 py-1 font-hand text-lg text-charcoal/80"
+              >
+                <span className="truncate">{p.name}</span>
+                <span className="shrink-0 font-mono text-[9px] uppercase tracking-[0.15em] text-charcoal/50">
+                  {ago(now - p.at)}
+                </span>
               </li>
             ))
           )}
