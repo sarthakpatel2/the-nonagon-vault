@@ -1,0 +1,1 @@
+DELETE FROM public.crew_avatars WHERE slug = 'aditi';
