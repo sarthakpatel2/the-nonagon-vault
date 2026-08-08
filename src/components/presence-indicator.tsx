@@ -1,5 +1,19 @@
 import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
+import { crew } from "@/lib/crew";
+
+const norm = (s: string) => s.toLowerCase().replace(/[^a-z]/g, "");
+
+/** Best-effort match of a presence display name to a crew profile slug. */
+function matchSlug(name: string): string | null {
+  const n = norm(name);
+  if (!n) return null;
+  const exact = crew.find((m) => norm(m.name) === n);
+  if (exact) return exact.slug;
+  const partial = crew.filter((m) => norm(m.name).includes(n) || n.includes(norm(m.name)));
+  return partial.length === 1 ? partial[0].slug : null;
+}
 
 export const NAME_KEY = "nonagon-name";
 
