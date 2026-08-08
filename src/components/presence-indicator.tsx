@@ -1,5 +1,19 @@
 import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
+import { crew } from "@/lib/crew";
+
+const norm = (s: string) => s.toLowerCase().replace(/[^a-z]/g, "");
+
+/** Best-effort match of a presence display name to a crew profile slug. */
+function matchSlug(name: string): string | null {
+  const n = norm(name);
+  if (!n) return null;
+  const exact = crew.find((m) => norm(m.name) === n);
+  if (exact) return exact.slug;
+  const partial = crew.filter((m) => norm(m.name).includes(n) || n.includes(norm(m.name)));
+  return partial.length === 1 ? partial[0].slug : null;
+}
 
 export const NAME_KEY = "nonagon-name";
 
@@ -109,17 +123,31 @@ export function PresenceIndicator() {
           {people.length === 0 ? (
             <li className="px-2 py-1 font-hand text-lg text-charcoal/50">Just you for now</li>
           ) : (
-            people.map((p) => (
-              <li
-                key={p.id}
-                className="flex items-baseline justify-between gap-2 px-2 py-1 font-hand text-lg text-charcoal/80"
-              >
-                <span className="truncate">{p.name}</span>
-                <span className="shrink-0 font-mono text-[9px] uppercase tracking-[0.15em] text-charcoal/50">
-                  {ago(now - p.at)}
-                </span>
-              </li>
-            ))
+            people.map((p) => {
+              const slug = matchSlug(p.name);
+              return (
+                <li
+                  key={p.id}
+                  className="flex items-baseline justify-between gap-2 px-2 py-1 font-hand text-lg text-charcoal/80"
+                >
+                  {slug ? (
+                    <Link
+                      to="/friends/$slug"
+                      params={{ slug }}
+                      onClick={() => setOpen(false)}
+                      className="truncate underline decoration-brand/40 underline-offset-4 hover:text-brand transition-colors"
+                    >
+                      {p.name}
+                    </Link>
+                  ) : (
+                    <span className="truncate">{p.name}</span>
+                  )}
+                  <span className="shrink-0 font-mono text-[9px] uppercase tracking-[0.15em] text-charcoal/50">
+                    {ago(now - p.at)}
+                  </span>
+                </li>
+              );
+            })
           )}
         </ul>
       )}
