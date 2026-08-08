@@ -109,17 +109,31 @@ export function PresenceIndicator() {
           {people.length === 0 ? (
             <li className="px-2 py-1 font-hand text-lg text-charcoal/50">Just you for now</li>
           ) : (
-            people.map((p) => (
-              <li
-                key={p.id}
-                className="flex items-baseline justify-between gap-2 px-2 py-1 font-hand text-lg text-charcoal/80"
-              >
-                <span className="truncate">{p.name}</span>
-                <span className="shrink-0 font-mono text-[9px] uppercase tracking-[0.15em] text-charcoal/50">
-                  {ago(now - p.at)}
-                </span>
-              </li>
-            ))
+            people.map((p) => {
+              const slug = matchSlug(p.name);
+              return (
+                <li
+                  key={p.id}
+                  className="flex items-baseline justify-between gap-2 px-2 py-1 font-hand text-lg text-charcoal/80"
+                >
+                  {slug ? (
+                    <Link
+                      to="/friends/$slug"
+                      params={{ slug }}
+                      onClick={() => setOpen(false)}
+                      className="truncate underline decoration-brand/40 underline-offset-4 hover:text-brand transition-colors"
+                    >
+                      {p.name}
+                    </Link>
+                  ) : (
+                    <span className="truncate">{p.name}</span>
+                  )}
+                  <span className="shrink-0 font-mono text-[9px] uppercase tracking-[0.15em] text-charcoal/50">
+                    {ago(now - p.at)}
+                  </span>
+                </li>
+              );
+            })
           )}
         </ul>
       )}
