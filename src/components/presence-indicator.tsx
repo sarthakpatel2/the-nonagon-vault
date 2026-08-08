@@ -30,6 +30,7 @@ export function PresenceIndicator() {
       const list: Who[] = Object.values(state)
         .map((entries) => entries[0])
         .filter(Boolean)
+        .filter((e) => e.id !== me)
         .map((e) => ({ id: e.id, name: e.name || "Someone" }));
       setPeople(list);
     };
@@ -49,7 +50,9 @@ export function PresenceIndicator() {
     };
   }, []);
 
-  const count = Math.max(people.length, 1);
+  const count = people.length;
+
+  if (count === 0) return null;
 
   return (
     <div className="fixed bottom-20 left-5 z-40">
@@ -63,8 +66,9 @@ export function PresenceIndicator() {
           <span className="absolute inline-flex h-full w-full rounded-full bg-brand/60 animate-ping" />
           <span className="relative inline-flex size-2 rounded-full bg-brand" />
         </span>
-        {count} here now
+        {count} {count === 1 ? "other here now" : "others here now"}
       </button>
+
 
       {open && (
         <ul className="mt-2 w-52 max-h-56 overflow-y-auto rounded-md border border-charcoal/15 bg-paper/95 backdrop-blur-md p-2 shadow-lg">
