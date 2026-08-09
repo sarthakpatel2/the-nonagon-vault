@@ -97,7 +97,7 @@ export function VideoSocial({ videoId, tone = "dark" }: { videoId: string; tone?
       toast.error(error.message);
       return;
     }
-    localStorage.setItem(NAME_KEY, who);
+    setStoredName(who);
     setMessage("");
     load();
   };
