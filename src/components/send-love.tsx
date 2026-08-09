@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { getStoredName, setStoredName } from "@/components/presence-indicator";
 
 type LoveNote = {
   id: string;
@@ -75,6 +76,11 @@ export function SendLove() {
   const [burst, setBurst] = useState(0);
   const [confetti, setConfetti] = useState<Confetti[]>([]);
   const [mood, setMood] = useState<string>("love");
+
+  useEffect(() => {
+    const saved = getStoredName();
+    if (saved) setName(saved);
+  }, []);
   const [trail, setTrail] = useState<{ id: number; x: number; y: number; emoji: string }[]>([]);
 
   useEffect(() => {
@@ -157,9 +163,9 @@ export function SendLove() {
       toast.error("Couldn't send love. Try again?");
       return;
     }
+    setStoredName(trimmedName);
     toast.success("Love sent 💖");
     setMessage("");
-    setName("");
     setBurst((b) => b + 1);
     fireConfetti();
     playChime();
