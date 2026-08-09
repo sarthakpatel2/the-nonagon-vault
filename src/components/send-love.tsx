@@ -76,6 +76,11 @@ export function SendLove() {
   const [burst, setBurst] = useState(0);
   const [confetti, setConfetti] = useState<Confetti[]>([]);
   const [mood, setMood] = useState<string>("love");
+
+  useEffect(() => {
+    const saved = getStoredName();
+    if (saved) setName(saved);
+  }, []);
   const [trail, setTrail] = useState<{ id: number; x: number; y: number; emoji: string }[]>([]);
 
   useEffect(() => {
