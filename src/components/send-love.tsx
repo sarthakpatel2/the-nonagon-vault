@@ -157,9 +157,9 @@ export function SendLove() {
       toast.error("Couldn't send love. Try again?");
       return;
     }
+    setStoredName(trimmedName);
     toast.success("Love sent 💖");
     setMessage("");
-    setName("");
     setBurst((b) => b + 1);
     fireConfetti();
     playChime();
