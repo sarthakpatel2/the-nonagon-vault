@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { crew } from "@/lib/crew";
@@ -16,6 +16,21 @@ function matchSlug(name: string): string | null {
 }
 
 export const NAME_KEY = "nonagon-name";
+export const NAME_EVENT = "nonagon-name-change";
+
+export function getStoredName() {
+  if (typeof window === "undefined") return "";
+  return (localStorage.getItem(NAME_KEY) || "").trim();
+}
+
+/** Save the visitor's display name and let presence know about it. */
+export function setStoredName(name: string) {
+  if (typeof window === "undefined") return;
+  const clean = name.trim().slice(0, 60);
+  if (!clean) return;
+  localStorage.setItem(NAME_KEY, clean);
+  window.dispatchEvent(new CustomEvent(NAME_EVENT, { detail: clean }));
+}
 
 function clientId() {
   if (typeof window === "undefined") return "server";
@@ -43,6 +58,13 @@ export function PresenceIndicator() {
   const [people, setPeople] = useState<Who[]>([]);
   const [open, setOpen] = useState(false);
   const [now, setNow] = useState(() => Date.now());
+  const [myName, setMyName] = useState("");
+  const [draft, setDraft] = useState("");
+  const trackRef = useRef<(() => void) | null>(null);
+
+  useEffect(() => {
+    setMyName(getStoredName());
+  }, []);
 
   useEffect(() => {
     const me = clientId();
@@ -50,42 +72,51 @@ export function PresenceIndicator() {
       config: { presence: { key: me } },
     });
 
+    const track = () => {
+      const name = getStoredName();
+      channel.track({
+        id: me,
+        name: name || "Someone",
+        named: Boolean(name),
+        at: new Date().toISOString(),
+      });
+    };
+    trackRef.current = track;
+
     const sync = () => {
-      const state = channel.presenceState<{ id: string; name: string; at?: string }>();
+      const state = channel.presenceState<{ id: string; name: string; named?: boolean; at?: string }>();
       const list: Who[] = Object.values(state)
         .map((entries) => entries[0])
         .filter(Boolean)
         .filter((e) => e.id !== me)
         .map((e) => ({
           id: e.id,
-          name: e.name || "Someone",
+          name: (e.named === false ? "" : e.name) || "Someone",
           at: e.at ? Date.parse(e.at) : Date.now(),
         }));
       setPeople(list);
     };
 
-    channel
-      .on("presence", { event: "sync" }, sync)
-      .subscribe(async (status) => {
-        if (status !== "SUBSCRIBED") return;
-        await channel.track({
-          id: me,
-          name: (typeof window !== "undefined" && localStorage.getItem(NAME_KEY)) || "Someone",
-          at: new Date().toISOString(),
-        });
-      });
+    channel.on("presence", { event: "sync" }, sync).subscribe((status) => {
+      if (status !== "SUBSCRIBED") return;
+      track();
+    });
 
     // keep our own presence timestamp fresh
-    const heartbeat = window.setInterval(() => {
-      channel.track({
-        id: me,
-        name: (typeof window !== "undefined" && localStorage.getItem(NAME_KEY)) || "Someone",
-        at: new Date().toISOString(),
-      });
-    }, 30000);
+    const heartbeat = window.setInterval(track, 30000);
+
+    const onName = () => {
+      setMyName(getStoredName());
+      track();
+    };
+    window.addEventListener(NAME_EVENT, onName);
+    window.addEventListener("storage", onName);
 
     return () => {
       window.clearInterval(heartbeat);
+      window.removeEventListener(NAME_EVENT, onName);
+      window.removeEventListener("storage", onName);
+      trackRef.current = null;
       supabase.removeChannel(channel);
     };
   }, []);
@@ -117,13 +148,10 @@ export function PresenceIndicator() {
         {count} {count === 1 ? "other here now" : "others here now"}
       </button>
 
-
       {open && (
-        <ul className="mt-2 w-60 max-h-56 overflow-y-auto rounded-md border border-charcoal/15 bg-paper/95 backdrop-blur-md p-2 shadow-lg">
-          {people.length === 0 ? (
-            <li className="px-2 py-1 font-hand text-lg text-charcoal/50">Just you for now</li>
-          ) : (
-            people.map((p) => {
+        <div className="mt-2 w-60 rounded-md border border-charcoal/15 bg-paper/95 backdrop-blur-md p-2 shadow-lg">
+          <ul className="max-h-56 overflow-y-auto">
+            {people.map((p) => {
               const slug = matchSlug(p.name);
               return (
                 <li
@@ -147,9 +175,40 @@ export function PresenceIndicator() {
                   </span>
                 </li>
               );
-            })
+            })}
+          </ul>
+
+          {!myName && (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setStoredName(draft);
+                setDraft("");
+              }}
+              className="mt-2 border-t border-charcoal/10 pt-2"
+            >
+              <label className="block px-2 font-mono text-[9px] uppercase tracking-[0.15em] text-charcoal/50">
+                Show your name to others
+              </label>
+              <div className="mt-1 flex gap-1 px-2 pb-1">
+                <input
+                  value={draft}
+                  onChange={(e) => setDraft(e.target.value)}
+                  maxLength={60}
+                  placeholder="Your name"
+                  className="min-w-0 flex-1 rounded border border-charcoal/15 bg-paper px-2 py-1 font-hand text-base text-charcoal/80 outline-none focus:border-brand"
+                />
+                <button
+                  type="submit"
+                  disabled={!draft.trim()}
+                  className="rounded border border-charcoal/15 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.15em] text-charcoal/70 hover:border-brand hover:text-brand disabled:opacity-40 transition-colors"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
           )}
-        </ul>
+        </div>
       )}
     </div>
   );
